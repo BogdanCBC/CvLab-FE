@@ -1,0 +1,10 @@
+.refresh-table-button {
+    display: flex;
+    align-items: center;
+    justify-content: right;
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    border: none;
+    cursor: pointer;
+}

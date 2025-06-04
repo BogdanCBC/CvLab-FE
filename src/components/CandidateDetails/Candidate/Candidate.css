@@ -1,0 +1,25 @@
+.candidate-details {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+}
+
+.candidate-header {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: flex-start;
+}
+
+.candidate-details h2 {
+    margin: 0;
+    font-size: 24px;
+    flex-grow: 1;
+}
+
+.candidate-cv-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}

@@ -1,0 +1,6 @@
+.candidate-details {
+    background-color: azure;
+    grid: 2/2/3/3;
+    overflow: auto;
+    padding: 10px;
+}
