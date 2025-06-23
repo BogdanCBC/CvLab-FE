@@ -15,7 +15,7 @@ export default function WorkExperience(props) {
                     variant = "contained"
                     size = "small"
                     sx = {{margin: 1, marginBottom: 2}}
-                    onClick={props.addEducation}
+                    onClick={() => props.addWorkExperience()}
                 > <AddIcon />Add Work Experience</Button>
             </div>
 

@@ -15,7 +15,7 @@ export default function Education(props) {
                     variant = "contained"
                     size = "small"
                     sx = {{margin: 1, marginBottom: 2}}
-                    onClick={props.addEducation}
+                    onClick={() => props.addEducation()}
                 > <AddIcon />Add Education</Button>
             </div>
             

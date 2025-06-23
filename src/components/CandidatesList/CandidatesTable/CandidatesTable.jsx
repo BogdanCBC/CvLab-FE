@@ -16,10 +16,10 @@ import FirstPageIcon from '@mui/icons-material/FirstPage';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import LastPageIcon from '@mui/icons-material/LastPage';
-import RefreshButton from '../RefreshButton/RefreshButton';
-import { Button } from '@mui/material';
+import { Button, TextField } from '@mui/material';
+import './CandidatesTable.css'
+import Fuse from 'fuse.js';
 
-import api from '../../../api';
 
 function TablePaginationActions(props) {
   const theme = useTheme();
@@ -86,27 +86,20 @@ TablePaginationActions.propTypes = {
 export default function CandidatesTable(props) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [searchTerm, setSearchTerm] = React.useState('');
 
-  const [data, setData] = React.useState([]);
+  const fuse = new Fuse(props.data, {
+    keys: ['firstName', 'lastName', 'experience', 'position'],
+    threshold: 0.3,
+  });
 
-  React.useEffect(() => {fetchData()}, []);
-
-  const fetchData = async () => {
-        const response = await api.get("/candidates");
-        const data = response.data.map(candidate => ({
-            id: candidate.id,
-            firstName: candidate.first_name,
-            lastName: candidate.last_name,
-            experience: candidate.experience,
-            position: candidate.position,
-        }));
-        console.log(data);
-        setData(data);
-  }
+  const filteredData = searchTerm
+      ? fuse.search(searchTerm).map(result => result.item)
+      : props.data;
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - data.length) : 0;
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - props.data.length) : 0;
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -119,9 +112,21 @@ export default function CandidatesTable(props) {
 
   return (
     <div>
-    < RefreshButton  fetchDataFunction={fetchData}/>
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
+
+    <TextField
+      label="Search Candidates"
+      variant="outlined"
+      fullWidth
+      margin="normal"
+      value={searchTerm}
+      onChange={(e) => {
+        setSearchTerm(e.target.value);
+        setPage(0);
+      }}
+    />
+
+    <TableContainer component={Paper} >
+      <Table sx={{ minWidth: 500 }} aria-label="custom pagination table" style={{height: '550px'}}>
         <TableHead style={{backgroundColor: '#f5f5f5'}}>
           <TableRow>
             <TableCell style={{ width: '30%' }}>First Name</TableCell>
@@ -134,13 +139,17 @@ export default function CandidatesTable(props) {
         
         <TableBody sx={{width: '100%', height: '400px'}}>
           {(rowsPerPage > 0
-            ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-            : data
+              ? filteredData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              : filteredData
           ).map((row) => (
             <TableRow
                     key={row.id}
                     onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#f0f0f0'} 
                     onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+                    onClick={() => {
+                      props.selectedHandler(row.id)
+                      props.setEditMode(false);
+                    }}
             >
               <TableCell sx={{ width: '20%'}} scope="row">
                 {row.firstName}
@@ -157,7 +166,10 @@ export default function CandidatesTable(props) {
               <TableCell sx={{ width: '20%' }} align="right">
 
                   <Button 
-                      onClick={() => props.selectedHandler(row.id)}
+                      onClick={() => { 
+                          props.selectedHandler(row.id)
+                          props.setEditMode(false);
+                      }}
                       variant="contained"
                       sx={{ backgroundColor: '#1976d2', color: 'white', width: "40px", height: "30px"}}
                   >
@@ -179,7 +191,7 @@ export default function CandidatesTable(props) {
             <TablePagination
               rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
               colSpan={4}
-              count={data.length}
+              count={filteredData.length}
               rowsPerPage={rowsPerPage}
               page={page}
               slotProps={{

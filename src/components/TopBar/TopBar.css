@@ -1,10 +1,32 @@
 .top-bar {
     grid-column: 1 / 3;
     display: flex;
-    justify-content: flex-end;
+    flex-direction: column;
     padding: 10px;
+    gap: 10px;
+}
+
+.alert-wrapper {
+    width: 95%;
+    align-self: center;
+    z-index: 2;
+}
+
+.controls-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 30px;
+}
+
+.top-bar img {
+    margin-top: 20px;
+    margin-left: 40px;
+    height: 140px;
+    width: 140px;
 }
 
 .button-wrapper {
-    margin-right: 40px
+    margin-top: 20px;
+    margin-right: 40px;
 }

@@ -2,32 +2,33 @@ import Button from '@mui/material/Button'
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import TextField from '@mui/material/TextField';
-import "./Skills.css";
+import './Certifications.css'
 
-export default function Skills(props) {
+export default function Certifications(props) {
+
 
     return (
-        <div className="skills">
-            <div className="skills-header">
-                <h2 sx={{fontSize: 30}}>Skills</h2>
+        <div className="certifications">
+            <div className="certifications-header">
+                <h2 sx={{fontSize: 30}}>Certifications</h2>
                 <Button
-                    className="add-skill-button"
+                    className="add-certification-button"
                     variant="contained"
                     size="small"
                     sx={{margin: 1, marginBottom: 2}}
-                    onClick={() => props.addSkill()}
+                    onClick={() => props.addCertification()}
                 > 
-                    <AddIcon />Add Skill
+                    <AddIcon />Add Certification
                 </Button>
             </div>
 
-            {props.profileData.skills.map((skill, index) => (
-                <div key={index} className="skill-item">
+            {props.profileData.certifications.map((certification, index) => (
+                <div key={index} className="certification-item">
                     <TextField 
-                        value={skill || ""}
-                        placeholder='Enter skill...'
+                        value={certification || ""}
+                        placeholder='Enter certification...'
                         onChange={(e) => {
-                            props.updateSkills(index, e.target.value);
+                            props.updateCertifications(index, e.target.value);
                         }}
                         fullWidth
                     />
@@ -36,7 +37,7 @@ export default function Skills(props) {
                         variant="outlined"
                         size="small"
                         sx={{ marginLeft: 1 }}
-                        onClick={() => props.removeSkill(index)}
+                        onClick={() => props.removeCertification(index)}
                     >
                         <DeleteIcon />
                     </Button>

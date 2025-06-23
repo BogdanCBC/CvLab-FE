@@ -9,6 +9,7 @@ import {getFileNameFromDisposition, downloadFileFromBlob} from "../../../helperF
 export default function Candidate(props) {
     const [candidate, setCandidate] = useState(null);
     const [success, setSuccess] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         fetchData();
@@ -60,25 +61,36 @@ export default function Candidate(props) {
 
     const getFormattedCV = async () => {
         try {
-            const response = await api.get(`/template/${props.candidateId}?file_type=pdf`, {
-                responseType: 'blob',
-            })
+            setLoading(true);
 
-            const disposition = response.headers['content-disposition'];
-            let filename = getFileNameFromDisposition(disposition);
-            const blobFile = new Blob([response.data]);
+            const generateCandidateCV = await api.post(`/template?id=${props.candidateId}`)
+            if (generateCandidateCV) {
+                const response = await api.get(`/template/${props.candidateId}?file_type=pdf`, {
+                    responseType: 'blob',
+                })
 
-            downloadFileFromBlob(blobFile, filename);
+                const disposition = response.headers['content-disposition'];
+                let filename = getFileNameFromDisposition(disposition);
+                const blobFile = new Blob([response.data]);
+
+                downloadFileFromBlob(blobFile, filename);
+
+                setLoading(false);
+            } else {
+                console.log('Failed to generate new CV.')
+                setLoading(false);
+            }
         } catch (error) {
             console.error("Error fetching formatted CV:", error);
             alert("An error occurred while fetching the formatted CV. Please try again.");
+            setLoading(false)
         }
     }
     
     return (
         <Box
             sx={{
-                maxHeight: '510px',
+                maxHeight: '550px',
                 overflowY: 'auto',
                 overflowX: 'hidden',
                 padding: 2,
@@ -90,7 +102,7 @@ export default function Candidate(props) {
                 </Alert>
             )}
 
-            <div className="candidate-details">
+            <div className="candidate-wrapper">
                 <div className="candidate-header">
                     <h2>Candidate Name: {candidate ? candidate.firstName : "none"}</h2>
                     <Button 
@@ -107,11 +119,21 @@ export default function Candidate(props) {
             </div>
             
             <div className="candidate-cv-buttons">
-                <Button variant="contained" color="primary" onClick={getFormattedCV}>
+                <Button
+                    loading={loading}
+                    variant="contained"
+                    color="primary"
+                    onClick={() => getFormattedCV()}
+                >
                     Get formated CV 
                 </Button>
 
-                <Button variant="contained" color="primary" onClick={getCandidateCV} sx={{ marginLeft: 1 }}>
+                <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={() => getCandidateCV()}
+                    sx={{ marginLeft: 1 }}
+                >
                     Get original CV 
                 </Button>
             </div>

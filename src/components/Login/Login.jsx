@@ -31,16 +31,17 @@ function Login({ onLogin }) {
         validateStatus: () => true
       })
 
-      if (response.status === 200 && response.data.access_token){
-        const token = response.data.access_token;
-        localStorage.setItem('token', token);
+      if (response.status === 200 && response.data.access_token && response.data.refresh_token){
+        localStorage.setItem('token', response.data.access_token);
+        localStorage.setItem('refreshToken', response.data.refresh_token);
         onLogin();
         navigate('/');
-      } else if (response.status === 401) {
+      } else if (response.status === 401 || response.status === 404) {
         alert('Username or password is incorrect.')
       } else {
-        alert('Unexpected error occured.')
+        alert('Uexpected error occured')
       }
+    
     } catch (error) {
       alert('Login failed: '+ (error.message || 'Unexpected error occurred'));
     }

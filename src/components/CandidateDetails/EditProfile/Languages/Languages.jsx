@@ -24,7 +24,7 @@ export default function Languages(props) {
                     variant="contained"
                     size="small"
                     sx={{margin: 1, marginBottom: 2}}
-                    onClick={props.addLanguage}
+                    onClick={() => props.addLanguage()}
                 >
                     <AddIcon />Add Language
                 </Button>
@@ -45,9 +45,9 @@ export default function Languages(props) {
                     <TextField
                         select
                         label="Level"
-                        value={language.language_level || ""}
+                        value={language.level || ""}
                         onChange={(e) => {
-                            props.updateLanguage(index, "language_level", e.target.value);
+                            props.updateLanguage(index, "level", e.target.value);
                         }}
                         size="small"
                         sx={{ minWidth: 150 }}

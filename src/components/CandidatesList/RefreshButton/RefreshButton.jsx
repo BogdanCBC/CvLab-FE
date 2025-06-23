@@ -5,10 +5,14 @@ import { Button } from '@mui/material';
 
 export default function RefreshButton(props) {
     return (
-        <div className='refresh-table-button'>
-            <Button onClick={props.fetchDataFunction} variant='contained' color='primary' size='small' sx={{ margin: 1 }}>
+            <Button
+                onClick={props.fetchDataFunction}
+                variant='contained'
+                color='primary'
+                size='small'
+                sx={{ margin: 1 }}
+            >
                 <RefreshIcon />
             </Button>
-        </div>
     );
 }

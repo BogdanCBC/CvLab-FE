@@ -1,10 +1,11 @@
 .modal-box {
   position: absolute;
+  overflow-y: auto;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 400px;
-  height: 450px;
+  width: 40%;
+  height: 80%;
   background-color: white;
   border: 2px solid #000;
   box-shadow: 0px 3px 6px rgba(0,0,0,0.2);
@@ -25,4 +26,18 @@
     height: 250px;        
     resize: none;      
     overflow-y: auto;
+}
+
+.uploaded-files-container {
+  max-height: 600px;
+  overflow-y: auto;
+  width: 100%;
+  margin-bottom: 20px;
+  padding-right: 8px;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: space-evenly;
+  padding: 1rem;
 }
