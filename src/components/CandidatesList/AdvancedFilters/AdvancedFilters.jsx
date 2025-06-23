@@ -71,7 +71,7 @@ export default function AdvancedFilters(props){
                     position: formData.position,
                     experience: formData.experience.trim() === '' ? undefined : parseInt(formData.experience),
                     skills: formData.skills,
-                    language: formData.languages,
+                    languages: formData.languages,
                     certifications: formData.certifications
                 },
                 paramsSerializer: params => qs.stringify(params, { arrayFormat: 'repeat' })

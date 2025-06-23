@@ -22,7 +22,8 @@ function CandidatesList(props) {
             position: candidate.position,
         }));
         console.log(data);
-        setData(data);
+        const sorted = data.sort((a, b) => b.id - a.id);
+        setData(sorted);
     }
 
     return (
@@ -48,7 +49,6 @@ function CandidatesList(props) {
 
             <CandidatesTable 
                 data={data}
-                setData={setData}
                 candidate={props.selectedCandidate}
                 selectedHandler={props.selectedHandler}
                 editMode={props.editMode}
