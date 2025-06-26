@@ -88,18 +88,18 @@ export default function CandidatesTable(props) {
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [searchTerm, setSearchTerm] = React.useState('');
 
-  const fuse = new Fuse(props.data, {
+  const fuse = new Fuse(props.candidates, {
     keys: ['firstName', 'lastName', 'experience', 'position'],
     threshold: 0.3,
   });
 
-  const filteredData = searchTerm
+  const filteredCandidates = searchTerm
       ? fuse.search(searchTerm).map(result => result.item)
-      : props.data;
+      : props.candidates;
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - props.data.length) : 0;
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - props.candidates.length) : 0;
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -139,8 +139,8 @@ export default function CandidatesTable(props) {
         
         <TableBody sx={{width: '100%', height: '400px'}}>
           {(rowsPerPage > 0
-              ? filteredData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              : filteredData
+              ? filteredCandidates.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              : filteredCandidates
           ).map((row) => (
             <TableRow
                     key={row.id}
@@ -191,7 +191,7 @@ export default function CandidatesTable(props) {
             <TablePagination
               rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
               colSpan={4}
-              count={filteredData.length}
+              count={filteredCandidates.length}
               rowsPerPage={rowsPerPage}
               page={page}
               slotProps={{

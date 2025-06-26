@@ -1,13 +1,11 @@
-import React, { useState } from "react";
 import "./CandidateDetails.css";
 import NoCandidate from "./NoCandidate/NoCandidate";
 import Candidate from "./Candidate/Candidate";
 import EditCandidate from "./EditProfile/EditProfile";
 
 function CandidateDetails(props) {
-    // const [editMode, setEditMode] = useState(false);
 
-    if (!props.candidate) {
+    if (!props.selectedCandidate) {
         return (
             <div className="candidate-details">
                 <NoCandidate />
@@ -18,13 +16,16 @@ function CandidateDetails(props) {
     return (
         <div className="candidate-details">
             {props.editMode ? (<EditCandidate
-                            candidateId={props.candidate}
+                            candidateId={props.selectedCandidate}
                             setEditMode={props.setEditMode}
                         />) : 
                         (<Candidate
-                            candidateId={props.candidate}
+                            candidate={props.selectedCandidate}
+                            selectedHandler={props.selectedHandler}
+                            candidateId={props.selectedCandidate}
                             setEditMode={props.setEditMode}
                             editMode={props.editMode}
+                            setCandidates={props.setCandidates}
                         />)}
         </div>
     );

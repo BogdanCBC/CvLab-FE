@@ -8,6 +8,7 @@ import { styled } from '@mui/material/styles';
 import { downloadFileFromBlob, getFileNameFromDisposition } from '../../../helperFunctions';
 import api from "../../../api.js"
 import { v4 as uuidv4 } from 'uuid';
+import { fetchCandidates } from '../../../utils/fetchCandidates.js';
 
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
@@ -124,10 +125,12 @@ function UploadCandidateModal(props) {
           props.setWarning(false);
         }, 3000);
       }
-
-      setLoading(false);
-      props.setModalState(false);
-
+      
+      fetchCandidates().then(sortedCandidates => {
+        props.setCandidates(sortedCandidates);
+        setLoading(false);
+        props.setModalState(false);
+      });
     } catch (error) {
       console.error("Error during batch upload:", error);
       props.setError(true);
@@ -141,7 +144,7 @@ function UploadCandidateModal(props) {
   return (
       <Modal
         open={props.modalState}
-        onClose={() => props.setModalState(false)}
+        onClose={() => {props.setModalState(false)}}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >

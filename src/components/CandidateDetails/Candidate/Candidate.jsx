@@ -1,10 +1,12 @@
+import './Candidate.css';
+import api from "../../../api";
 import React, { useState, useEffect } from "react";
 import CheckIcon from '@mui/icons-material/Check';
 import EditIcon from '@mui/icons-material/Edit';
-import api from "../../../api";
-import './Candidate.css';
 import { Button, Alert, Box } from "@mui/material";
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import {getFileNameFromDisposition, downloadFileFromBlob} from "../../../helperFunctions";
+import { fetchCandidates } from '../../../utils/fetchCandidates';
 
 export default function Candidate(props) {
     const [candidate, setCandidate] = useState(null);
@@ -87,6 +89,21 @@ export default function Candidate(props) {
         }
     }
     
+    const deleteCandidate = async () => {
+        try {
+            const response = await api.delete('/candidates', {params: {id: props.candidateId}});
+            if (response.status === 204) {
+                props.selectedHandler(null);
+                fetchCandidates().then(sortedCandidates => {
+                    props.setCandidates(sortedCandidates);
+                });   
+            }
+        } catch (error) {
+            console.error("Error deleting candidate:", error);
+            alert("An error occurred while deleting the candidate. Please try again.");
+        }
+    }
+
     return (
         <Box
             sx={{
@@ -105,6 +122,15 @@ export default function Candidate(props) {
             <div className="candidate-wrapper">
                 <div className="candidate-header">
                     <h2>Candidate Name: {candidate ? candidate.firstName : "none"}</h2>
+                    <Button
+                        variant="contained"
+                        size="small"
+                        color="error"
+                        onClick={deleteCandidate}
+                        startIcon={<DeleteForeverIcon />}
+                    >
+                        Delete
+                    </Button>
                     <Button 
                         variant="contained" 
                         size="small" 

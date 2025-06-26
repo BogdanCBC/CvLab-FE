@@ -86,7 +86,7 @@ export default function AdvancedFilters(props){
                     position: candidate.position
                 }));
 
-                props.setData(mappedData);
+                props.setCandidates(mappedData);
                 console.log(mappedData);
 
                 props.setModalState(false);

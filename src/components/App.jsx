@@ -13,6 +13,7 @@ function App() {
   const [selectedCandidate, setSelectedCandidate] = useState(null);
   const [editMode, setEditMode] = useState(false);
   const [advancedSearch, setAdvancedSearch] = useState(false);
+  const [candidates, setCandidates] = useState([]);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -45,20 +46,25 @@ function App() {
           element={
             isLoggedIn ? (
               <div className="app">
-                <TopBar />
+                <TopBar 
+                  candidates={candidates}
+                  setCandidates={setCandidates}
+                />
                 <CandidatesList
-                  candidate={selectedCandidate}
                   selectedHandler={setSelectedCandidate}
                   editMode={editMode}
                   setEditMode={setEditMode}
                   advancedSearch={advancedSearch}
                   setAdvancedSearch={setAdvancedSearch}
+                  candidates={candidates}
+                  setCandidates={setCandidates}
                 />
                 <CandidateDetails
-                  candidate={selectedCandidate}
+                  selectedCandidate={selectedCandidate}
                   selectedHandler={setSelectedCandidate}
                   editMode={editMode}
                   setEditMode={setEditMode}
+                  setCandidates={setCandidates}
                 />
               </div>
             ) : (

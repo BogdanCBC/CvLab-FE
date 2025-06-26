@@ -5,7 +5,7 @@ import Alert from "@mui/material/Alert";
 import CheckIcon from '@mui/icons-material/Check';
 import UploadCandidateModal from './UploadCandidateModal/UploadCandidateModal';
 
-function TopBar() {
+function TopBar(props) {
     const [open, setOpen] = useState(false);
     const [success, setSuccess] = useState(false);
     const [warning, setWarning] = useState(false);
@@ -56,6 +56,8 @@ function TopBar() {
                 setSuccess={setSuccess}
                 setWarning={setWarning}
                 setError={setError}
+                candidates={props.candidates}
+                setCandidates={props.setCandidates}
             />
         </div>
     );

@@ -1,47 +1,47 @@
-import Button from '@mui/material/Button'
+import Button from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add';
-import DeleteIcon from '@mui/icons-material/Delete';
-import TextField from '@mui/material/TextField';
-import "./Skills.css";
+import SkillsList from './SkillsList/SkillsList';
+import { closestCorners, DndContext } from '@dnd-kit/core';
+import './Skills.css';
 
 export default function Skills(props) {
+  const handleDragEnd = (event) => {
+    const { active, over } = event;
+    if (!over || active.id === over.id) return;
 
-    return (
-        <div className="skills">
-            <div className="skills-header">
-                <h2 sx={{fontSize: 30}}>Skills</h2>
-                <Button
-                    className="add-skill-button"
-                    variant="contained"
-                    size="small"
-                    sx={{margin: 1, marginBottom: 2}}
-                    onClick={() => props.addSkill()}
-                > 
-                    <AddIcon />Add Skill
-                </Button>
-            </div>
+    const oldIndex = parseInt(active.id);
+    const newIndex = parseInt(over.id);
 
-            {props.profileData.skills.map((skill, index) => (
-                <div key={index} className="skill-item">
-                    <TextField 
-                        value={skill || ""}
-                        placeholder='Enter skill...'
-                        onChange={(e) => {
-                            props.updateSkills(index, e.target.value);
-                        }}
-                        fullWidth
-                    />
+    const updatedSkills = [...props.profileData.skills];
+    const [moved] = updatedSkills.splice(oldIndex, 1);
+    updatedSkills.splice(newIndex, 0, moved);
+    
+    props.updateSkillPosition(oldIndex, newIndex);
+  };
 
-                    <Button
-                        variant="outlined"
-                        size="small"
-                        sx={{ marginLeft: 1 }}
-                        onClick={() => props.removeSkill(index)}
-                    >
-                        <DeleteIcon />
-                    </Button>
-                </div>
-            ))}
-        </div>
-    );
+  return (
+    <div className="skills">
+      <div className="skills-header">
+        <h2>Skills</h2>
+        <Button
+          className="add-skill-button"
+          variant="contained"
+          size="small"
+          sx={{ margin: 1, marginBottom: 2 }}
+          onClick={props.addSkill}
+        >
+          <AddIcon />
+          Add Skill
+        </Button>
+      </div>
+
+      <DndContext collisionDetection={closestCorners} onDragEnd={handleDragEnd}>
+        <SkillsList
+          skills={props.profileData.skills}
+          updateSkills={props.updateSkills}
+          removeSkill={props.removeSkill}
+        />
+      </DndContext>
+    </div>
+  );
 }

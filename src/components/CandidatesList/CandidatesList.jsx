@@ -3,28 +3,18 @@ import './CandidatesList.css';
 import CandidatesTable from './CandidatesTable/CandidatesTable';
 import { Button } from '@mui/material';
 import RefreshButton from './RefreshButton/RefreshButton';
-import api from '../../api';
+import { fetchCandidates } from '../../utils/fetchCandidates';
 import AdvancedFilters from './AdvancedFilters/AdvancedFilters';
 
 function CandidatesList(props) {
 
-    useEffect(() => {fetchData()}, []);
-    const [data, setData] = useState([]);
+    useEffect(() => {
+        fetchCandidates().then(sortedCandidates => {
+            props.setCandidates(sortedCandidates);
+        });
+    }, []);
+
     const [modalState, setModalState] = useState(false);
-    
-    const fetchData = async () => {
-        const response = await api.get("/candidates");
-        const data = response.data.map(candidate => ({
-            id: candidate.id,
-            firstName: candidate.first_name,
-            lastName: candidate.last_name,
-            experience: candidate.experience,
-            position: candidate.position,
-        }));
-        console.log(data);
-        const sorted = data.sort((a, b) => b.id - a.id);
-        setData(sorted);
-    }
 
     return (
         <div className="candidates-list">
@@ -37,18 +27,18 @@ function CandidatesList(props) {
                     Open advanced filters
                 </Button>
                 <RefreshButton
-                    fetchDataFunction={fetchData}
+                    setCandidates={props.setCandidates}
                 />
             </div>
 
             <AdvancedFilters
-                setData={setData}
+                setCandidates={props.setCandidates}
                 modalState={modalState}
                 setModalState={setModalState}
             />
 
             <CandidatesTable 
-                data={data}
+                candidates={props.candidates}
                 candidate={props.selectedCandidate}
                 selectedHandler={props.selectedHandler}
                 editMode={props.editMode}

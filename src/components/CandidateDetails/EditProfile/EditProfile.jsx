@@ -179,6 +179,20 @@ function EditProfile(props) {
         }));
     }
 
+    const updateSkillPosition = (oldIndex, newIndex) => {
+        setProfileData(prevData => {
+            const updatedSkills = [...prevData.skills];
+            const [moved] = updatedSkills.splice(oldIndex, 1);
+            updatedSkills.splice(newIndex, 0, moved);
+
+            return {
+            ...prevData,
+            skills: updatedSkills
+            };
+        });
+    };
+
+
     const updateLanguage = (index, field, value) => {
         setProfileData(prevData => ({
             ...prevData,
@@ -429,11 +443,12 @@ function EditProfile(props) {
                     />
                     )}
                     {selectedSection === 'Skills' && (
-                    <Skills 
+                    <Skills
                         profileData={profileData}
                         updateSkills={updateSkills}
                         addSkill={addSkill}
                         removeSkill={removeSkill}
+                        updateSkillPosition={updateSkillPosition}
                     />
                     )}
                     {selectedSection === 'Languages' && (
