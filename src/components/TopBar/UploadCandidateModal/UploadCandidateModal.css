@@ -41,3 +41,10 @@
   justify-content: space-evenly;
   padding: 1rem;
 }
+
+.files-header {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-bottom: 10px;
+}

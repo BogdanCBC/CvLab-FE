@@ -3,7 +3,7 @@ import api from "../../../api";
 import React, { useState, useEffect } from "react";
 import CheckIcon from '@mui/icons-material/Check';
 import EditIcon from '@mui/icons-material/Edit';
-import { Button, Alert, Box } from "@mui/material";
+import { Button, Alert, Box, FormControl, InputLabel, Select, MenuItem } from "@mui/material";
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import {getFileNameFromDisposition, downloadFileFromBlob} from "../../../helperFunctions";
 import { fetchCandidates } from '../../../utils/fetchCandidates';
@@ -12,6 +12,7 @@ export default function Candidate(props) {
     const [candidate, setCandidate] = useState(null);
     const [success, setSuccess] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [downloadFileType, setDownloadFileType] = useState('pdf');
 
     useEffect(() => {
         fetchData();
@@ -67,7 +68,7 @@ export default function Candidate(props) {
 
             const generateCandidateCV = await api.post(`/template?id=${props.candidateId}`)
             if (generateCandidateCV) {
-                const response = await api.get(`/template/${props.candidateId}?file_type=pdf`, {
+                const response = await api.get(`/template/${props.candidateId}?file_type=${downloadFileType}`, {
                     responseType: 'blob',
                 })
 
@@ -122,7 +123,7 @@ export default function Candidate(props) {
             <div className="candidate-wrapper">
                 <div className="candidate-header">
                     <h2>Candidate Name: {candidate ? candidate.firstName : "none"}</h2>
-                    <Button
+                    {localStorage.getItem('role') === "admin" && (<Button
                         variant="contained"
                         size="small"
                         color="error"
@@ -130,7 +131,7 @@ export default function Candidate(props) {
                         startIcon={<DeleteForeverIcon />}
                     >
                         Delete
-                    </Button>
+                    </Button>)}
                     <Button 
                         variant="contained" 
                         size="small" 
@@ -145,6 +146,20 @@ export default function Candidate(props) {
             </div>
             
             <div className="candidate-cv-buttons">
+                <FormControl >
+                    <InputLabel id="file-type-select-label">File Type</InputLabel>
+                    <Select
+                        labelId="file-type-select-label"
+                        id="file-type-select"
+                        value={downloadFileType}
+                        label="File Type"
+                        onChange={(e) => setDownloadFileType(e.target.value)}
+                    >
+                        <MenuItem value="pdf">PDF</MenuItem>
+                        <MenuItem value="pptx">PPTX</MenuItem>
+                    </Select>
+                </FormControl>
+                
                 <Button
                     loading={loading}
                     variant="contained"

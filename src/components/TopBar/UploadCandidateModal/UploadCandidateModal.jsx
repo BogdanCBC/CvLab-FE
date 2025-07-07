@@ -3,7 +3,7 @@ import './UploadCandidateModal.css';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import UploadCandidate from '../UploadCandidate/UploadCandidate';
-import { Button } from '@mui/material';
+import { Button, InputLabel, MenuItem, FormControl, Select } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { downloadFileFromBlob, getFileNameFromDisposition } from '../../../helperFunctions';
 import api from "../../../api.js"
@@ -26,12 +26,12 @@ function UploadCandidateModal(props) {
   const [files, setFiles] = useState([]);
   const [loading, setLoading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState({});
-
+  const [downloadType, setDownloadType] = useState('pdf');
 
   const handleFileUpload = (event) => {
     const selectedFiles = Array.from(event.target.files);
     const pdfFiles = selectedFiles.filter(file => file.type === 'application/pdf');
-    const fileObject = pdfFiles.map((file, index) => ({
+    const fileObject = pdfFiles.map((file) => ({
       id: uuidv4(),
       fileName: file.name,
       file: file,
@@ -49,6 +49,10 @@ function UploadCandidateModal(props) {
     );
   };
 
+  const handleChangeFileType = (event) => {
+    setDownloadType(event.target.value);  
+  }
+
   const handleRemoveFile = (fileId) => {
     console.log(files)
     setFiles(prevFiles => prevFiles.filter(file => file.id !== fileId));
@@ -60,7 +64,7 @@ function UploadCandidateModal(props) {
     formData.append("cv_pdf", fileObj.file);
 
     try{
-      const response = await api.post('/template/complete?file_type=pdf', formData, {
+      const response = await api.post(`/template/complete?file_type=${downloadType}`, formData, {
         headers: {
           "Accept": "application/json"
         },
@@ -119,11 +123,15 @@ function UploadCandidateModal(props) {
         setTimeout(() => {
           props.setSuccess(false);
         }, 3000);
+
+        setFiles([]);
       } else {
         props.setWarning(true);
         setTimeout(() => {
           props.setWarning(false);
         }, 3000);
+
+        setFiles([]);
       }
       
       fetchCandidates().then(sortedCandidates => {
@@ -173,7 +181,24 @@ function UploadCandidateModal(props) {
             <div className='modal-content'>
               {files.length > 0 && (
                 <div className='files-section'>
-                  <h3>Uploaded Files ({files.length})</h3>
+                  <div className='files-header'>
+                    <h3>Uploaded Files ({files.length})</h3>
+
+                    <FormControl variant="outlined" sx={{ minWidth: 200 }}>
+                      <InputLabel id="file-type-label">Download File Type</InputLabel>
+                      <Select
+                        labelId="file-type-label"
+                        id="file-type-select"
+                        value={downloadType}
+                        onChange={handleChangeFileType}
+                        label="File Type"
+                      >
+                        <MenuItem value="pdf">PDF</MenuItem>
+                        <MenuItem value="pptx">PPTX</MenuItem>
+                      </Select>
+                    </FormControl>
+                  </div>
+
                   {files.map((file) => (
                     <UploadCandidate 
                       key={file.id}

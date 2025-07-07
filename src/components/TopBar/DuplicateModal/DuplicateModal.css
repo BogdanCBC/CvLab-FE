@@ -1,0 +1,12 @@
+.duplicate-modal-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.handle-duplicate {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    padding: 20px;
+}

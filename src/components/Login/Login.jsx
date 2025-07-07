@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './Login.css';
+import { jwtDecode } from 'jwt-decode';
 import api from '../../api';
+import './Login.css';
 
 function Login({ onLogin }) {
   const navigate = useNavigate();
@@ -32,6 +33,9 @@ function Login({ onLogin }) {
       })
 
       if (response.status === 200 && response.data.access_token && response.data.refresh_token){
+        const decoded = jwtDecode(response.data.access_token);
+        localStorage.setItem('role', decoded.role);
+        
         localStorage.setItem('token', response.data.access_token);
         localStorage.setItem('refreshToken', response.data.refresh_token);
         onLogin();

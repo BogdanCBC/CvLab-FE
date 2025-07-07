@@ -1,4 +1,6 @@
 import axios from 'axios';
+import { jwtDecode } from 'jwt-decode';
+
 
 const API_URL = 'http://localhost:8080/api';
 
@@ -37,6 +39,8 @@ api.interceptors.response.use(
         try{
           const response = await axios.post(`${API_URL}/refresh`, new URLSearchParams({ refresh_token: refreshToken}));
           const newAccessToken = response.data.access_token;
+          const decoded = jwtDecode(newAccessToken);
+          localStorage.setItem('role', decoded.role);
 
           localStorage.setItem('token', newAccessToken);
           originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
