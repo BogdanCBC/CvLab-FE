@@ -3,6 +3,7 @@ import './TopBar.css';
 import Button from '@mui/material/Button';
 import Alert from "@mui/material/Alert";
 import CheckIcon from '@mui/icons-material/Check';
+import { useNavigate } from 'react-router-dom';
 import UploadCandidateModal from './UploadCandidateModal/UploadCandidateModal';
 
 function TopBar(props) {
@@ -10,6 +11,13 @@ function TopBar(props) {
     const [success, setSuccess] = useState(false);
     const [warning, setWarning] = useState(false);
     const [error, setError] = useState(false);
+    const navigateLogin = useNavigate();
+
+    function handleLogout() {
+        localStorage.clear();
+        props.setIsLoggedIn(false);
+        navigateLogin('/login'); 
+    }
 
     return (
         <div className="top-bar">
@@ -49,6 +57,13 @@ function TopBar(props) {
                     </Button>
                 </div>
             </div>
+
+            <Button
+                className="logout-button"
+                onClick={handleLogout}
+            >
+                Logout
+            </Button>
             
             <UploadCandidateModal
                 modalState={open}

@@ -47,8 +47,7 @@ api.interceptors.response.use(
 
           return api(originalRequest);
         } catch(refreshError){
-          localStorage.removeItem('token');
-          localStorage.removeItem('refreshToken');
+          localStorage.clear();
           window.location.href = '/login?expired=true';
         }
       } else {

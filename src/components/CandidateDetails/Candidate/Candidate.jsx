@@ -24,13 +24,11 @@ export default function Candidate(props) {
             const data = {
                 id: response.data.id,
                 firstName: response.data.first_name || "N/A",
-                lastName: response.data.last_name || "N/A",
                 description: response.data.description || "N/A",
-                experience: response.data.experience || "N/A",
-                position: response.data.position || "N/A",
+                username: response.data.username || "N/A"
             };
 
-            console.log("Status code:", response.status);
+            console.log("Status code:", data);
 
             setCandidate(data);
             setSuccess(true);
@@ -92,7 +90,7 @@ export default function Candidate(props) {
     
     const deleteCandidate = async () => {
         try {
-            const response = await api.delete('/candidates', {params: {id: props.candidateId}});
+            const response = await api.delete(`/candidates?id=${props.candidateId}`);
             if (response.status === 204) {
                 props.selectedHandler(null);
                 fetchCandidates().then(sortedCandidates => {
@@ -101,7 +99,6 @@ export default function Candidate(props) {
             }
         } catch (error) {
             console.error("Error deleting candidate:", error);
-            alert("An error occurred while deleting the candidate. Please try again.");
         }
     }
 
@@ -142,6 +139,13 @@ export default function Candidate(props) {
                         Edit
                     </Button>
                 </div>
+                
+                {localStorage.getItem('role') === "admin" && (
+                    <div className='uploader'>
+                        <h2>Candidate uploaded by: {candidate ? candidate.username : "Unknown"}</h2>
+                    </div>
+                )}
+                
                 <p>Candidate description: {candidate ? candidate.description : "none"}</p>
             </div>
             

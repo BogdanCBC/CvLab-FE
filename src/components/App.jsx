@@ -49,6 +49,7 @@ function App() {
                 <TopBar 
                   candidates={candidates}
                   setCandidates={setCandidates}
+                  setIsLoggedIn={setIsLoggedIn}
                 />
                 <CandidatesList
                   selectedHandler={setSelectedCandidate}
