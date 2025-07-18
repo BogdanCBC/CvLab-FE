@@ -1,3 +1,5 @@
+import api from "./api";
+
     function getFileNameFromDisposition(disposition) {
         let filename = 'cv.pdf';
         if (disposition && disposition.includes('filename=')) {
@@ -21,4 +23,24 @@
             window.URL.revokeObjectURL(url);
     }
 
-export {getFileNameFromDisposition, downloadFileFromBlob}
+    async function downloadGeneratedFile(candidateId, fileType = 'pdf', fallbackFileName = 'cv_output.pdf') {
+        try {
+            const res = await api.get(`/cv/generate`, {
+                params: {
+                    candidate_id: candidateId,
+                    file_type: fileType,
+                },
+                responseType: 'blob',
+            });
+
+            const disposition = res.headers['content-disposition'];
+            const fileName = getFileNameFromDisposition(disposition) || fallbackFileName;
+
+            downloadFileFromBlob(res.data, fileName);
+        } catch (error) {
+            console.error(`Failed to download file for candidate ${candidateId}`, error);
+            throw error;
+        }
+    }
+
+export {getFileNameFromDisposition, downloadFileFromBlob, downloadGeneratedFile}

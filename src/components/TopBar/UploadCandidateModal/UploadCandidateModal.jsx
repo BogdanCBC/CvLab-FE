@@ -24,130 +24,126 @@ const VisuallyHiddenInput = styled('input')({
 
 function UploadCandidateModal(props) {
   const [files, setFiles] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [uploadProgress, setUploadProgress] = useState({});
+  const [duplicates, setDuplicates] = useState([]);
   const [downloadType, setDownloadType] = useState('pdf');
+  const [isUploading, setIsUploading] = useState(false);
 
   const handleFileUpload = (event) => {
     const selectedFiles = Array.from(event.target.files);
     const pdfFiles = selectedFiles.filter(file => file.type === 'application/pdf');
+
     const fileObject = pdfFiles.map((file) => ({
       id: uuidv4(),
       fileName: file.name,
       file: file,
-      description: ''
+      additionalInfo: '',
+      progress: 0,
+      status: 'pending',
     }))
 
-    setFiles(prevFiles => [...prevFiles, ...fileObject])
+    setFiles(prev => [...prev, ...fileObject]);
   }
 
-  const handleFileDescriptionChange = (fileId, description) => {
+  const handleDescriptionChange = (fileId, additionalInfo) => {
     setFiles(prevFiles => 
       prevFiles.map(file => 
-        file.id === fileId ? { ...file, description } : file
+        file.id === fileId ? { ...file, additionalInfo } : file
       )
     );
   };
+
+  const handleRemoveFile = (fileId) => {
+    setFiles(prevFiles => prevFiles.filter(file => file.id !== fileId));
+  }
 
   const handleChangeFileType = (event) => {
     setDownloadType(event.target.value);  
   }
 
-  const handleRemoveFile = (fileId) => {
-    console.log(files)
-    setFiles(prevFiles => prevFiles.filter(file => file.id !== fileId));
-  };
-
-  const uploadSingleFile = async (fileObj) => {
+  const uploadSingleCV = async (fileData) => {
     const formData = new FormData();
-    formData.append("additional_info", fileObj.description || '');
-    formData.append("cv_pdf", fileObj.file);
+    formData.append('cv_pdf', fileData.file);
+    formData.append('additional_info', fileData.additionalInfo);
 
-    try{
-      const response = await api.post(`/template/complete?file_type=${downloadType}`, formData, {
+    try {
+      const response = await api.post('/cv/process', formData, {
         headers: {
-          "Accept": "application/json"
-        },
-        responseType: 'blob'
-      })
-
-      const disposition = response.headers['content-disposition'];
-      let filename = getFileNameFromDisposition(disposition);
-      const blobFile = new Blob([response.data]);
-
-      downloadFileFromBlob(blobFile, filename);
-
-      return {success: true, fileName: fileObj.fileName };
-    } catch(error) {
-      console.error(`Error uploading file ${fileObj.fileName}:`, error);
-      return {success: false, fileName: fileObj.fileName, error: error.message}
+          'Content-Type': 'multipart/form-data',
+          'Accept': 'application/json',
+        }
+      });
+      return response.data;
+    } catch (error) {
+      console.error('Error uploading file:', fileData.fileName, error);
+      return {error: true}
     }
   }
 
-  const handleSubmit = async () => {
-    if (files.length === 0) {
-      alert("Please select at least one PDF file to upload.");
+  const processFile = async (file) => {
+    // Set to loading
+    setFiles(prev =>
+      prev.map(f =>
+        f.id === file.id ? { ...f, progress: 50, status: 'loading' } : f
+      )
+    );
+
+    const response = await uploadSingleCV(file);
+    console.log(response)
+    if (response.error) {
+      setFiles(prev =>
+        prev.map(f =>
+          f.id === file.id ? { ...f, progress: 100, status: 'error' } : f
+        )
+      );
       return;
     }
 
-    setLoading(true);
-    const results = [];
+    if (response.duplicates === false && response.new_candidate_id) {
+      try {
+        const res = await api.get(`/cv/generate`, {
+          params: {
+            candidate_id: response.new_candidate_id,
+            file_type: downloadType,
+          },
+          responseType: 'blob',
+        });
 
-    try{
-      for (let i=0; i<files.length; i++){
-        const fileObj = files[i];
+        const disposition = res.headers['content-disposition'];
+        const fileName = getFileNameFromDisposition(disposition) || `${file.fileName}_output.${downloadType}`;
 
-        setUploadProgress(prev => ({
-          ...prev,
-          [fileObj.id]: {status: 'uploading', progress: 0 }
-        }));
+        downloadFileFromBlob(res.data, fileName);
 
-        const result = await uploadSingleFile(fileObj);
-        results.push(result);
-
-        setUploadProgress(prev => ({
-          ...prev,
-          [fileObj.id]: {
-            status: result.success ? 'completed' : 'error',
-            progress: 100,
-            error: result.error 
-          }
-        }));
+        setFiles(prev =>
+          prev.map(f =>
+            f.id === file.id ? { ...f, progress: 100, status: 'done' } : f
+          )
+        );
+      } catch (downloadError) {
+        console.error(`Download failed for ${file.fileName}`, downloadError);
+        setFiles(prev =>
+          prev.map(f =>
+            f.id === file.id ? { ...f, progress: 100, status: 'error' } : f
+          )
+        );
       }
-
-      const failed = results.filter(r => !r.success).length;
-
-      if (failed === 0){
-        props.setSuccess(true);
-
-        setTimeout(() => {
-          props.setSuccess(false);
-        }, 3000);
-
-        setFiles([]);
-      } else {
-        props.setWarning(true);
-        setTimeout(() => {
-          props.setWarning(false);
-        }, 3000);
-
-        setFiles([]);
-      }
-      
-      fetchCandidates().then(sortedCandidates => {
-        props.setCandidates(sortedCandidates);
-        setLoading(false);
-        props.setModalState(false);
-      });
-    } catch (error) {
-      console.error("Error during batch upload:", error);
-      props.setError(true);
-        setTimeout(() => {
-          props.setError(false);
-        }, 3000);
-      setLoading(false);
+    } else {
+      // Duplicate case — we'll handle in next step
+      setFiles(prev =>
+        prev.map(f =>
+          f.id === file.id ? { ...f, progress: 100, status: 'duplicate', duplicateInfo: response } : f
+        )
+      );
     }
   };
+
+  const handleSubmit = async () => {
+    setIsUploading(true);
+    for (const file of files) {
+      await processFile(file);
+    }
+    setIsUploading(false);
+    await fetchCandidates();
+  }
 
   return (
       <Modal
@@ -177,9 +173,10 @@ function UploadCandidateModal(props) {
                   />
                 </Button>
             </div>
-            
-            <div className='modal-content'>
-              {files.length > 0 && (
+
+          <div className='modal-content'>
+            {files.length > 0 && (
+              <div className='files-section'>
                 <div className='files-section'>
                   <div className='files-header'>
                     <h3>Uploaded Files ({files.length})</h3>
@@ -198,52 +195,46 @@ function UploadCandidateModal(props) {
                       </Select>
                     </FormControl>
                   </div>
-
-                  {files.map((file) => (
-                    <UploadCandidate 
-                      key={file.id}
-                      fileId={file.id}
-                      fileName={file.fileName}
-                      description={file.description}
-                      onDescriptionChange={handleFileDescriptionChange}
-                      onRemove={handleRemoveFile}
-                      uploadStatus={uploadProgress[file.id]}
-                    />
-                  ))}
-
-                  {files.length === 0 && (
-                    <div style={{
-                      textAlign: 'center',
-                      colot: '#666',
-                      padding: '40px 20px',
-                      fontSize: '16px'
-                    }}>
-                      No PDF files uploaded yet. Click "Upload PDF files" to get started.
-                    </div>
-                  )}
                 </div>
-              )}
-            </div>
-
-            {files.length > 0 && (
-              <div className='modal-actions'>
-                <Button
-                  variant='outlied'
-                  onClick={() => props.setModalState(false)}
-                  disabled={loading}
-                >
-                  Cancel
-                </Button>
-                
-                <Button 
-                  variant="contained"
-                  onClick={handleSubmit}
-                  disabled={loading}
-                >
-                  {loading ? 'Uploading...' : `Submit ${files.length} File(s)`}
-                </Button>
               </div>
             )}
+
+            {files.map(file => (
+              <UploadCandidate
+                key={file.id}
+                fileData={file}
+                onDescriptionChange={handleDescriptionChange}
+                onRemove={handleRemoveFile}
+              />
+            ))}
+
+            {files.length > 0 && (
+              <div className="modal-actions">
+                <Button
+                  variant="outlined"
+                  color="error"
+                  disabled={isUploading}
+                  onClick={() => {
+                    setFiles([]);
+                    setDuplicates([]);
+                    props.setModalState(false);
+                    fetchCandidates();
+                  }}
+                >
+                  Clear ALL
+                </Button>
+                <Button
+                  variant="contained"
+                  disabled={isUploading}
+                  onClick={handleSubmit}
+                >
+                  Submit ({files.length}) file(s)
+                </Button>
+
+              </div>
+            )}
+          </div>
+            
         </Box>
       </Modal>
   );

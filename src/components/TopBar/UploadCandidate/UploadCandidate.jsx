@@ -1,109 +1,79 @@
 import React from 'react';
-import { TextField, IconButton, Paper, Typography, LinearProgress, Chip  } from '@mui/material';
-import { Delete, PictureAsPdf, CheckCircle, Error, CloudUpload } from '@mui/icons-material';
-import { styled } from '@mui/material/styles';
+import {
+  Card,
+  CardContent,
+  Typography,
+  LinearProgress,
+  TextField,
+  IconButton,
+} from '@mui/material';
+import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import DeleteIcon from '@mui/icons-material/Delete';
+import './UploadCandidate.css';
 
-const FileContainer = styled(Paper)(({ theme }) => ({
-  padding: theme.spacing(2),
-  margin: theme.spacing(1, 0),
-  display: 'flex',
-  alignItems: 'center',
-  gap: theme.spacing(2),
-  backgroundColor: '#f5f5f5',
-}));
 
-const FileInfo = styled('div')({
-  display: 'flex',
-  alignItems: 'center',
-  gap: '8px',
-  minWidth: '200px',
-});
+function UploadCandidate({ fileData, onDescriptionChange, onRemove }) {
+  const {id, fileName, additionalInfo, progress, status } = fileData;
 
-const DescriptionField = styled(TextField)({
-  flexGrow: 1,
-});
-
-function UploadCandidate({ fileId, fileName, description, onDescriptionChange, onRemove, uploadStatus }) {
-  const handleDescriptionChange = (event) => {
-    onDescriptionChange(fileId, event.target.value);
-  };
-
-  const getStatusIcon = () => {
-    if (!uploadStatus) return null;
-
-    switch (uploadStatus.status) {
-      case 'uploading':
-        return <CloudUpload color="primary" />;
-      case 'completed':
-        return <CheckCircle color="success" />;
-      case 'error':
-        return <Error color="error" />;
-      default:
-        return null;
-    }
-  };
-
-  const getStatusChip = () => {
-    if(!uploadStatus) return null;
-
-    switch (uploadStatus.status) {
-        case 'uploading':
-            return <Chip label="Uploading..." color="primary" size="small" />;
-        case 'completed':
-            return <Chip label="Completed" color="success" size="small" />;
-        case 'error':
-            return <Chip label="Failed" color="error" size="small" />;
-        default:
-            return null;
-    }
-  };
-
-  const isUploading = uploadStatus?.status === 'uploading';
-  const isCompleted = uploadStatus?.status === 'completed';
+  const getProgressColor = () => {
+    if (status === 'error') return 'error';
+    if (status === 'success') return 'success';
+    return 'primary';
+  }
 
   return (
-    <FileContainer elevation={1}>
-      <FileInfo>
-        <PictureAsPdf color="error" />
-        <Typography variant="body2" noWrap style={{ maxWidth: '150px' }}>
-          {fileName}
-        </Typography>
-        {uploadStatus && (
-            <div style={{display: 'flex', alignItems: 'center', gap: '8px', margin: '4px'}}>
-                {getStatusIcon()}
-                {getStatusChip()}
-            </div>
-        )}
-      </FileInfo>
-    
-      {uploadStatus?.status === 'uploading' && (
-        <div style={{ minWidth: '100px'}}>
-            <LinearProgress />
-        </div>
-      )}
+    <Card variant="outlined" sx={{ mb: 2 }}>
+      <CardContent>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <Typography 
+            variant="subtitle1" 
+            noWrap 
+            sx={{ maxWidth: '80%' }}
+          >
+            {fileName}
+          </Typography>
+          
+          {status === 'loading' && <Typography color="primary">Processing...</Typography>}
+          {status === 'done' && (
+            <Typography color="green" sx={{ display: 'flex', alignItems: 'center' }}>
+              <CheckCircleOutlineIcon sx={{ mr: 1 }} /> Completed
+            </Typography>
+          )}
+          {status === 'error' && (
+            <Typography color="error" sx={{ display: 'flex', alignItems: 'center' }}>
+              <ErrorOutlineIcon sx={{ mr: 1 }} /> Failed
+            </Typography>
+          )}
+          {status === 'duplicate' && (
+            <Typography color="orange" sx={{ display: 'flex', alignItems: 'center' }}>
+              ⚠ Duplicate Detected
+            </Typography>
+          )}
 
-      <DescriptionField
-        label="Aditional information"
-        variant="outlined"
-        size="small"
-        value={description}
-        onChange={handleDescriptionChange}
-        placeholder="Add aditional information about candidate"
-        multiline
-        maxRows={2}
-        disabled={isUploading || isCompleted}
-      />
-      
-      <IconButton
-        onClick={() => onRemove(fileId)}
-        color="error"
-        size="small"
-        aria-label="Remove file"
-        disabled={isUploading}
-      >
-        <Delete />
-      </IconButton>
-    </FileContainer>
+          
+          <IconButton aria-label="delete" onClick={() => onRemove(id)}>
+            <DeleteIcon />
+          </IconButton>
+        </div>
+
+        <LinearProgress 
+          variant="determinate"
+          value={progress}
+          color={getProgressColor()}
+          sx={{ mt: 2, mb: 2 }}
+        />
+
+        <TextField
+          fullWidth
+          label="Additional Info"
+          variant="outlined"
+          size="small"
+          value={additionalInfo}
+          onChange={(e) => onDescriptionChange(id, e.target.value)}
+        />
+      </CardContent>
+    </Card>
   );
 }
 
