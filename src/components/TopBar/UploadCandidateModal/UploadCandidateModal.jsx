@@ -24,7 +24,6 @@ const VisuallyHiddenInput = styled('input')({
 
 function UploadCandidateModal(props) {
   const [files, setFiles] = useState([]);
-  const [duplicates, setDuplicates] = useState([]);
   const [downloadType, setDownloadType] = useState('pdf');
   const [isUploading, setIsUploading] = useState(false);
 
@@ -80,7 +79,6 @@ function UploadCandidateModal(props) {
   }
 
   const processFile = async (file) => {
-    // Set to loading
     setFiles(prev =>
       prev.map(f =>
         f.id === file.id ? { ...f, progress: 50, status: 'loading' } : f
@@ -115,7 +113,7 @@ function UploadCandidateModal(props) {
 
         setFiles(prev =>
           prev.map(f =>
-            f.id === file.id ? { ...f, progress: 100, status: 'done' } : f
+            f.id === file.id ? { ...f, progress: 100, status: 'success' } : f
           )
         );
       } catch (downloadError) {
@@ -127,10 +125,14 @@ function UploadCandidateModal(props) {
         );
       }
     } else {
-      // Duplicate case — we'll handle in next step
       setFiles(prev =>
         prev.map(f =>
-          f.id === file.id ? { ...f, progress: 100, status: 'duplicate', duplicateInfo: response } : f
+          f.id === file.id 
+            ? { 
+                ...f,
+                progress: 100,
+                status: 'duplicate',
+                duplicateInfo: response } : f
         )
       );
     }
@@ -144,6 +146,97 @@ function UploadCandidateModal(props) {
     setIsUploading(false);
     await fetchCandidates();
   }
+
+  const handleKeepDuplicate = async (localId) => {
+    const target = files.find((f) => f.id === localId);
+    if (!target) return;
+
+    setFiles((prev) => 
+      prev.map((f) => (f.id === localId ? {...f, status: 'loading', progress: 75} : f))
+    );
+
+    console.log(target)
+    console.log(target.duplicateInfo?.new_candidate_id)
+
+    try {
+      const serverCandidateId = target.duplicateInfo.new_candidate_id;
+      const fileName = target.fileName;
+      
+      const res = await api.get('/cv/generate', {
+        params: {candidate_id: serverCandidateId, file_type: downloadType },
+        responseType: 'blob',
+      });
+      
+      const mime =
+        downloadType === 'pdf'
+          ? 'application/pdf'
+          : 'application/vnd.openxmlformats-officedocument.presentationml.presentation';
+      const blob = new Blob([res.data], { type: mime });
+      const safeName = fileName.replace(/\.pdf$/i, '') + `_output.${downloadType}`;
+      downloadFileFromBlob(blob, safeName);
+
+      // success UI
+      setFiles((prev) =>
+        prev.map((f) => (f.id === localId ? { ...f, status: 'done', progress: 100 } : f))
+      );
+
+    } catch (err) {
+        console.error('Keep duplicate failed', err);
+        setFiles((prev) =>
+          prev.map((f) => (f.id === localId ? { ...f, status: 'error', progress: 100 } : f))
+        );
+      }
+  }
+
+  const handleDeleteDuplicate = async (localId) => {
+    const target = files.find((f) => f.id === localId);
+    if (!target) return;
+
+    const duplicateIds = target.duplicateInfo?.duplicate_candidates_ids;
+    const serverCandidateId = target.duplicateInfo?.new_candidate_id;
+    const fileName = target.fileName;
+
+    setFiles((prev) => 
+      prev.map((f) => (f.id === localId ? {...f, status: 'loading', progress: 25} : f))
+    );
+
+    try {
+      if (duplicateIds.length){
+        await api.delete('/candidates/soft-delete', { data: duplicateIds });
+      }
+
+      setFiles((prev) => 
+        prev.map((f) => (f.id === localId ? {...f, progress: 60} : f))
+      );
+
+      const res = await api.get('/cv/generate', {
+        params: {candidate_id: serverCandidateId, file_type: downloadType },
+        responseType: 'blob',
+      });
+
+      const mime = 
+        downloadType === 'pdf'
+        ? 'application/pdf'
+        : 'application/vnd.openxmlformats-officedocument.presentationml.presentation';
+      
+        const blob = new Blob([res.data], {type: mime});
+        const safeName = fileName.replace(/\.pdf$/i,'') + `_output.${downloadType}`;
+        downloadFileFromBlob(blob, safeName);
+
+        setFiles((prev) => 
+          prev.map((f) => 
+            f.id === localId ? {...f, status: 'done', progress: 100} : f
+          )
+        );
+
+        await fetchCandidates();
+    } catch (err) {
+      console.error('Delete duplicates + keep new failed', err);
+      setFiles((prev) => 
+        prev.map((f) => (f.id === localId ? {...f, status: 'error', progress: 100} : f))
+      );
+    }
+  };
 
   return (
       <Modal
@@ -205,6 +298,8 @@ function UploadCandidateModal(props) {
                 fileData={file}
                 onDescriptionChange={handleDescriptionChange}
                 onRemove={handleRemoveFile}
+                onKeepDuplicate={handleKeepDuplicate}
+                onDeleteDuplicate={handleDeleteDuplicate}
               />
             ))}
 
@@ -216,7 +311,6 @@ function UploadCandidateModal(props) {
                   disabled={isUploading}
                   onClick={() => {
                     setFiles([]);
-                    setDuplicates([]);
                     props.setModalState(false);
                     fetchCandidates();
                   }}
