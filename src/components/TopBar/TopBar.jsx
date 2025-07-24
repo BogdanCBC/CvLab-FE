@@ -58,12 +58,15 @@ function TopBar(props) {
                 </div>
             </div>
 
-            <Button
-                className="logout-button"
-                onClick={handleLogout}
-            >
-                Logout
-            </Button>
+            <div className="logout-button-wrapper">
+                <Button
+                    variant='outlined'
+                    className="logout-button"
+                    onClick={handleLogout}
+                >
+                    Logout
+                </Button>
+            </div>
             
             <UploadCandidateModal
                 modalState={open}
