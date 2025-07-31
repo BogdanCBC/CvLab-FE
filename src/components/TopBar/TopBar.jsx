@@ -19,6 +19,10 @@ function TopBar(props) {
         navigateLogin('/login'); 
     }
 
+    const handleNavigateJob = () => {
+        navigateLogin('/job-description')
+    }
+
     return (
         <div className="top-bar">
             {success && (
@@ -59,6 +63,13 @@ function TopBar(props) {
             </div>
 
             <div className="logout-button-wrapper">
+                <Button
+                    variant="outlined"
+                    onClick={handleNavigateJob}
+                >
+                    Job Description
+                </Button>
+
                 <Button
                     variant='outlined'
                     className="logout-button"

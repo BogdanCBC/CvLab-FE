@@ -1,0 +1,5 @@
+.job-description-page {
+    display: grid;
+    grid-template-rows: 15% 85%;
+    grid-template-rows: 50% 50%;
+}

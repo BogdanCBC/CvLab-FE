@@ -1,4 +1,3 @@
-// App.jsx
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import TopBar from './TopBar/TopBar';
@@ -7,6 +6,7 @@ import CandidateDetails from './CandidateDetails/CandidateDetails';
 import Login from './Login/Login';
 import { isTokenValid } from '../utils/auth'
 import './App.css';
+import JobDescription from './JobDescription/JobDescription';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -39,13 +39,19 @@ function App() {
             isLoggedIn ? <Navigate to="/" /> : <Login onLogin={handleLogin} />
           }
         />
-
+        {/* Job description */}
+        <Route 
+            path="/job-description"
+            element={
+              isLoggedIn ? <JobDescription /> : <Navigate to="/login" />
+            }
+        />
         {/* Main App Route */}
         <Route
           path="/"
           element={
             isLoggedIn ? (
-              <div className="app">
+              <div className="candidates-page">
                 <TopBar 
                   candidates={candidates}
                   setCandidates={setCandidates}
