@@ -2,13 +2,13 @@ import React, {useState, useEffect} from "react";
 
 import "./JDDetails.css"
 import api from "../../../api";
-import { Button, TextField } from "@mui/material";
+import { Button } from "@mui/material";
 import JobInfoForm from "./JobInfoForm/JobInfoForm";
+import SelectedJD from "./SelectedJD/SelectedJD";
 
 export default function JDDetails( {selectedJob, setSelectedCandidate, setJobs} ) {
     const [jobInfo, setJobInfo] = useState(null);
     const [uploadNew, setUploadNew] = useState(false);
-    
 
     useEffect(() => {fetchSelectedCandidate()}, [selectedJob])
 
@@ -19,7 +19,7 @@ export default function JDDetails( {selectedJob, setSelectedCandidate, setJobs} 
                 const data = response.data
 
                 if(data.success) {
-                    setJobInfo(data.data);
+                    setJobInfo(data.data[0]);
                 } else {
                     setJobInfo(null);
                 }
@@ -27,6 +27,11 @@ export default function JDDetails( {selectedJob, setSelectedCandidate, setJobs} 
         } catch (err) {
             setJobInfo(null);
         }
+    }
+
+    const updateJobInfoFromJobs = (jobsArray, jobId) => {
+        const updated = jobsArray.find(job => job.job_id === jobId);
+        if (updated) setJobInfo(updated);
     }
 
     return(
@@ -39,6 +44,16 @@ export default function JDDetails( {selectedJob, setSelectedCandidate, setJobs} 
                     Upload new 
                 </Button>
             )}
+
+            {(!uploadNew && jobInfo) && (
+                <SelectedJD 
+                    jobInfo={jobInfo}
+                    setJobs={setJobs}
+                    setJobInfo={setJobInfo}
+                    jobId={selectedJob}
+                    updateJobInfoFromJobs={updateJobInfoFromJobs}
+                />
+            )} 
             
             {uploadNew && (
                 <JobInfoForm

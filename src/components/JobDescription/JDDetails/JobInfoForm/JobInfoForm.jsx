@@ -18,16 +18,16 @@ export default function JobInfoForm({setJobs, setUploadNew}) {
         setFormData(prev => ({
             ...prev,
             [id]: value
-        }))
+        }));
     }
 
     const handleAddSkill = (value) => {
-        if (value.trim() === "") return
+        if (value.trim() === "") return;
         setFormData(prev => ({
             ...prev,
             skills: [...prev.skills, value.trim()]
-        }))
-        setSkillInput("")
+        }));
+        setSkillInput("");
     }
 
     const handleDelete = (index) => {

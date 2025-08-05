@@ -89,7 +89,7 @@ export default function JDTable({jobs, setSelectedJob}) {
     const [rowsPerPage, setRowsPerPage] = useState(5);
 
     const emptyRows = 
-        page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rowsPerPage.length) : 0;
+        page > 0 ? Math.max(0, (1 + page) * rowsPerPage - jobs.length) : 0;
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
