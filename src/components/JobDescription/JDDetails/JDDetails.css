@@ -1,0 +1,11 @@
+.jd-details {
+    grid-row: 2/3;
+    grid-column: 2/3;
+    border: 1px solid grey;
+    border-radius: 5px;
+    padding: 16px;
+    margin: 5px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}

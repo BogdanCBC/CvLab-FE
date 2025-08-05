@@ -3,9 +3,11 @@ import { Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import JDTable from "./JDTable/JDTable";
 import JDTopBar from "./JDTopBar/JDTopBar"
+import JDDetails from "./JDDetails/JDDetails";
 import "./JobDescription.css"
 
 import { fetchJobDescription } from "../../utils/fetchJobDescription";
+
 
 export default function JobDescription() {
 
@@ -29,6 +31,11 @@ export default function JobDescription() {
             <JDTable 
                 jobs={jobs}
                 setSelectedJob={setSelectedJob}
+            />
+            <JDDetails 
+                selectedJob={selectedJob}
+                setSelectedJob={setSelectedJob}
+                setJobs={setJobs}
             />
         </div>
     );

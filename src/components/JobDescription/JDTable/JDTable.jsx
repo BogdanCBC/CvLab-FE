@@ -104,14 +104,15 @@ export default function JDTable({jobs, setSelectedJob}) {
 
     const handleSelect = (event, jobId) => {
         console.log("Selected job ID:", jobId);
+        setSelectedJob(jobId);
     };
 
     return(
         <div className="jd-table">
             <TableContainer component={Paper}>
-                <Table sx={{minWidth: 650}} aria-label="simple table">
+                <Table sx={{minWidth: 650, minHeight: 650}} aria-label="simple table">
                     <TableHead>
-                        <TableRow>
+                        <TableRow sx={{ backgroundColor: 'rgba(200, 215, 216, 0.92)'}}>
                             <TableCell>Title</TableCell>
                             <TableCell>Short Description</TableCell>
                         </TableRow>
