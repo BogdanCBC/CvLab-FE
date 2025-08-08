@@ -4,11 +4,9 @@ import AddIcon from "@mui/icons-material/Add";
 import { fetchJobDescription } from "../../../../../utils/fetchJobDescription";
 import api from "../../../../../api";
 
-export default function EditMode({jobInfo, setEditMode, setJobs, setJobInfo, jobId, updateJobInfoFromJobs}) {
+export default function EditMode({jobInfo, setEditMode, setJobs, setJobInfo, selectedJob, updateJobInfoFromJobs}) {
     const [jobData, setJobData] = useState(jobInfo);
-    const [skills, setSkills] = useState(
-        jobInfo.skills ? jobInfo.skills.split(",").map(s => s.trim()) : []
-    );
+    const [skills, setSkills] = useState(jobInfo.skills);
     const [newSkill, setNewSkill] = useState("");
 
     const handleChange = (e) => {
@@ -43,12 +41,12 @@ export default function EditMode({jobInfo, setEditMode, setJobs, setJobInfo, job
                     const response = await fetchJobDescription();
                     if (response.success) {
                         setJobs(response.jobs);
-                        updateJobInfoFromJobs(response.jobs, jobId);
+                        updateJobInfoFromJobs(response.jobs, selectedJob);
                     }
                 }
                 const updateJobInfo = {
                     ...jobData,
-                    skills: skills.join(",")
+                    skills: skills
                 };
                 setJobInfo(updateJobInfo);
                 setEditMode(false);
@@ -57,7 +55,6 @@ export default function EditMode({jobInfo, setEditMode, setJobs, setJobInfo, job
             console.log("Crapaaa");
         }
     }
-
     return(
         <form onSubmit={handleSubmit}>
             <Box

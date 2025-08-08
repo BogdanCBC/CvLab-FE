@@ -14,9 +14,11 @@ export default function JobDescription() {
     const [jobs, setJobs] = useState([]);
     const [selectedJob, setSelectedJob] = useState(null);
     const [failMessage, setFailMessage] = useState(null);
+    const [uploadNew, setUploadNew] = useState(false);
 
     useEffect(() => {
         fetchJobDescription().then(response => {
+            console.log(response)
             if(response.success) {
                 setJobs(response.jobs);
             } else {
@@ -27,7 +29,9 @@ export default function JobDescription() {
 
     return (
         <div className="job-description-page">
-            <JDTopBar />
+            <JDTopBar 
+                setUploadNew={setUploadNew}
+            />
             <JDTable 
                 jobs={jobs}
                 setSelectedJob={setSelectedJob}
@@ -36,6 +40,8 @@ export default function JobDescription() {
                 selectedJob={selectedJob}
                 setSelectedJob={setSelectedJob}
                 setJobs={setJobs}
+                uploadNew={uploadNew}
+                setUploadNew={setUploadNew}
             />
         </div>
     );

@@ -8,10 +8,10 @@ export async function fetchJobDescription() {
         const response = await api.get("/job-description");
         if (response.data.success) {
             const jobs = response.data.data.map(job => ({
-                job_id: job.jd_id,
+                job_id: job.job_id,
                 title: job.title,
                 description: job.description,
-                skills: job.skills.split(',')
+                skills: job.skills
             }));
             const data = {
                 success: response.data.success,

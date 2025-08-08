@@ -91,6 +91,7 @@ export default function JobInfoForm({setJobs, setUploadNew}) {
                 <TextField
                     label="Title"
                     id="title"
+                    required
                     maxRows={2}
                     fullWidth={true}
                     value={formData.title}
@@ -100,6 +101,7 @@ export default function JobInfoForm({setJobs, setUploadNew}) {
                 <TextField
                     label="Job description"
                     id="description"
+                    required
                     value={formData.description}
                     multiline
                     rows={10}

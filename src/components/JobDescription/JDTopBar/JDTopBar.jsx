@@ -1,8 +1,9 @@
-import { Button } from '@mui/material';
+import { Box, Button, Stack } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import "./JDTopBar.css"
 
-export default function JDTopBar(){
+export default function JDTopBar({setUploadNew}){
     const navigate = useNavigate();
 
     const handleBack = () => {
@@ -12,13 +13,25 @@ export default function JDTopBar(){
     return (
         <div className="job-top-bar">
             <h1>Job Description Page</h1>
-            <Button
-                variant="contained"
-                onClick={handleBack}
+            <Box
+                display="flex"
+                justifyContent="space-between"
             >
-                Back to candidates
-            </Button>
+                    <Button
+                        variant="contained"
+                        onClick={handleBack}
+                    >
+                        Back to candidates
+                    </Button>
 
+                    <Button
+                        variant="contained"
+                        onClick={() => setUploadNew(true)}
+                        startIcon={<AddCircleOutlineIcon />}
+                    >
+                        Upload New
+                    </Button>
+            </Box>
         </div>
     )
 }

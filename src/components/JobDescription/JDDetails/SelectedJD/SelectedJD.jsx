@@ -4,7 +4,14 @@ import ViewMode from "./ViewMode/ViewMode";
 import EditMode from "./EditMode/EditMode";
 
 
-export default function SelectedJD( {jobInfo, setJobs, setJobInfo, jobId, updateJobInfoFromJobs} ) {
+export default function SelectedJD( {
+        jobInfo,
+        setJobInfo,
+        setJobs,
+        selectedJob, 
+        setSelectedJob, 
+        updateJobInfoFromJobs
+    }) {
     const [editMode, setEditMode] = useState(false);
 
     return (
@@ -17,18 +24,20 @@ export default function SelectedJD( {jobInfo, setJobs, setJobInfo, jobId, update
             {!editMode && (            
                 <ViewMode 
                     jobInfo={jobInfo}
+                    setJobInfo={setJobInfo}
                     setEditMode={setEditMode}
+                    setJobs={setJobs}
+                    setSelectedJob={setSelectedJob}
                 />
             )}
 
-            {
-                editMode && (
+            {editMode && (
                     <EditMode 
                         jobInfo={jobInfo}
                         setEditMode={setEditMode}
                         setJobs={setJobs}
                         setJobInfo={setJobInfo}
-                        jobId={jobId}
+                        selectedJob={selectedJob}
                         updateJobInfoFromJobs={updateJobInfoFromJobs}
                     />
                 )
