@@ -9,7 +9,7 @@ import "./JobDescription.css"
 import { fetchJobDescription } from "../../utils/fetchJobDescription";
 
 
-export default function JobDescription() {
+export default function JobDescription({setSelectedCandidate}) {
 
     const [jobs, setJobs] = useState([]);
     const [selectedJob, setSelectedJob] = useState(null);
@@ -42,6 +42,7 @@ export default function JobDescription() {
                 setJobs={setJobs}
                 uploadNew={uploadNew}
                 setUploadNew={setUploadNew}
+                setSelectedCandidate={setSelectedCandidate}
             />
         </div>
     );

@@ -43,7 +43,11 @@ function App() {
         <Route 
             path="/job-description"
             element={
-              isLoggedIn ? <JobDescription /> : <Navigate to="/login" />
+              isLoggedIn ? 
+                <JobDescription
+                  setSelectedCandidate={setSelectedCandidate}
+                /> : 
+                <Navigate to="/login" />
             }
         />
         {/* Main App Route */}

@@ -1,13 +1,16 @@
-import React from "react"
+import React, { useState } from "react"
 import { Box, Typography, Stack, Button, Chip } from "@mui/material";
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
 
 import api from "../../../../../api";
 import { fetchJobDescription } from "../../../../../utils/fetchJobDescription";
+import MatchModal from "./MatchModal/MatchModal";
 
 
-export default function ViewMode({ jobInfo, setJobInfo, setEditMode, setJobs, setSelectedJob }) {
+export default function ViewMode({ jobInfo, setJobInfo, setEditMode, setJobs, setSelectedJob,setSelectedCandidate}) {
+    const [matchModalState, setMatchModalState] = useState(false);
+    const [matchCandidates, setMatchCandidates] = useState([]);
 
     const handleDelete = async () => {
         try {
@@ -44,6 +47,26 @@ export default function ViewMode({ jobInfo, setJobInfo, setEditMode, setJobs, se
         }
     }
 
+    //BAGA MODALUL
+    const handleMatch = async () => {
+        try{
+            const matchResp = await api.get('/job-description/match', {
+                params: {
+                    "job_id": jobInfo.job_id
+                }
+            })
+            //raspunsu-i OK
+            if  (matchResp.data.success) {
+                setMatchCandidates(matchResp.data.data);
+                setMatchModalState(true);
+            } else {
+
+            }
+        } catch (err) {
+
+        }
+    }
+
     return (
         <Box
             display="flex"
@@ -51,7 +74,13 @@ export default function ViewMode({ jobInfo, setJobInfo, setEditMode, setJobs, se
             justifyContent="space-around"
             gap={2}
         >
-            <Stack direction="row" justifyContent="flex-end" alignItems="center">
+            <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
+                <Button
+                    variant="contained"
+                    onClick={() => handleMatch()}    
+                >
+                    Match
+                </Button>
                 <Stack direction="row" spacing={2}>
                     <Button
                         variant="contained"
@@ -60,7 +89,6 @@ export default function ViewMode({ jobInfo, setJobInfo, setEditMode, setJobs, se
                     >
                         Edit
                     </Button>
-
                     <Button
                         variant="contained"
                         color="error"
@@ -86,6 +114,13 @@ export default function ViewMode({ jobInfo, setJobInfo, setEditMode, setJobs, se
                     <Chip key={skill} label={skill} />
                 ))}
             </Stack>
+            <MatchModal
+                matchModalState={matchModalState}
+                setMatchModalState={setMatchModalState}
+                matchCandidates={matchCandidates}
+                setMatchCandidates={setMatchCandidates}
+                setSelectedCandidate={setSelectedCandidate}
+            />
         </Box>
     );
 }
