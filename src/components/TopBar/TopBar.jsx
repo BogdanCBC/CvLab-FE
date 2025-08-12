@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './TopBar.css';
-import Button from '@mui/material/Button';
+import { Button, Box } from '@mui/material';
 import Alert from "@mui/material/Alert";
 import CheckIcon from '@mui/icons-material/Check';
 import { useNavigate } from 'react-router-dom';
@@ -62,10 +62,15 @@ function TopBar(props) {
                 </div>
             </div>
 
-            <div className="logout-button-wrapper">
+            <Box
+                display="flex"
+                justifyContent="flex-end"
+                sx={{marginTop: "25px", marginRight: "40px"}}
+            >
                 <Button
                     variant="outlined"
                     onClick={handleNavigateJob}
+                    sx={{marginRight: "10px"}}
                 >
                     Job Description
                 </Button>
@@ -77,6 +82,9 @@ function TopBar(props) {
                 >
                     Logout
                 </Button>
+            </Box>
+            <div className="logout-button-wrapper">
+
             </div>
             
             <UploadCandidateModal

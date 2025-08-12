@@ -54,8 +54,7 @@ export default function ViewMode({ jobInfo, setJobInfo, setEditMode, setJobs, se
                 params: {
                     "job_id": jobInfo.job_id
                 }
-            })
-            //raspunsu-i OK
+            });
             if  (matchResp.data.success) {
                 setMatchCandidates(matchResp.data.data);
                 setMatchModalState(true);

@@ -285,6 +285,7 @@ function UploadCandidateModal(props) {
                       >
                         <MenuItem value="pdf">PDF</MenuItem>
                         <MenuItem value="pptx">PPTX</MenuItem>
+                        <MenuItem value="docx">DOCX</MenuItem>
                       </Select>
                     </FormControl>
                   </div>
