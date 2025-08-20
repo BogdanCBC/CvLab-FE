@@ -258,6 +258,19 @@ function EditProfile(props) {
         }));
     };
 
+    const updateFeelItClientPosition = (oldIndex, newIndex) => {
+        setProfileData(prevData => {
+            const updatedClients = [...prevData.feel_it];
+            const [moved] = updatedClients.splice(oldIndex, 1);
+            updatedClients.splice(newIndex, 0, moved);
+
+            return {
+                ...prevData,
+                feel_it: updatedClients
+            };
+        });
+    }
+
     const removeFeelItClient = (index) => {
         setProfileData(prev => ({
             ...prev,
@@ -476,6 +489,7 @@ function EditProfile(props) {
                         updateFeelItResponsibility={updateFeelItResponsibility}
                         addFeelItResponsibility={addFeelItResponsibility}
                         removeFeelItResponsibility={removeFeelItResponsibility}
+                        updateFeelItClientPosition={updateFeelItClientPosition}
                     />
                     )}
 

@@ -26,6 +26,7 @@ function UploadCandidateModal(props) {
   const [files, setFiles] = useState([]);
   const [downloadType, setDownloadType] = useState('pdf');
   const [isUploading, setIsUploading] = useState(false);
+  const [fileLanguage, setFileLanguage] = useState('English');
 
   const handleFileUpload = (event) => {
     const selectedFiles = Array.from(event.target.files);
@@ -59,10 +60,15 @@ function UploadCandidateModal(props) {
     setDownloadType(event.target.value);  
   }
 
+  const handleChangeFileLanguage = (event) => {
+    setFileLanguage(event.target.value);
+  }
+
   const uploadSingleCV = async (fileData) => {
     const formData = new FormData();
     formData.append('cv_pdf', fileData.file);
     formData.append('additional_info', fileData.additionalInfo);
+    formData.append('file_language', fileLanguage);
 
     try {
       const response = await api.post('/cv/process', formData, {
@@ -98,10 +104,11 @@ function UploadCandidateModal(props) {
 
     if (response.duplicates === false && response.new_candidate_id) {
       try {
-        const res = await api.get(`/cv/generate`, {
+        const res = await api.get('/cv/generate', {
           params: {
             candidate_id: response.new_candidate_id,
             file_type: downloadType,
+            file_language: fileLanguage
           },
           responseType: 'blob',
         });
@@ -163,7 +170,11 @@ function UploadCandidateModal(props) {
       const fileName = target.fileName;
       
       const res = await api.get('/cv/generate', {
-        params: {candidate_id: serverCandidateId, file_type: downloadType },
+        params: {
+          candidate_id: serverCandidateId,
+          file_type: downloadType,
+          file_language: fileLanguage
+        },
         responseType: 'blob',
       });
       
@@ -210,7 +221,11 @@ function UploadCandidateModal(props) {
       );
 
       const res = await api.get('/cv/generate', {
-        params: {candidate_id: serverCandidateId, file_type: downloadType },
+        params: {
+          candidate_id: serverCandidateId,
+          file_type: downloadType, 
+          file_language: fileLanguage
+        },
         responseType: 'blob',
       });
 
@@ -286,6 +301,17 @@ function UploadCandidateModal(props) {
                         <MenuItem value="pdf">PDF</MenuItem>
                         <MenuItem value="pptx">PPTX</MenuItem>
                         <MenuItem value="docx">DOCX</MenuItem>
+                      </Select>
+                      
+                      <Select
+                        labelId="file-language-label"
+                        id="file-language-select"
+                        value={fileLanguage}
+                        onChange={handleChangeFileLanguage}
+                        label="CV Language"
+                      >
+                        <MenuItem value="English">English</MenuItem>
+                        <MenuItem value="French">French</MenuItem>
                       </Select>
                     </FormControl>
                   </div>

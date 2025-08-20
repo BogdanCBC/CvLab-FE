@@ -119,6 +119,7 @@ export default function ViewMode({ jobInfo, setJobInfo, setEditMode, setJobs, se
                 matchCandidates={matchCandidates}
                 setMatchCandidates={setMatchCandidates}
                 setSelectedCandidate={setSelectedCandidate}
+                jobId={jobInfo.job_id}
             />
         </Box>
     );
