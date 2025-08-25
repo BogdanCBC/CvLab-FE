@@ -7,6 +7,7 @@ import Login from './Login/Login';
 import { isTokenValid } from '../utils/auth'
 import './App.css';
 import JobDescription from './JobDescription/JobDescription';
+import MatchPage from './MatchPage/MatchPage';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -49,6 +50,19 @@ function App() {
                 /> : 
                 <Navigate to="/login" />
             }
+        />
+        {/* Match page */}
+        <Route 
+          path="/match/:jobId"
+          element={
+            isLoggedIn ? (
+              <MatchPage
+                  setSelectedCandidate={setSelectedCandidate}
+              />
+            ) : (
+              <Navigate to="/login" />
+            )
+          }
         />
         {/* Main App Route */}
         <Route

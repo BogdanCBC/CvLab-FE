@@ -1,16 +1,19 @@
 import React, { useState } from "react"
-import { Box, Typography, Stack, Button, Chip } from "@mui/material";
+import { Box, Typography, Stack, Button, Chip, Alert } from "@mui/material";
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
 
 import api from "../../../../../api";
 import { fetchJobDescription } from "../../../../../utils/fetchJobDescription";
-import MatchModal from "./MatchModal/MatchModal";
 
 
-export default function ViewMode({ jobInfo, setJobInfo, setEditMode, setJobs, setSelectedJob,setSelectedCandidate}) {
-    const [matchModalState, setMatchModalState] = useState(false);
-    const [matchCandidates, setMatchCandidates] = useState([]);
+import { useNavigate } from 'react-router-dom';
+
+export default function ViewMode({ jobInfo, setJobInfo, setEditMode, setJobs, setSelectedJob }) {
+    const [noMatchAlert, setNoMatchAlert] = useState(false);
+    const [noMatchMessage, setNoMatchMessage] = useState("");
+
+    const navigate = useNavigate();
 
     const handleDelete = async () => {
         try {
@@ -47,22 +50,26 @@ export default function ViewMode({ jobInfo, setJobInfo, setEditMode, setJobs, se
         }
     }
 
-    //BAGA MODALUL
-    const handleMatch = async () => {
+
+    const handleNavigate = async () => {
         try{
             const matchResp = await api.get('/job-description/match', {
                 params: {
                     "job_id": jobInfo.job_id
                 }
             });
-            if  (matchResp.data.success) {
-                setMatchCandidates(matchResp.data.data);
-                setMatchModalState(true);
-            } else {
 
+            if (matchResp.data.success){
+                navigate(`/match/${jobInfo.job_id}`)
             }
         } catch (err) {
+            setNoMatchMessage(err.response.data.message);
+            setNoMatchAlert(true);
 
+            setTimeout(() => {
+                setNoMatchAlert(false);
+                setNoMatchMessage("");
+            }, 3000);
         }
     }
 
@@ -73,10 +80,13 @@ export default function ViewMode({ jobInfo, setJobInfo, setEditMode, setJobs, se
             justifyContent="space-around"
             gap={2}
         >
+            {noMatchAlert && (
+                <Alert severity="warning">{noMatchMessage}</Alert>
+            )}
             <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
                 <Button
                     variant="contained"
-                    onClick={() => handleMatch()}    
+                    onClick={() => handleNavigate()}    
                 >
                     Match
                 </Button>
@@ -113,14 +123,6 @@ export default function ViewMode({ jobInfo, setJobInfo, setEditMode, setJobs, se
                     <Chip key={skill} label={skill} />
                 ))}
             </Stack>
-            <MatchModal
-                matchModalState={matchModalState}
-                setMatchModalState={setMatchModalState}
-                matchCandidates={matchCandidates}
-                setMatchCandidates={setMatchCandidates}
-                setSelectedCandidate={setSelectedCandidate}
-                jobId={jobInfo.job_id}
-            />
         </Box>
     );
 }
