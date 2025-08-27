@@ -12,6 +12,7 @@ export default function Candidate(props) {
     const [candidate, setCandidate] = useState(null);
     const [success, setSuccess] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [templateType, setTemplateType] = useState('FeelIT');
     const [downloadFileType, setDownloadFileType] = useState('pdf');
 
     useEffect(() => {
@@ -42,7 +43,7 @@ export default function Candidate(props) {
         }
     }
 
-    const getCandidateCV = async () => {
+    const getOriginalCV = async () => {
         try{
             const response = await api.get(`/candidates/cv/${props.candidateId}`, {
                     responseType: 'blob',
@@ -63,8 +64,13 @@ export default function Candidate(props) {
     const getFormattedCV = async () => {
         try {
             setLoading(true);
+            const formData = new FormData();
+            formData.append("candidate_id", props.candidateId);
+            formData.append("template_type", templateType)
 
-            const generateCandidateCV = await api.post(`/template?id=${props.candidateId}`)
+            const generateCandidateCV = await api.post(`/template`, formData, {
+                headers: { "Content-Type" : "application/json" }
+            })
             if (generateCandidateCV) {
                 const response = await api.get(`/template/${props.candidateId}?file_type=${downloadFileType}`, {
                     responseType: 'blob',
@@ -164,6 +170,21 @@ export default function Candidate(props) {
                         <MenuItem value="docx">DOCX</MenuItem>
                     </Select>
                 </FormControl>
+
+                <FormControl>
+                    <InputLabel id="template-type-select-label">Template</InputLabel>
+                    <Select
+                        labelId="template-type-select-label"
+                        id="template-type-select"
+                        value={templateType}
+                        label="Template Type"
+                        onChange={(e) => setTemplateType(e.target.value)}
+                    >
+                        <MenuItem value="FeelIT">FeelIT</MenuItem>
+                        <MenuItem value="ISE">ISE</MenuItem>
+                        <MenuItem></MenuItem>
+                    </Select>
+                </FormControl>
                 
                 <Button
                     loading={loading}
@@ -177,7 +198,7 @@ export default function Candidate(props) {
                 <Button
                     variant="contained"
                     color="primary"
-                    onClick={() => getCandidateCV()}
+                    onClick={() => getOriginalCV()}
                     sx={{ marginLeft: 1 }}
                 >
                     Get original CV 

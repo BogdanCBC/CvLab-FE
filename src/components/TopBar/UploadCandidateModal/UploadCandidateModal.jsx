@@ -121,8 +121,7 @@ function UploadCandidateModal(props) {
           params: {
             candidate_id: response.new_candidate_id,
             file_type: downloadType,
-            template_type: templateType,
-            file_language: fileLanguage
+            template_type: templateType
           },
           responseType: 'blob',
         });
@@ -187,8 +186,7 @@ function UploadCandidateModal(props) {
         params: {
           candidate_id: serverCandidateId,
           file_type: downloadType,
-          template_type: templateType,
-          file_language: fileLanguage
+          template_type: templateType
         },
         responseType: 'blob',
       });
@@ -239,8 +237,7 @@ function UploadCandidateModal(props) {
         params: {
           candidate_id: serverCandidateId,
           file_type: downloadType, 
-          template_type: templateType,
-          file_language: fileLanguage
+          template_type: templateType
         },
         responseType: 'blob',
       });
