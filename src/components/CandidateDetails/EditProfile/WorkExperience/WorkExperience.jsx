@@ -85,7 +85,14 @@ export default function WorkExperience(props) {
                         }}
                         InputLabelProps={{shrink:true}}
                     />
-
+                    <TextField
+                        label="Description"
+                        multiline
+                        value={work.work_description || ""}
+                        onChange={(e) => {
+                            props.updateWorkExperience(index, "work_description", e.target.value);
+                        }}
+                    />
                     <div className="responsibilities">
                         <div className="responsibilities-header">
                             <h3>Responsibilities</h3>

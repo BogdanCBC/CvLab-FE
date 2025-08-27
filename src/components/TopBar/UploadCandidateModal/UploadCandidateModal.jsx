@@ -27,6 +27,7 @@ function UploadCandidateModal(props) {
   const [downloadType, setDownloadType] = useState('pdf');
   const [isUploading, setIsUploading] = useState(false);
   const [fileLanguage, setFileLanguage] = useState('English');
+  const [templateType, setTemplateType] = useState('FeelIT');
 
   const handleFileUpload = (event) => {
     const selectedFiles = Array.from(event.target.files);
@@ -64,6 +65,17 @@ function UploadCandidateModal(props) {
     setFileLanguage(event.target.value);
   }
 
+  const handleChangeTemplateType = (event) => {
+    setTemplateType(event.target.value);
+  }
+
+  const handleModalClose = async () => {
+    props.setModalState(false);
+    fetchCandidates().then(sortedCandidates => {
+      props.setCandidates(sortedCandidates);
+    });
+  }
+
   const uploadSingleCV = async (fileData) => {
     const formData = new FormData();
     formData.append('cv_pdf', fileData.file);
@@ -92,6 +104,7 @@ function UploadCandidateModal(props) {
     );
 
     const response = await uploadSingleCV(file);
+    
     console.log(response)
     if (response.error) {
       setFiles(prev =>
@@ -108,6 +121,7 @@ function UploadCandidateModal(props) {
           params: {
             candidate_id: response.new_candidate_id,
             file_type: downloadType,
+            template_type: templateType,
             file_language: fileLanguage
           },
           responseType: 'blob',
@@ -173,6 +187,7 @@ function UploadCandidateModal(props) {
         params: {
           candidate_id: serverCandidateId,
           file_type: downloadType,
+          template_type: templateType,
           file_language: fileLanguage
         },
         responseType: 'blob',
@@ -224,6 +239,7 @@ function UploadCandidateModal(props) {
         params: {
           candidate_id: serverCandidateId,
           file_type: downloadType, 
+          template_type: templateType,
           file_language: fileLanguage
         },
         responseType: 'blob',
@@ -256,7 +272,7 @@ function UploadCandidateModal(props) {
   return (
       <Modal
         open={props.modalState}
-        onClose={() => {props.setModalState(false)}}
+        onClose={handleModalClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
@@ -285,24 +301,26 @@ function UploadCandidateModal(props) {
           <div className='modal-content'>
             {files.length > 0 && (
               <div className='files-section'>
-                <div className='files-section'>
-                  <div className='files-header'>
-                    <h3>Uploaded Files ({files.length})</h3>
-
-                    <FormControl variant="outlined" sx={{ minWidth: 200 }}>
+                <div className='files-header'>
+                  <h3>Uploaded Files ({files.length})</h3>
+                  <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: 'repeat(3, 1fr)' }, gap: 2 }}>
+                    <FormControl variant='outlined' fullWidth>
                       <InputLabel id="file-type-label">Download File Type</InputLabel>
-                      <Select
-                        labelId="file-type-label"
+                      <Select 
+                        labelId='file-type-label'
                         id="file-type-select"
                         value={downloadType}
                         onChange={handleChangeFileType}
-                        label="File Type"
+                        label="Download File Type"
                       >
                         <MenuItem value="pdf">PDF</MenuItem>
                         <MenuItem value="pptx">PPTX</MenuItem>
                         <MenuItem value="docx">DOCX</MenuItem>
                       </Select>
-                      
+                    </FormControl>
+                    
+                    <FormControl variant="outlined" fullWidth>
+                      <InputLabel id="file-language-label">CV Language</InputLabel>
                       <Select
                         labelId="file-language-label"
                         id="file-language-select"
@@ -314,7 +332,21 @@ function UploadCandidateModal(props) {
                         <MenuItem value="French">French</MenuItem>
                       </Select>
                     </FormControl>
-                  </div>
+                    
+                    <FormControl variant="outlined" fullWidth>
+                      <InputLabel id="template-type-label">Template</InputLabel>
+                      <Select
+                        labelId="template-type-label"
+                        id="template-type-select"
+                        value={templateType}
+                        onChange={handleChangeTemplateType}
+                        label="Template"
+                      >
+                        <MenuItem value="FeelIT">FeelIT</MenuItem>
+                        <MenuItem value="ISE">ISE</MenuItem>
+                      </Select>
+                    </FormControl>
+                  </Box>
                 </div>
               </div>
             )}

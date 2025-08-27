@@ -39,6 +39,22 @@ export default function GenerlInfo(props) {
                     props.updateGeneralInfo("position", e.target.value);
                 }}
             />
+            <TextField
+                label="Email"
+                multiline
+                value={props.profileData.general_info.email || ""}
+                onChange={(e) => {
+                    props.updateGeneralInfo("email", e.target.value);
+                }}
+            />
+            <TextField
+                label="Phone"
+                multiline
+                value={props.profileData.general_info.phone || ""}
+                onChange={(e) => {
+                    props.updateGeneralInfo("phone", e.target.value);
+                }}
+            />
             <TextField 
                 label="Description"
                 multiline
