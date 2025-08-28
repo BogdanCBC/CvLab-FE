@@ -11,6 +11,7 @@ export async function fetchCandidates() {
             lastName: candidate.last_name,
             experience: candidate.experience,
             position: candidate.position,
+            language: candidate.language,
         }));
         console.log(data);
         const sorted = data.sort((a, b) => b.id - a.id);

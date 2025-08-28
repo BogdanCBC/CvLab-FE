@@ -89,7 +89,7 @@ export default function CandidatesTable(props) {
   const [searchTerm, setSearchTerm] = React.useState('');
 
   const fuse = new Fuse(props.candidates, {
-    keys: ['firstName', 'lastName', 'experience', 'position'],
+    keys: ['firstName', 'lastName', 'experience', 'position', 'language'],
     threshold: 0.3,
   });
 
@@ -133,6 +133,7 @@ export default function CandidatesTable(props) {
             <TableCell align="right">Last Name</TableCell>
             <TableCell align="right">Experience</TableCell>
             <TableCell align="right">Role</TableCell>
+            <TableCell align="right">Language</TableCell>
             <TableCell align="right">Actions</TableCell>
           </TableRow>
         </TableHead>
@@ -162,6 +163,9 @@ export default function CandidatesTable(props) {
               </TableCell>
               <TableCell sx={{ width: '20%' }} align="right">
                 {row.position}
+              </TableCell>
+              <TableCell sx={{ width: '20%' }} align="right">
+                {row.language}
               </TableCell>
               <TableCell sx={{ width: '20%' }} align="right">
 

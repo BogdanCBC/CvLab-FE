@@ -76,6 +76,14 @@ function UploadCandidateModal(props) {
     });
   }
 
+  const handleClearAll = async() => {
+    setFiles([]);
+    props.setModalState(false);
+    fetchCandidates().then(sortedCandidates => {
+      props.setCandidates(sortedCandidates);
+    });
+  }
+
   const uploadSingleCV = async (fileData) => {
     const formData = new FormData();
     formData.append('cv_pdf', fileData.file);
@@ -365,11 +373,7 @@ function UploadCandidateModal(props) {
                   variant="outlined"
                   color="error"
                   disabled={isUploading}
-                  onClick={() => {
-                    setFiles([]);
-                    props.setModalState(false);
-                    fetchCandidates();
-                  }}
+                  onClick={handleClearAll}
                 >
                   Clear ALL
                 </Button>

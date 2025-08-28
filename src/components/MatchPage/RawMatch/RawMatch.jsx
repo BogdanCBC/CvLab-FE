@@ -162,6 +162,20 @@ export default function RawMatch({ jobId, jobTitle, setSelectedCandidate, matchC
                             {c.position}
                         </Typography>
                         <Typography
+                            variant="body1"
+                            color="text.secondary"
+                            sx={{ mb: 1}}
+                        >
+                            Email: {c.email || "Not available"}
+                        </Typography>
+                        <Typography
+                            variant="body1"
+                            color="text.secondary"
+                            sx={{ mb: 1}}
+                        >
+                            Phone: {c.phone || "Not available"}
+                        </Typography>
+                        <Typography
                             variant="body2"
                             sx={{mb: 1, fontWeight: "bold"}}
                         >
