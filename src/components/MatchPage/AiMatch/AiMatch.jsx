@@ -20,7 +20,7 @@ export default function AiMatch({ aiMatchedCandidates, jobTitle, setSelectedCand
     };
 
     return (
-        
+        <Box display="flex" alignItems="center">
         <Box className={["ai-match-box", isEmpty && "empty"].filter(Boolean).join(" ")}>
             {isEmpty ? (
                 <Box className="empty-content" >
@@ -59,7 +59,13 @@ export default function AiMatch({ aiMatchedCandidates, jobTitle, setSelectedCand
                                             {c.match_stars}
                                         </Typography>
                                     </Box>
-                                    <Typography variant="body2" color="text.secondary" sx={{whiteSpace:"pre-line"}}>
+                                    <Typography 
+                                        variant="body2"
+                                        color="text.secondary" 
+                                        sx={{whiteSpace:"pre-line"}} 
+                                        whiteSpace="pre-line" 
+                                        textAlign="justify"
+                                    >
                                         {c.description}
                                     </Typography>
                                 </Paper>
@@ -68,6 +74,7 @@ export default function AiMatch({ aiMatchedCandidates, jobTitle, setSelectedCand
                     </Box>
                 </>
             ) }
+        </Box>
         </Box>
     );
 }

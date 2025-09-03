@@ -21,7 +21,7 @@ function Login({ onLogin }) {
     e.preventDefault();
 
     const formData = new URLSearchParams();
-    formData.append('username', username);
+    formData.append('username', username.toLocaleLowerCase());
     formData.append('password', password);
 
     try {

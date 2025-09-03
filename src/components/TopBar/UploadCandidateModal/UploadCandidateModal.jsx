@@ -9,6 +9,7 @@ import { downloadFileFromBlob, getFileNameFromDisposition } from '../../../helpe
 import api from "../../../api.js"
 import { v4 as uuidv4 } from 'uuid';
 import { fetchCandidates } from '../../../utils/fetchCandidates.js';
+import { cleanupFailedCandidate } from '../../../utils/cleanupFailedCandidate.js';
 
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
@@ -26,8 +27,11 @@ function UploadCandidateModal(props) {
   const [files, setFiles] = useState([]);
   const [downloadType, setDownloadType] = useState('pdf');
   const [isUploading, setIsUploading] = useState(false);
+  const [submitBtnStatus, setSubmitStatusBtn] = useState(false);
   const [fileLanguage, setFileLanguage] = useState('English');
   const [templateType, setTemplateType] = useState('FeelIT');
+
+  const hasUnresolvedDuplicates = files.some(f => f.status === "duplicate");
 
   const handleFileUpload = (event) => {
     const selectedFiles = Array.from(event.target.files);
@@ -70,15 +74,9 @@ function UploadCandidateModal(props) {
   }
 
   const handleModalClose = async () => {
-    props.setModalState(false);
-    fetchCandidates().then(sortedCandidates => {
-      props.setCandidates(sortedCandidates);
-    });
-  }
-
-  const handleClearAll = async() => {
     setFiles([]);
     props.setModalState(false);
+    setSubmitStatusBtn(false);
     fetchCandidates().then(sortedCandidates => {
       props.setCandidates(sortedCandidates);
     });
@@ -120,6 +118,10 @@ function UploadCandidateModal(props) {
           f.id === file.id ? { ...f, progress: 100, status: 'error' } : f
         )
       );
+
+      if (response.new_candidate_id) {
+        await cleanupFailedCandidate(response.new_candidate_id);
+      }
       return;
     }
 
@@ -167,6 +169,7 @@ function UploadCandidateModal(props) {
   };
 
   const handleSubmit = async () => {
+    setSubmitStatusBtn(true);
     setIsUploading(true);
     for (const file of files) {
       await processFile(file);
@@ -217,6 +220,10 @@ function UploadCandidateModal(props) {
         setFiles((prev) =>
           prev.map((f) => (f.id === localId ? { ...f, status: 'error', progress: 100 } : f))
         );
+
+        if (target.duplicateInfo?.new_candidate_id) {
+          await cleanupFailedCandidate(target.duplicateInfo.new_candidate_id);
+        }
       }
   }
 
@@ -271,13 +278,22 @@ function UploadCandidateModal(props) {
       setFiles((prev) => 
         prev.map((f) => (f.id === localId ? {...f, status: 'error', progress: 100} : f))
       );
+
+      if (target.duplicateInfo?.new_candidate_id) {
+        await cleanupFailedCandidate(target.duplicateInfo.new_candidate_id);
+      }
     }
   };
 
   return (
       <Modal
         open={props.modalState}
-        onClose={handleModalClose}
+        onClose={(event, reason) => {
+          if (hasUnresolvedDuplicates && (reason === "backdropClick" || reason === "escapeKeyDown")) {
+            return;
+          }
+          handleModalClose();
+        }}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
@@ -290,6 +306,7 @@ function UploadCandidateModal(props) {
                 <Button
                   component="label"
                   variant="contained"
+                  disabled={submitBtnStatus}
                   tabIndex={-1}
                   style={{ marginBottom: '20px' }}
                 >
@@ -372,14 +389,14 @@ function UploadCandidateModal(props) {
                 <Button
                   variant="outlined"
                   color="error"
-                  disabled={isUploading}
-                  onClick={handleClearAll}
+                  disabled={isUploading || hasUnresolvedDuplicates}
+                  onClick={handleModalClose}
                 >
-                  Clear ALL
+                  Close Window
                 </Button>
                 <Button
                   variant="contained"
-                  disabled={isUploading}
+                  disabled={submitBtnStatus}
                   onClick={handleSubmit}
                 >
                   Submit ({files.length}) file(s)
