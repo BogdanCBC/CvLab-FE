@@ -159,12 +159,11 @@ export default function Candidate(props) {
             <Typography>
                 <strong>Email:</strong> {candidate?.email || "Not Specified"}
             </Typography>
-            <Typography sx={{ whiteSpace: "pre-line" }}>
+            <Typography sx={{ whiteSpace: "pre-line", textAlign: "justify" }}>
                 <strong>Candidate description:</strong>{" "}
                 {candidate ? candidate.description : "none"}
             </Typography>
 
-            {/* Buttons */}
             <div className="candidate-cv-buttons">
                 <FormControl>
                 <InputLabel id="file-type-select-label">File Type</InputLabel>

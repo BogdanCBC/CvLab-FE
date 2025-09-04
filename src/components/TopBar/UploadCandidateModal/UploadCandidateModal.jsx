@@ -153,6 +153,10 @@ function UploadCandidateModal(props) {
             f.id === file.id ? { ...f, progress: 100, status: 'error' } : f
           )
         );
+        if (response.new_candidate_id) {
+          await cleanupFailedCandidate(response.new_candidate_id);
+        }
+        return;
       }
     } else {
       setFiles(prev =>
@@ -289,7 +293,7 @@ function UploadCandidateModal(props) {
       <Modal
         open={props.modalState}
         onClose={(event, reason) => {
-          if (hasUnresolvedDuplicates && (reason === "backdropClick" || reason === "escapeKeyDown")) {
+          if ((isUploading || hasUnresolvedDuplicates) && (reason === "backdropClick" || reason === "escapeKeyDown")) {
             return;
           }
           handleModalClose();
@@ -334,6 +338,7 @@ function UploadCandidateModal(props) {
                         value={downloadType}
                         onChange={handleChangeFileType}
                         label="Download File Type"
+                        disabled={submitBtnStatus}
                       >
                         <MenuItem value="pdf">PDF</MenuItem>
                         <MenuItem value="pptx">PPTX</MenuItem>
@@ -349,6 +354,7 @@ function UploadCandidateModal(props) {
                         value={fileLanguage}
                         onChange={handleChangeFileLanguage}
                         label="CV Language"
+                        disabled={submitBtnStatus}
                       >
                         <MenuItem value="English">English</MenuItem>
                         <MenuItem value="French">French</MenuItem>
@@ -363,6 +369,7 @@ function UploadCandidateModal(props) {
                         value={templateType}
                         onChange={handleChangeTemplateType}
                         label="Template"
+                        disabled={submitBtnStatus}
                       >
                         <MenuItem value="FeelIT">FeelIT</MenuItem>
                         <MenuItem value="ISE">ISE</MenuItem>
