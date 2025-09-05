@@ -1,9 +1,11 @@
-import { Box, Modal, FormControl, InputLabel, Input, Button, IconButton, Stack, Chip } from "@mui/material";
+import { 
+  Box, Modal, FormControl, InputLabel, Input, Button, IconButton, Stack, Chip, FormLabel,
+  Typography
+} from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import React, { useState, useEffect } from "react";
 import './AdvancedFilters.css';
 import api from "../../../api.js";
-import qs from 'qs';
 
 export default function AdvancedFilters(props){
     const [formData, setFormData] = useState({
@@ -12,18 +14,20 @@ export default function AdvancedFilters(props){
         experience: '',
         languages: [],
         certifications: []
-    })
+    });
 
-    const [skillInput, setSkillInput] = useState("")
-    const [languageInput, setLanguageInput] = useState("")
-    const [certificationInput, setCertificationInput] = useState("")
-    const [isValid, setIsValid] = useState(false)
+    const [skillInput, setSkillInput] = useState("");
+    const [yearsInput, setYearsInput] = useState("");
+    const [languageInput, setLanguageInput] = useState("");
+    const [certificationInput, setCertificationInput] = useState("");
+    const [isValid, setIsValid] = useState(false);
 
-        useEffect(() => {
+    useEffect(() => {
         const hasInput =
             formData.position.trim() !== '' ||
             formData.experience.trim() !== '' ||
             skillInput.trim() !== '' ||
+            yearsInput.trim() !== '' ||
             languageInput.trim() !== '' ||
             certificationInput.trim() !== '' ||
             formData.skills.length > 0 ||
@@ -31,12 +35,7 @@ export default function AdvancedFilters(props){
             formData.certifications.length > 0;
 
         setIsValid(hasInput);
-    }, [
-        formData,
-        skillInput,
-        languageInput,
-        certificationInput
-    ]);
+    }, [formData, skillInput, yearsInput, languageInput, certificationInput]);
 
     const handleSingleChange = (e) => {
         const { id, value } = e.target;
@@ -46,12 +45,22 @@ export default function AdvancedFilters(props){
         }));
     };
 
+    const handleAddSkill = () => {
+        if (skillInput.trim() === "" || yearsInput.trim() === "") return;
+        setFormData(prev => ({
+            ...prev,
+            skills: [...prev.skills, { skill: skillInput.trim(), years: parseInt(yearsInput, 10) }]
+        }));
+        setSkillInput("");
+        setYearsInput("");
+    };
+
     const handelAddToList = (field, value, setter) => {
         if (value.trim() === "") return;
         setFormData(prev => ({
             ...prev,
             [field]: [...prev[field], value.trim()]
-        }))
+        }));
         setter("");
     };
 
@@ -59,22 +68,19 @@ export default function AdvancedFilters(props){
         setFormData(prev => ({
             ...prev,
             [field]: prev[field].filter((_, i) => i !== index)
-        }))
-    }
+        }));
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         try {
-            const response = await api.get('/filters', {
-                params: {
-                    position: formData.position,
-                    experience: formData.experience.trim() === '' ? undefined : parseInt(formData.experience),
-                    skills: formData.skills,
-                    languages: formData.languages,
-                    certifications: formData.certifications
-                },
-                paramsSerializer: params => qs.stringify(params, { arrayFormat: 'repeat' })
+            const response = await api.post('/filters', {
+                position: formData.position,
+                experience: formData.experience.trim() === '' ? undefined : parseInt(formData.experience, 10),
+                skills: formData.skills,
+                languages: formData.languages,
+                certifications: formData.certifications
             });
 
             if (response.status === 200) {
@@ -106,10 +112,9 @@ export default function AdvancedFilters(props){
                 const backendMessage = error.response.data?.Status || 'An error occurred';
 
                 if (status === 404 || status === 500) {
-                alert(backendMessage);
-
+                    alert(backendMessage);
                 } else {
-                alert(`Error ${status}: ${backendMessage}`);
+                    alert(`Error ${status}: ${backendMessage}`);
                 }
             } else {
                 alert('Network error or no response from server.');
@@ -117,19 +122,18 @@ export default function AdvancedFilters(props){
         }
     };
 
-
     return(
         <Modal
             open={props.modalState}
             onClose={() => props.setModalState(false)}
         >
-            <Box
-                className="modal-box"
-            >
+            <Box className="modal-box">
+                <Typography display="flex" justifyContent="center" variant="h4">
+                    Advanced Filters
+                </Typography>
                 <form onSubmit={handleSubmit}>
-                    <Box
-                        sx={{display: 'flex', flexDirection: 'column', gap: 2}}
-                    >
+                    <Box sx={{display: 'flex', flexDirection: 'column', gap: 2}}>
+                        {/* Position */}
                         <FormControl fullWidth margin="normal">
                             <InputLabel htmlFor="position">Position</InputLabel>
                             <Input 
@@ -139,6 +143,7 @@ export default function AdvancedFilters(props){
                             />
                         </FormControl>
 
+                        {/* General Experience */}
                         <FormControl fullWidth margin="normal">
                             <InputLabel htmlFor="experience">Experience</InputLabel>
                             <Input
@@ -158,33 +163,42 @@ export default function AdvancedFilters(props){
                             />
                         </FormControl>
 
+                        {/* Skills with years */}
                         <FormControl fullWidth margin="normal">
-                            <InputLabel htmlFor="skills-input">Skills</InputLabel>
-                            <Box sx= {{ display: 'flex', alignItems: 'center'}}>                            
+                            <FormLabel>Skills</FormLabel>
+                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mt: 2 }}>                            
                                 <Input 
-                                    id="skills-input"
+                                    placeholder="Skill"
                                     value={skillInput}
                                     onChange={(e) => setSkillInput(e.target.value)}
-                                    fullWidth
                                 />
-                                <IconButton onClick={() => handelAddToList('skills', skillInput, setSkillInput)}>
+                                <Input
+                                    placeholder="Years"
+                                    type="number"
+                                    inputProps={{ min: 0 }}
+                                    value={yearsInput}
+                                    onChange={(e) => setYearsInput(e.target.value)}
+                                    sx={{ width: '100px' }}
+                                />
+                                <IconButton onClick={handleAddSkill}>
                                     <AddIcon />
                                 </IconButton>
                             </Box>
-                            <Stack direction="row" spacing={1} mt={2}>
-                                {formData.skills.map((skill, index) => (
+                            <Stack direction="row" spacing={1} mt={2} flexWrap="wrap">
+                                {formData.skills.map((s, index) => (
                                     <Chip
                                         key={index}
-                                        label={skill}
+                                        label={`${s.skill} (${s.years} yrs)`}
                                         onClick={() => handleDelete('skills', index)}
                                     />
                                 ))}
                             </Stack>
                         </FormControl>
                         
+                        {/* Languages */}
                         <FormControl>
                             <InputLabel htmlFor="languages">Language</InputLabel>
-                            <Box sx={{display: 'flex', alignContent: 'center' }}>    
+                            <Box sx={{display: 'flex', alignContent: 'center'}}>    
                                 <Input
                                     id="languages"
                                     value={languageInput}
@@ -206,6 +220,7 @@ export default function AdvancedFilters(props){
                             </Stack>
                         </FormControl>
                         
+                        {/* Certifications */}
                         <FormControl>
                             <InputLabel htmlFor="certification">Certification</InputLabel>
                             <Box sx={{display: 'flex', alignItems: 'center'}}>
@@ -219,7 +234,6 @@ export default function AdvancedFilters(props){
                                     <AddIcon />
                                 </IconButton>
                             </Box>
-
                             <Stack direction="row" spacing={1} mt={2}>
                                 {formData.certifications.map((certification, index) => (
                                     <Chip 
@@ -231,6 +245,7 @@ export default function AdvancedFilters(props){
                             </Stack>
                         </FormControl>
                         
+                        {/* Submit */}
                         <Box sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}>
                             <Button
                                 type="submit"
@@ -243,7 +258,10 @@ export default function AdvancedFilters(props){
                         </Box>
                     </Box>
                 </form>
+                <Typography display="flex" justifyContent="center" variant="h6">
+                    BLABLABLA EXPLICATIE FA FRUMOS
+                </Typography>
             </Box>
         </Modal>
-    )
+    );
 }

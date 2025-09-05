@@ -3,6 +3,7 @@ import AddIcon from '@mui/icons-material/Add';
 import SkillsList from './SkillsList/SkillsList';
 import { closestCorners, DndContext } from '@dnd-kit/core';
 import './Skills.css';
+import { Typography } from '@mui/material';
 
 export default function Skills(props) {
   const handleDragEnd = (event) => {
@@ -34,7 +35,9 @@ export default function Skills(props) {
           Add Skill
         </Button>
       </div>
-
+      
+      <Typography>Skill MODIFICA SI FA FRUMOS</Typography>
+      <Typography>Years of experience</Typography>
       <DndContext collisionDetection={closestCorners} onDragEnd={handleDragEnd}>
         <SkillsList
           skills={props.profileData.skills}
