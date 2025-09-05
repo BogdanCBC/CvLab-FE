@@ -10,11 +10,11 @@ export default function SkillsList({ skills, updateSkills, removeSkill }) {
         items={skills.map((_, index) => index.toString())}
         strategy={verticalListSortingStrategy}
       >
-        {skills.map((skill, index) => (
+        {skills.map((skill_obj, index) => (
           <SkillItem
             key={index}
             id={index.toString()}
-            skill={skill}
+            skill_obj={skill_obj}
             index={index}
             updateSkills={updateSkills}
             removeSkill={removeSkill}

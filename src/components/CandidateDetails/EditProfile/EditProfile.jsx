@@ -158,17 +158,19 @@ function EditProfile(props) {
         }))
     }
 
-    const updateSkills = (index, value) => {
+    const updateSkills = (index, field, value) => {
         setProfileData(prevData => ({
             ...prevData,
-            skills: prevData.skills.map((skill, i) => i === index ? value : skill)
+            skills: prevData.skills.map((skill, i) => 
+                i === index ? {...skill, [field] : value} : skill
+            )
         }));
     }
 
     const addSkill = () => {
         setProfileData(prevData => ({
             ...prevData,
-            skills: [...prevData.skills, ""]
+            skills: [ {skill: "", years: 0}, ...prevData.skills]
         }));
     }
 

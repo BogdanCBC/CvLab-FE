@@ -112,106 +112,106 @@ export default function Candidate(props) {
 
     return (
         <Box sx={{ padding: 2 }}>
-        {success && (
-            <Alert icon={<CheckIcon fontSize="inherit" />} severity="success">
-            Candidate data fetched successfully!
-            </Alert>
-        )}
-
-        <div className="candidate-wrapper">
-            <div className="candidate-header">
-            <h2>Candidate Name: {candidate ? candidate.firstName : "none"}</h2>
-            {localStorage.getItem('role') === "admin" && (
-                <Button
-                variant="contained"
-                size="small"
-                color="error"
-                onClick={deleteCandidate}
-                startIcon={<DeleteForeverIcon />}
-                >
-                Delete
-                </Button>
-            )}
-            <Button
-                variant="contained"
-                size="small"
-                onClick={() => props.setEditMode(true)}
-                sx={{ marginLeft: 2 }}
-                startIcon={<EditIcon />}
-            >
-                Edit
-            </Button>
-            </div>
-
-            {localStorage.getItem('role') === "admin" && (
-            <div className="uploader">
-                <h2>Candidate uploaded by: {candidate ? candidate.username : "Unknown"}</h2>
-            </div>
+            {success && (
+                <Alert icon={<CheckIcon fontSize="inherit" />} severity="success">
+                Candidate data fetched successfully!
+                </Alert>
             )}
 
-            <Box className="candidate-data">
-            <Typography variant="h6" gutterBottom>
-                Details
-            </Typography>
-            <Typography>
-                <strong>Phone Number:</strong> {candidate?.phone || "Not Specified"}
-            </Typography>
-            <Typography>
-                <strong>Email:</strong> {candidate?.email || "Not Specified"}
-            </Typography>
-            <Typography sx={{ whiteSpace: "pre-line", textAlign: "justify" }}>
-                <strong>Candidate description:</strong>{" "}
-                {candidate ? candidate.description : "none"}
-            </Typography>
-
-            <div className="candidate-cv-buttons">
-                <FormControl>
-                <InputLabel id="file-type-select-label">File Type</InputLabel>
-                <Select
-                    labelId="file-type-select-label"
-                    id="file-type-select"
-                    value={downloadFileType}
-                    onChange={(e) => setDownloadFileType(e.target.value)}
-                >
-                    <MenuItem value="pdf">PDF</MenuItem>
-                    <MenuItem value="pptx">PPTX</MenuItem>
-                    <MenuItem value="docx">DOCX</MenuItem>
-                </Select>
-                </FormControl>
-
-                <FormControl>
-                <InputLabel id="template-type-select-label">Template</InputLabel>
-                <Select
-                    labelId="template-type-select-label"
-                    id="template-type-select"
-                    value={templateType}
-                    onChange={(e) => setTemplateType(e.target.value)}
-                >
-                    <MenuItem value="FeelIT">FeelIT</MenuItem>
-                    <MenuItem value="ISE">ISE</MenuItem>
-                </Select>
-                </FormControl>
-
+            <div className="candidate-wrapper">
+                <div className="candidate-header">
+                <h2>Candidate Name: {candidate ? candidate.firstName : "none"}</h2>
+                {localStorage.getItem('role') === "admin" && (
+                    <Button
+                    variant="contained"
+                    size="small"
+                    color="error"
+                    onClick={deleteCandidate}
+                    startIcon={<DeleteForeverIcon />}
+                    >
+                    Delete
+                    </Button>
+                )}
                 <Button
-                loading={loading}
-                variant="contained"
-                color="primary"
-                onClick={() => getFormattedCV()}
+                    variant="contained"
+                    size="small"
+                    onClick={() => props.setEditMode(true)}
+                    sx={{ marginLeft: 2 }}
+                    startIcon={<EditIcon />}
                 >
-                Get formatted CV
+                    Edit
                 </Button>
+                </div>
 
-                <Button
-                variant="contained"
-                color="primary"
-                onClick={() => getOriginalCV()}
-                sx={{ marginLeft: 1 }}
-                >
-                Get original CV
-                </Button>
+                {localStorage.getItem('role') === "admin" && (
+                <div className="uploader">
+                    <h2>Candidate uploaded by: {candidate ? candidate.username : "Unknown"}</h2>
+                </div>
+                )}
+
+                <Box className="candidate-data">
+                <Typography variant="h6" gutterBottom>
+                    Details
+                </Typography>
+                <Typography>
+                    <strong>Phone Number:</strong> {candidate?.phone || "Not Specified"}
+                </Typography>
+                <Typography>
+                    <strong>Email:</strong> {candidate?.email || "Not Specified"}
+                </Typography>
+                <Typography sx={{ whiteSpace: "pre-line", textAlign: "justify" }}>
+                    <strong>Candidate description:</strong>{" "}
+                    {candidate ? candidate.description : "none"}
+                </Typography>
+
+                <div className="candidate-cv-buttons">
+                    <FormControl>
+                    <InputLabel id="file-type-select-label">File Type</InputLabel>
+                    <Select
+                        labelId="file-type-select-label"
+                        id="file-type-select"
+                        value={downloadFileType}
+                        onChange={(e) => setDownloadFileType(e.target.value)}
+                    >
+                        <MenuItem value="pdf">PDF</MenuItem>
+                        <MenuItem value="pptx">PPTX</MenuItem>
+                        <MenuItem value="docx">DOCX</MenuItem>
+                    </Select>
+                    </FormControl>
+
+                    <FormControl>
+                    <InputLabel id="template-type-select-label">Template</InputLabel>
+                    <Select
+                        labelId="template-type-select-label"
+                        id="template-type-select"
+                        value={templateType}
+                        onChange={(e) => setTemplateType(e.target.value)}
+                    >
+                        <MenuItem value="FeelIT">FeelIT</MenuItem>
+                        <MenuItem value="ISE">ISE</MenuItem>
+                    </Select>
+                    </FormControl>
+
+                    <Button
+                    loading={loading}
+                    variant="contained"
+                    color="primary"
+                    onClick={() => getFormattedCV()}
+                    >
+                    Get formatted CV
+                    </Button>
+
+                    <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={() => getOriginalCV()}
+                    sx={{ marginLeft: 1 }}
+                    >
+                    Get original CV
+                    </Button>
+                </div>
+                </Box>
             </div>
-            </Box>
-        </div>
         </Box>
     );
 }

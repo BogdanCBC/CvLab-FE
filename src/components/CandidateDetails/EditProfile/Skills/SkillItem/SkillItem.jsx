@@ -7,7 +7,7 @@ import IconButton from '@mui/material/IconButton';
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from '@dnd-kit/utilities';
 
-export default function SkillItem({ id, skill, index, updateSkills, removeSkill }) {
+export default function SkillItem({ id, skill_obj, index, updateSkills, removeSkill }) {
   const {
     attributes,
     listeners,
@@ -25,6 +25,8 @@ export default function SkillItem({ id, skill, index, updateSkills, removeSkill 
     marginBottom: "8px"
   };
 
+  console.log(skill_obj)
+
   return (
     <div ref={setNodeRef} style={style}>
       
@@ -38,10 +40,17 @@ export default function SkillItem({ id, skill, index, updateSkills, removeSkill 
       </IconButton>
       
       <TextField
-        value={skill}
+        value={skill_obj.skill}
         placeholder="Enter skill..."
-        onChange={(e) => updateSkills(index, e.target.value)}
+        onChange={(e) => updateSkills(index, "skill", e.target.value)}
         fullWidth
+      />
+      <TextField
+        type="number"
+        value={skill_obj.years}
+        placeholder="Enter number of years"
+        onChange={(e) => updateSkills(index, "years", Number(e.target.value))}
+        inputProps={{ min: 0 }}
       />
       <Button
         variant="outlined"
