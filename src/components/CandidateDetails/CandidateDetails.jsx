@@ -1,10 +1,10 @@
+import React, { useState } from 'react';
 import "./CandidateDetails.css";
 import NoCandidate from "./NoCandidate/NoCandidate";
 import Candidate from "./Candidate/Candidate";
-import EditCandidate from "./EditProfile/EditProfile";
+import EditProfile from "./EditProfile/EditProfile";
 
 function CandidateDetails(props) {
-
     if (!props.selectedCandidate) {
         return (
             <div className="candidate-details">
@@ -15,7 +15,7 @@ function CandidateDetails(props) {
 
     return (
         <div className="candidate-details">
-            {props.editMode ? (<EditCandidate
+            {props.editMode ? (<EditProfile
                             candidateId={props.selectedCandidate}
                             setEditMode={props.setEditMode}
                         />) : 

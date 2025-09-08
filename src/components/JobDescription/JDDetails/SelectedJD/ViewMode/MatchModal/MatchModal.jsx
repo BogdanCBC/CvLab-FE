@@ -7,7 +7,8 @@ import api from "../../../../../../api";
 export default function MatchModal({ matchModalState, setMatchModalState, matchCandidates, setSelectedCandidate, jobId }) {
     const navigate = useNavigate();
     const [selectedIds, setSelectedIds] = useState(new Set());
-    const [fileLanguage, setFileLanguage] = useState("English")
+    const [fileLanguage, setFileLanguage] = useState("English");
+    const [candidates, setCandidates] = useState(matchCandidates || []);
 
     const handleSelect = async (key) => {
         setSelectedCandidate(key);
@@ -28,7 +29,6 @@ export default function MatchModal({ matchModalState, setMatchModalState, matchC
         setFileLanguage(event.target.value);
     }
 
-    //TODO: Do something with this data
     const handleAIMatch = async () => {
         const params = new URLSearchParams();
         params.append('job_id', String(jobId));
@@ -37,9 +37,11 @@ export default function MatchModal({ matchModalState, setMatchModalState, matchC
 
         try{
             const response = await api.get("/job-description/ai-match", { params });
-            console.log(response.data);
+            if (response.data.success && Array.isArray(response.data.data)) {
+                setCandidates(response.data.data);
+            }
         } catch (err){
-
+            console.error("Error fetching AI match:", err);
         }
     }
     
@@ -115,10 +117,10 @@ export default function MatchModal({ matchModalState, setMatchModalState, matchC
                                 Matched Skills: {c.matched_count}
                             </Typography>
                             <Stack direction="row" spacing={1}>
-                                {c.skills.map(skill => (
+                                {c.skills.map((s, index) => (
                                     <Chip 
-                                        key={skill}
-                                        label={skill}
+                                        key={`${s.skill}-${index}`}
+                                        label={`${s.skill} (${s.years} yrs)`}
                                         color="primary"
                                         variant="outlined"
                                     />

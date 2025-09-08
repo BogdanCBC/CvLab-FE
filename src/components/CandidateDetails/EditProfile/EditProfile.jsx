@@ -10,7 +10,7 @@ import Certifications from "./Certifications/Certifications";
 import FeelIt from "./FeelIt/FeelIt"
 import PersonalProjects from "./PersonalProjects/PersonalProjects"
 
-import { Button, Box } from '@mui/material';
+import { Button, Box, Alert, Typography } from '@mui/material';
 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { green, grey } from '@mui/material/colors';
@@ -26,6 +26,11 @@ function EditProfile(props) {
     const { candidateId, setEditMode } = props;
     const [profileData, setProfileData] = useState(null);
     const [selectedSection, setSelectedSection] = useState('GeneralInfo');
+    const [unvalidMessage, setUnvalidMessage] = useState("");
+    const [unvalidError, setUnvalidError] = useState(false);
+
+    const [saveSuccessMessage, setSaveSuccessMessage] = useState("");
+    const [saveSuccess, setSaveSuccess] = useState(false);
 
     useEffect(() => {
         fetchCandidateData();
@@ -36,18 +41,53 @@ function EditProfile(props) {
             const response = await api.get(`/profile/${candidateId}`)
             setProfileData(response.data);
         } catch (error) {
-            console.error("Error fetching candidate data:", error);
+            // console.error("Error fetching candidate data:", error);
         }
+    }
+
+    function formatValidationErrors(detail) {
+        if (!Array.isArray(detail)) return "Validation error. Please check your input.";
+
+        return detail.map((err) => {
+            const path = err.loc.slice(1).join(" → "); // prettier separator
+            let msg = err.msg;
+
+            // Optional: customize common cases
+            if (msg.includes("none is not an allowed value")) {
+                msg = "This field is required";
+            } else if (msg.includes("ensure this value is greater than 0")) {
+                msg = "Must be greater than 0";
+            } else if (msg.includes("value is not a valid email address")) {
+                msg = "Must be a valid email address";
+            }
+
+            return `${path}: ${msg}`;
+        }).join("\n");
     }
 
     const saveNewObject = async (newData) => {
         try {
-            console.log("New Data:", newData)
+            // console.log("New Data:", newData)
             const response = await api.put(`/candidates/${candidateId}`, newData);
-            
-            console.log("Status", response)
-        } catch (error) {
-            console.error("Failed to update JSON object:", error);
+            if (response.data){
+                setUnvalidMessage("");
+                setUnvalidError(false);
+
+                setSaveSuccessMessage("Candidate saved successfully.");
+                setSaveSuccess(true);
+                setTimeout(() => {
+                    setSaveSuccessMessage("");
+                    setSaveSuccess(false);
+                }, 5000);
+            }
+
+            // console.log("Status", response)
+        } catch (err) {
+            if (err.response?.status === 422) {
+                const message = formatValidationErrors(err.response.data?.detail);
+                setUnvalidMessage(message);
+                setUnvalidError(true);
+            }
         }
     }
 
@@ -404,6 +444,23 @@ function EditProfile(props) {
             </div>
 
             <ThemeProvider theme={theme}>
+                {unvalidError && (
+                    <Alert
+                        severity="error"
+                        sx={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center" }}
+                    >
+                    {unvalidMessage.split("\n").map((line, index) => (
+                            <Typography key={index} variant="body2">{line}</Typography>
+                    ))}
+                    </Alert>
+                )}
+
+                {saveSuccess && (
+                    <Alert severity="success">
+                        {saveSuccessMessage}
+                    </Alert>
+                )}
+
                 <div className="action-buttons">
                     <Button
                         variant="contained"
@@ -412,7 +469,7 @@ function EditProfile(props) {
                             setEditMode(false);
 
                             //UNCOMMENT THIS IN ORDER TO SEE THE JSON
-                            console.log(JSON.stringify(profileData.languages, null, 4));
+                            // console.log(JSON.stringify(profileData.languages, null, 4));
                         }}
                     >
                         GO BACK
@@ -422,7 +479,6 @@ function EditProfile(props) {
                         variant="contained"
                         onClick={() => {
                             saveNewObject(profileData);
-                            setEditMode(false);
                         }}
                     >
                         Save

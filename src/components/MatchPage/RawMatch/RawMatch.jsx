@@ -182,10 +182,10 @@ export default function RawMatch({ jobId, jobTitle, setSelectedCandidate, matchC
                             Matched Skills: {c.matched_count}
                         </Typography>
                         <Stack direction="row" spacing={1}>
-                            {c.skills.map(skill => (
+                            {c.skills.map((s, index) => (
                                 <Chip 
-                                    key={skill}
-                                    label={skill}
+                                    key={`${s.skill}-${index}`}
+                                    label={`${s.skill} (${s.years} yrs)`}
                                     color="primary"
                                     variant="outlined"
                                 />
