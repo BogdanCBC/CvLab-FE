@@ -30,6 +30,7 @@ function UploadCandidateModal(props) {
   const [submitBtnStatus, setSubmitStatusBtn] = useState(false);
   const [fileLanguage, setFileLanguage] = useState('English');
   const [templateType, setTemplateType] = useState('FeelIT');
+  const [iseSubType, setIseSubType] = useState('');
 
   const hasUnresolvedDuplicates = files.some(f => f.status === "duplicate");
 
@@ -70,8 +71,16 @@ function UploadCandidateModal(props) {
   }
 
   const handleChangeTemplateType = (event) => {
-    setTemplateType(event.target.value);
+    const value = event.target.value;
+    setTemplateType(value);
+    if (value !== "ISE") {
+      setIseSubType("");
+    }
   }
+
+  const handleChangeIseSubType = (event) => {
+    setIseSubType(event.target.value);
+  };
 
   const handleModalClose = async () => {
     setFiles([]);
@@ -131,7 +140,7 @@ function UploadCandidateModal(props) {
           params: {
             candidate_id: response.new_candidate_id,
             file_type: downloadType,
-            template_type: templateType
+            template_type: iseSubType || templateType
           },
           responseType: 'blob',
         });
@@ -201,7 +210,7 @@ function UploadCandidateModal(props) {
         params: {
           candidate_id: serverCandidateId,
           file_type: downloadType,
-          template_type: templateType
+          template_type: iseSubType || templateType
         },
         responseType: 'blob',
       });
@@ -256,7 +265,7 @@ function UploadCandidateModal(props) {
         params: {
           candidate_id: serverCandidateId,
           file_type: downloadType, 
-          template_type: templateType
+          template_type: iseSubType || templateType
         },
         responseType: 'blob',
       });
@@ -288,6 +297,8 @@ function UploadCandidateModal(props) {
       }
     }
   };
+
+  const isSubmitDisabled = submitBtnStatus || (templateType === "ISE" && !iseSubType);
 
   return (
       <Modal
@@ -375,6 +386,24 @@ function UploadCandidateModal(props) {
                         <MenuItem value="ISE">ISE</MenuItem>
                       </Select>
                     </FormControl>
+
+                    {templateType === "ISE" && (
+                      <FormControl variant="outlined" fullWidth style={{ marginTop: "1rem" }}>
+                        <InputLabel id="ise-subtype-label">ISE Template</InputLabel>
+                        <Select
+                          labelId="ise-subtype-label"
+                          id="ise-subtype-select"
+                          value={iseSubType}
+                          onChange={handleChangeIseSubType}
+                          label="ISE Template"
+                          disabled={submitBtnStatus}
+                        >
+                          <MenuItem value="ISE1">Template 1</MenuItem>
+                          <MenuItem value="ISE2">Template 2</MenuItem>
+                          <MenuItem value="ISE3">Template 3</MenuItem>
+                        </Select>
+                      </FormControl>
+                    )}
                   </Box>
                 </div>
               </div>
@@ -403,7 +432,7 @@ function UploadCandidateModal(props) {
                 </Button>
                 <Button
                   variant="contained"
-                  disabled={submitBtnStatus}
+                  disabled={isSubmitDisabled}
                   onClick={handleSubmit}
                 >
                   Submit ({files.length}) file(s)

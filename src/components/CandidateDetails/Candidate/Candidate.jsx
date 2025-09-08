@@ -15,6 +15,20 @@ export default function Candidate(props) {
     const [templateType, setTemplateType] = useState('FeelIT');
     const [downloadFileType, setDownloadFileType] = useState('pdf');
 
+    const [iseSubType, setIseSubType] = useState('');
+
+    const handleChangeTemplateType = (event) => {
+        const value = event.target.value;
+        setTemplateType(value);
+        if (value !== "ISE") {
+            setIseSubType("");
+        }
+    }
+
+    const handleChangeIseSubType = (event) => {
+        setIseSubType(event.target.value);
+    };
+
     useEffect(() => {
         fetchData();
     }, [props.candidateId]);
@@ -68,7 +82,7 @@ export default function Candidate(props) {
             setLoading(true);
             const formData = new FormData();
             formData.append("candidate_id", props.candidateId);
-            formData.append("template_type", templateType)
+            formData.append("template_type", templateType === "ISE" ? iseSubType : templateType)
 
             const generateCandidateCV = await api.post(`/template`, formData, {
                 headers: { "Content-Type" : "application/json" }
@@ -180,17 +194,35 @@ export default function Candidate(props) {
                     </FormControl>
 
                     <FormControl>
-                    <InputLabel id="template-type-select-label">Template</InputLabel>
-                    <Select
-                        labelId="template-type-select-label"
-                        id="template-type-select"
-                        value={templateType}
-                        onChange={(e) => setTemplateType(e.target.value)}
-                    >
-                        <MenuItem value="FeelIT">FeelIT</MenuItem>
-                        <MenuItem value="ISE">ISE</MenuItem>
-                    </Select>
+                        <InputLabel id="template-type-select-label">Template</InputLabel>
+                        <Select
+                            labelId="template-type-select-label"
+                            id="template-type-select"
+                            value={templateType}
+                            onChange={handleChangeTemplateType}
+                        >
+                            <MenuItem value="FeelIT">FeelIT</MenuItem>
+                            <MenuItem value="ISE">ISE</MenuItem>
+                        </Select>
                     </FormControl>
+
+                    {templateType === "ISE" && (
+                        <FormControl sx={{ minWidth: 140 }}>
+                            <InputLabel id="ise-subtype-label">ISE Template</InputLabel>
+                            <Select
+                                labelId="ise-subtype-label"
+                                id="ise-subtype-select"
+                                value={iseSubType}
+                                onChange={handleChangeIseSubType}
+                                label="ISE Template"
+                                
+                            >
+                                <MenuItem value="ISE1">Template 1</MenuItem>
+                                <MenuItem value="ISE2">Template 2</MenuItem>
+                                <MenuItem value="ISE3">Template 3</MenuItem>
+                            </Select>
+                        </FormControl>
+                    )}
 
                     <Button
                     loading={loading}
