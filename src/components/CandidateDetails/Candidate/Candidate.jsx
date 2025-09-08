@@ -114,7 +114,7 @@ export default function Candidate(props) {
         <Box sx={{ padding: 2 }}>
             {success && (
                 <Alert icon={<CheckIcon fontSize="inherit" />} severity="success">
-                Candidate data fetched successfully!
+                    Candidate data fetched successfully!
                 </Alert>
             )}
 

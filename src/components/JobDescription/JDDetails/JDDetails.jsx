@@ -11,9 +11,9 @@ export default function JDDetails({ selectedJob, setSelectedJob, setJobs, upload
     const [jobInfo, setJobInfo] = useState(null);
     
 
-    useEffect(() => { fetchSelectedCandidate() }, [selectedJob])
+    useEffect(() => { fetchSelectedJob() }, [selectedJob])
 
-    const fetchSelectedCandidate = async () => {
+    const fetchSelectedJob = async () => {
         try {
             if (selectedJob) {
                 const response = await api.get(`/job-description/${selectedJob}`);

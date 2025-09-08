@@ -119,8 +119,8 @@ export default function ViewMode({ jobInfo, setJobInfo, setEditMode, setJobs, se
                 SKILLS:
             </Typography>
             <Stack direction="row" spacing={1} flexWrap="wrap">
-                {jobInfo.skills.map((skill) => (
-                    <Chip key={skill} label={skill} />
+                {jobInfo.skills.map((s) => (
+                    <Chip key={s.skill} label={`${s.skill} (${s.years} yrs)`} />
                 ))}
             </Stack>
         </Box>

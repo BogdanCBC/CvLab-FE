@@ -1,13 +1,14 @@
 import React, { useState } from "react";
-import { Box, Button, Chip, FormControl, IconButton, Stack, TextField } from "@mui/material";
+import { Box, Button, Chip, FormControl, IconButton, Input, Stack, TextField } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import { fetchJobDescription } from "../../../../../utils/fetchJobDescription";
 import api from "../../../../../api";
 
 export default function EditMode({jobInfo, setEditMode, setJobs, setJobInfo, selectedJob, updateJobInfoFromJobs}) {
     const [jobData, setJobData] = useState(jobInfo);
-    const [skills, setSkills] = useState(jobInfo.skills);
+    const [skills, setSkills] = useState(jobInfo.skills || []);
     const [newSkill, setNewSkill] = useState("");
+    const [yearsInput, setYearsInput] = useState("");
 
     const handleChange = (e) => {
         const {id, value} = e.target;
@@ -17,11 +18,15 @@ export default function EditMode({jobInfo, setEditMode, setJobs, setJobInfo, sel
         }));
     }
 
-    const handleAddSkill = (value) => {
-        if (newSkill.trim() === "" || skills.includes(newSkill.trim())) return;
-        setSkills(prev => [...prev, newSkill.trim()]);
+    const handleAddSkill = () => {
+        if (newSkill.trim() === "" || yearsInput.trim() === "") return;
+        setSkills(prev => [
+            ...prev,
+            { skill: newSkill.trim(), years: parseInt(yearsInput, 10) }
+        ])
         setNewSkill("");
-    }
+        setYearsInput("");
+    };
 
     const handleDelete = (index) => {
         setSkills(prev => prev.filter((_, i) => i !== index));
@@ -80,26 +85,31 @@ export default function EditMode({jobInfo, setEditMode, setJobs, setJobInfo, sel
                 />
 
                 <FormControl>
-                    <Box sx={{display: 'flex', alignItems: 'center'}}>
-                        <TextField
-                            label="Add Skills"
+                    <Box sx={{display: 'flex', alignItems: 'center', gap: 1}}>
+                        <Input
+                            placeholder="Add Skills"
                             value={newSkill}
                             onChange={e => setNewSkill(e.target.value)}
-                            fullWidth
+                        />
+                        <Input
+                            placeholder="Years"
+                            type="number"
+                            inputProps={{min: 0}}
+                            value={yearsInput}
+                            onChange={(e) => setYearsInput(e.target.value)}
                         />
                         <IconButton onClick={handleAddSkill}>
                             <AddIcon />
                         </IconButton>
                     </Box>      
                     <Stack direction="row" spacing={1} mt={2}>
-                        {skills.map((skill, index) => (
+                        {skills.map((s, index) => (
                             <Chip 
                                 key={index}
-                                label={skill}
+                                label={`${s.skill} (${s.years} yrs)`}
                                 onClick={() => handleDelete(index)}
                             />
                         ))}
-
                     </Stack>
                 </FormControl>
 

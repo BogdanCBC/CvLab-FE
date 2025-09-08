@@ -1,17 +1,19 @@
-import { Box, Chip, FormControl, IconButton, Paper, TextField, Stack, Button, Typography  } from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
+import { Box, TextField, Stack, Button, Typography, Alert  } from "@mui/material";
 import React, { useState } from "react";
 
 import api from "../../../../api";
 import { fetchJobDescription } from "../../../../utils/fetchJobDescription";
 
 export default function JobInfoForm({setJobs, setUploadNew}) {
+    const [uploading, setUploading] = useState(false);
+    const [responseMessage, setResponseMessage] = useState("");
+    const [success, setSuccess] = useState(false);
+    const [failed, setFailed ] = useState(false);
+
     const [formData, setFormData] = useState({
         title: "",
-        description: "",
-        skills: []
-    })
-    const [skillInput, setSkillInput] = useState("")
+        description: ""
+    });
 
     const handleChange = (e) => {
         const {id, value} = e.target;
@@ -21,32 +23,19 @@ export default function JobInfoForm({setJobs, setUploadNew}) {
         }));
     }
 
-    const handleAddSkill = (value) => {
-        if (value.trim() === "") return;
-        setFormData(prev => ({
-            ...prev,
-            skills: [...prev.skills, value.trim()]
-        }));
-        setSkillInput("");
-    }
-
-    const handleDelete = (index) => {
-        setFormData(prev => ({
-            ...prev,
-            skills: prev.skills.filter((_, i) => i !== index)
-        }))
-    }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setUploading(true);
         try {
             const response = await api.post('/job-description', formData);
             console.log(response.data);
             if (response.data.success) {
+                setResponseMessage(response.data.message);
+
                 setFormData({
                     title: "",
                     description: "",
-                    skills: []
                 });
 
                 fetchJobDescription().then(response => {
@@ -55,8 +44,23 @@ export default function JobInfoForm({setJobs, setUploadNew}) {
                     }
                 });
             }
+            setSuccess(true);
+            setUploading(false);
+            
+            setTimeout(() => {
+                setSuccess(false);
+                setResponseMessage("");
+            }, 3000); 
         } catch (err) {
             console.log(err.data);
+            setResponseMessage(err.data.message)
+            setFailed(true);
+            setUploading(false);
+
+            setTimeout(() => {
+                setFailed(false);
+                setResponseMessage("");
+            }, 3000);
         }
     }
 
@@ -73,6 +77,16 @@ export default function JobInfoForm({setJobs, setUploadNew}) {
 
     return (
         <form onSubmit={handleSubmit}>
+            {success && (
+                <Alert severity="success">
+                    {responseMessage}
+                </Alert>
+            )}
+            {failed && (
+                <Alert severity="error">
+                    {responseMessage}
+                </Alert>
+            )}
             <Box 
                 display="flex"
                 flexDirection="column" 
@@ -108,35 +122,11 @@ export default function JobInfoForm({setJobs, setUploadNew}) {
                     onChange={handleChange}
                 />
 
-                <FormControl>
-                    <Box sx={{display: 'flex', alignItems: 'center'}}>
-                        <TextField
-                            id="skills"
-                            label="Essential Skills"
-                            value={skillInput}
-                            onChange={(e) => setSkillInput(e.target.value)}
-                            fullWidth
-                        />
-                        <IconButton 
-                            onClick={() => handleAddSkill(skillInput)}
-                        > 
-                            <AddIcon />
-                        </IconButton>
-                    </Box>
-                    <Stack direction="row" spacing={1} mt={2}>
-                        {formData.skills.map((skill, index) => (
-                            <Chip 
-                                key={index}
-                                label={skill}
-                                onClick={() => handleDelete(index)}
-                            />
-                        ))}
-                    </Stack>
-                </FormControl>
                 <Stack direction="row" spacing={2} justifyContent="center">
                     <Button
                         variant="contained"
                         onClick={() => handleGoBack()}
+                        loading={uploading}
                     >
                         Go back
                     </Button>
@@ -145,6 +135,7 @@ export default function JobInfoForm({setJobs, setUploadNew}) {
                         sx={{alignSelf: "center"}}
                         type="submit"
                         variant="contained"
+                        loading={uploading}
                     >
                         Submit
                     </Button>
