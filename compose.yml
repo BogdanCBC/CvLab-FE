@@ -4,7 +4,10 @@ services:
     ports:
       - "3000:3000"
     volumes:
-     - .:/app
+      - ./src:/app/src
+      - ./public:/app/public
+      - /etc/letsencrypt/live/cvprocessor.feel-it-services.com/fullchain.pem:/certs/cert.pem:ro
+      - /etc/letsencrypt/live/cvprocessor.feel-it-services.com/privkey.pem:/certs/key.pem:ro
     env_file:
       - .env
     stdin_open: true

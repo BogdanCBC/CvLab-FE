@@ -137,13 +137,13 @@ export default function Candidate(props) {
                 <h2>Candidate Name: {candidate ? candidate.firstName : "none"}</h2>
                 {localStorage.getItem('role') === "admin" && (
                     <Button
-                    variant="contained"
-                    size="small"
-                    color="error"
-                    onClick={deleteCandidate}
-                    startIcon={<DeleteForeverIcon />}
+                        variant="contained"
+                        size="small"
+                        color="error"
+                        onClick={deleteCandidate}
+                        startIcon={<DeleteForeverIcon />}
                     >
-                    Delete
+                        Delete
                     </Button>
                 )}
                 <Button
@@ -225,21 +225,22 @@ export default function Candidate(props) {
                     )}
 
                     <Button
-                    loading={loading}
-                    variant="contained"
-                    color="primary"
-                    onClick={() => getFormattedCV()}
+                        loading={loading}
+                        variant="contained"
+                        color="primary"
+                        disabled={loading || (templateType === "ISE" && !iseSubType)}
+                        onClick={() => getFormattedCV()}
                     >
-                    Get formatted CV
+                        Get formatted CV
                     </Button>
 
                     <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={() => getOriginalCV()}
-                    sx={{ marginLeft: 1 }}
+                        variant="contained"
+                        color="primary"
+                        onClick={() => getOriginalCV()}
+                        sx={{ marginLeft: 1 }}
                     >
-                    Get original CV
+                        Get original CV
                     </Button>
                 </div>
                 </Box>

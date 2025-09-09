@@ -36,8 +36,13 @@ export default function Skills(props) {
         </Button>
       </div>
       
-      <Typography>Skill MODIFICA SI FA FRUMOS</Typography>
-      <Typography>Years of experience</Typography>
+      <div className="skills-columns" style={{ display: "flex", alignItems: "center", gap: "8px", fontWeight: "bold", marginBottom: "8px" }}>
+        <span style={{ width: 40 }} />
+        <span style={{ flex: 1 }}>Skill</span>
+        <span style={{ width: 130 }}>Years</span>
+        <span style={{ width: 56 }} />
+      </div>
+
       <DndContext collisionDetection={closestCorners} onDragEnd={handleDragEnd}>
         <SkillsList
           skills={props.profileData.skills}
