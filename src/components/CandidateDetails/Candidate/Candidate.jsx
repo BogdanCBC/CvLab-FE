@@ -3,8 +3,9 @@ import api from "../../../api";
 import React, { useState, useEffect } from "react";
 import CheckIcon from '@mui/icons-material/Check';
 import EditIcon from '@mui/icons-material/Edit';
-import { Button, Alert, Box, FormControl, InputLabel, Select, MenuItem, Typography } from "@mui/material";
+import { Button, Alert, Box, FormControl, InputLabel, Select, MenuItem, Typography, Tooltip, IconButton } from "@mui/material";
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import InfoOutlineIcon from '@mui/icons-material/InfoOutline';
 import {getFileNameFromDisposition, downloadFileFromBlob} from "../../../helperFunctions";
 import { fetchCandidates } from '../../../utils/fetchCandidates';
 
@@ -12,8 +13,8 @@ export default function Candidate(props) {
     const [candidate, setCandidate] = useState(null);
     const [success, setSuccess] = useState(false);
     const [loading, setLoading] = useState(false);
-    const [templateType, setTemplateType] = useState('FeelIT');
-    const [downloadFileType, setDownloadFileType] = useState('pdf');
+    const [templateType, setTemplateType] = useState('');
+    const [downloadFileType, setDownloadFileType] = useState('');
 
     const [iseSubType, setIseSubType] = useState('');
 
@@ -124,6 +125,32 @@ export default function Candidate(props) {
         }
     }
 
+    const disableGetFormatted = ((downloadFileType === '') || (templateType === '')) || loading || (templateType === "ISE" && !iseSubType)
+
+    const renderTooltipContent = () => (
+        <>
+        <Typography
+            variant="subtitle2"
+            sx={{ fontWeight: "bold", mb: 0.2, textAlign: "justify" }}
+        >
+            Candidate details:
+        </Typography>
+        <ul style={{ margin: 0, paddingLeft: "1.2rem", textAlign: "justify" }}>
+            <li style={{ marginBottom: "0.2rem"}}>See candidate short description, phone number, and email</li>
+            <li style={{ marginBottom: "0.2rem"}}>
+                Get formatted CV in <strong>DOCX, PDF, or PPTX</strong> using
+            <strong> FeelIT</strong> or <strong> ISE</strong> templates
+            </li>
+            <li style={{ marginBottom: "0.2rem"}}>Choose from 3 different templates when exporting with ISE</li>
+            <li style={{ marginBottom: "0.2rem"}}>Download the original CV as submitted by the candidate</li>
+            <li style={{ marginBottom: "0.2rem"}}>
+                Edit details that will appear in the formatted CV, including:
+            <em> general information, skills, work experience, certifications, education, languages</em>
+            </li>
+        </ul>
+        </>
+    )
+
     return (
         <Box sx={{ padding: 2 }}>
             {success && (
@@ -135,6 +162,13 @@ export default function Candidate(props) {
             <div className="candidate-wrapper">
                 <div className="candidate-header">
                 <h2>Candidate Name: {candidate ? candidate.firstName : "none"}</h2>
+                
+                <Tooltip sx={{mr: 2}} title={renderTooltipContent()}>
+                    <IconButton>
+                        <InfoOutlineIcon />
+                    </IconButton>
+                </Tooltip>
+
                 {localStorage.getItem('role') === "admin" && (
                     <Button
                         variant="contained"
@@ -179,27 +213,29 @@ export default function Candidate(props) {
                 </Typography>
 
                 <div className="candidate-cv-buttons">
-                    <FormControl>
-                    <InputLabel id="file-type-select-label">File Type</InputLabel>
-                    <Select
-                        labelId="file-type-select-label"
-                        id="file-type-select"
-                        value={downloadFileType}
-                        onChange={(e) => setDownloadFileType(e.target.value)}
-                    >
-                        <MenuItem value="pdf">PDF</MenuItem>
-                        <MenuItem value="pptx">PPTX</MenuItem>
-                        <MenuItem value="docx">DOCX</MenuItem>
-                    </Select>
+                    <FormControl sx={{ minWidth: 130 }}>
+                        <InputLabel id="file-type-select-label">File Format</InputLabel>
+                        <Select
+                            labelId="file-type-select-label"
+                            id="file-type-select"
+                            value={downloadFileType}
+                            onChange={(e) => setDownloadFileType(e.target.value)}
+                            label="File Format"
+                        >
+                            <MenuItem value="pdf">PDF</MenuItem>
+                            <MenuItem value="pptx">PPTX</MenuItem>
+                            <MenuItem value="docx">DOCX</MenuItem>
+                        </Select>
                     </FormControl>
 
-                    <FormControl>
+                    <FormControl sx={{ minWidth: 140 }}>
                         <InputLabel id="template-type-select-label">Template</InputLabel>
                         <Select
                             labelId="template-type-select-label"
                             id="template-type-select"
                             value={templateType}
                             onChange={handleChangeTemplateType}
+                            label="Template"
                         >
                             <MenuItem value="FeelIT">FeelIT</MenuItem>
                             <MenuItem value="ISE">ISE</MenuItem>
@@ -215,7 +251,6 @@ export default function Candidate(props) {
                                 value={iseSubType}
                                 onChange={handleChangeIseSubType}
                                 label="ISE Template"
-                                
                             >
                                 <MenuItem value="ISE1">Template 1</MenuItem>
                                 <MenuItem value="ISE2">Template 2</MenuItem>
@@ -228,7 +263,7 @@ export default function Candidate(props) {
                         loading={loading}
                         variant="contained"
                         color="primary"
-                        disabled={loading || (templateType === "ISE" && !iseSubType)}
+                        disabled={disableGetFormatted}
                         onClick={() => getFormattedCV()}
                     >
                         Get formatted CV

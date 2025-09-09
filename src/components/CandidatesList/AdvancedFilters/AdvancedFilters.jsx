@@ -258,8 +258,13 @@ export default function AdvancedFilters(props){
                         </Box>
                     </Box>
                 </form>
-                <Typography display="flex" justifyContent="center" variant="h6">
-                    BLABLABLA EXPLICATIE FA FRUMOS
+
+                <Typography display="flex" justifyContent="center" variant="h7" sx={{ mt: 6, textAlign: "justify" }}>
+                    Use the advanced filters to refine your candidate search by position, years of experience, skills with minimum years, languages, and certifications. You can add multiple entries and remove them as needed before submitting.
+                </Typography>
+                
+                <Typography display="flex" justifyContent="center" variant="h7" sx={{ mt: 1, textAlign: "justify" }}>
+                   <b> Use the "+" button to add the desired skill, language or certification.</b>
                 </Typography>
             </Box>
         </Modal>

@@ -1,7 +1,7 @@
 import React, {useState} from "react"
 import { useNavigate } from 'react-router-dom';
-import { Box, Chip, Paper, Stack, Typography, Checkbox, Button, FormControl, InputLabel, Select, MenuItem } from "@mui/material";
-
+import { Box, Chip, Paper, Stack, Typography, Checkbox, Button, FormControl, InputLabel, Select, MenuItem, Tooltip, IconButton } from "@mui/material";
+import InfoOutlineIcon from '@mui/icons-material/InfoOutline';
 import "./RawMatch.css"
 import api from "../../../api";
 import { downloadFileFromBlob, getFileNameFromDisposition } from "../../../helperFunctions";
@@ -72,6 +72,31 @@ export default function RawMatch({ jobId, jobTitle, setSelectedCandidate, matchC
         navigate("/");
     };
 
+    const renderTooltipContent = () => (
+        <>
+        <Typography
+            variant="subtitle2"
+            sx={{ fontWeight: 'bold', mb: 0.2, textAlign: "justify" }}
+        >
+            Match Page:
+        </Typography>
+        <ul style={{ margin: 0, paddingLeft: '1.2rem', textAlign: "justify" }}>
+            <li style={{ marginBottom: "0.2rem"}}>
+            On the left side, view a list of candidates who have at least one required skill with the required years of experience. Click a candidate to be redirected to their details.
+            </li >
+            <li style={{ marginBottom: "0.2rem"}}>
+            Select desired candidates using the checkboxes, then use the "AI Match" button to generate a rating and a short description of how well each candidate fits the job requirements.
+            </li>
+            <li style={{ marginBottom: "0.2rem"}}>
+            Download a DOCX report containing the same matching information.
+            </li>
+            <li style={{ marginBottom: "0.2rem"}}>
+            The description can be generated in <strong>English</strong> or <strong>French</strong>.
+            </li>
+        </ul>
+        </>
+    )
+
     return (
         <Box
             className="raw-match-box"
@@ -134,6 +159,12 @@ export default function RawMatch({ jobId, jobTitle, setSelectedCandidate, matchC
                         <MenuItem value="French" sx={{width: 120}}>French</MenuItem>
                     </Select>
                 </FormControl>
+
+                <Tooltip title={renderTooltipContent()} sx={{mr: 2}}>
+                    <IconButton>
+                        <InfoOutlineIcon/>
+                    </IconButton>
+                </Tooltip>
             </Box>
             <Stack spacing={3}>
                 {matchCandidates.map((c) => (
