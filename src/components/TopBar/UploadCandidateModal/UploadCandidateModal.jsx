@@ -299,6 +299,7 @@ function UploadCandidateModal(props) {
   };
 
   const isSubmitDisabled = submitBtnStatus || (templateType === "ISE" && !iseSubType);
+  const hasFourth = templateType === 'ISE';
 
   return (
       <Modal
@@ -340,7 +341,16 @@ function UploadCandidateModal(props) {
               <div className='files-section'>
                 <div className='files-header'>
                   <h3>Uploaded Files ({files.length})</h3>
-                  <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: 'repeat(3, 1fr)' }, gap: 2 }}>
+                  <Box 
+                    sx={{ 
+                      display: 'grid',
+                      gap: 2 ,
+                      gridTemplateColumns: { 
+                        xs: '1fr',
+                        sm: hasFourth ? 'repeat(2, 1fr)' : 'repeat(3, 1fr)'
+                      },    
+                    }}
+                  >
                     <FormControl variant='outlined' fullWidth>
                       <InputLabel id="file-type-label">Download File Type</InputLabel>
                       <Select 
@@ -388,7 +398,7 @@ function UploadCandidateModal(props) {
                     </FormControl>
 
                     {templateType === "ISE" && (
-                      <FormControl variant="outlined" fullWidth style={{ marginTop: "1rem" }}>
+                      <FormControl variant="outlined" fullWidth>
                         <InputLabel id="ise-subtype-label">ISE Template</InputLabel>
                         <Select
                           labelId="ise-subtype-label"

@@ -112,108 +112,129 @@ export default function CandidatesTable(props) {
 
   return (
     <div>
+      <TextField
+        label="Search Candidates"
+        variant="outlined"
+        fullWidth
+        margin="normal"
+        value={searchTerm}
+        onChange={(e) => {
+          setSearchTerm(e.target.value);
+          setPage(0);
+        }}
+      />
 
-    <TextField
-      label="Search Candidates"
-      variant="outlined"
-      fullWidth
-      margin="normal"
-      value={searchTerm}
-      onChange={(e) => {
-        setSearchTerm(e.target.value);
-        setPage(0);
-      }}
-    />
+      <TableContainer component={Paper} sx={{ maxHeight: 550, overflowY: 'auto' }}>
+        <Table
+          stickyHeader
+          sx={{ minWidth: 500 }}
+          aria-label="custom pagination table"
+        >
+          <TableHead sx={{ backgroundColor: '#f5f5f5' }}>
+            <TableRow>
+              <TableCell style={{ width: '30%' }}>First Name</TableCell>
+              <TableCell align="right">Last Name</TableCell>
+              <TableCell align="right">Experience</TableCell>
+              <TableCell align="right">Role</TableCell>
+              <TableCell align="right">Language</TableCell>
+              <TableCell align="right">Actions</TableCell>
+            </TableRow>
+          </TableHead>
 
-    <TableContainer component={Paper} >
-      <Table sx={{ minWidth: 500 }} aria-label="custom pagination table" style={{height: '550px'}}>
-        <TableHead style={{backgroundColor: '#f5f5f5'}}>
-          <TableRow>
-            <TableCell style={{ width: '30%' }}>First Name</TableCell>
-            <TableCell align="right">Last Name</TableCell>
-            <TableCell align="right">Experience</TableCell>
-            <TableCell align="right">Role</TableCell>
-            <TableCell align="right">Language</TableCell>
-            <TableCell align="right">Actions</TableCell>
-          </TableRow>
-        </TableHead>
-        
-        <TableBody sx={{width: '100%', height: '400px'}}>
-          {(rowsPerPage > 0
-              ? filteredCandidates.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+          <TableBody>
+            {(rowsPerPage > 0
+              ? filteredCandidates.slice(
+                  page * rowsPerPage,
+                  page * rowsPerPage + rowsPerPage
+                )
               : filteredCandidates
-          ).map((row) => (
-            <TableRow
-                    key={row.id}
-                    onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#f0f0f0'} 
-                    onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+            ).map((row) => (
+              <TableRow
+                key={row.id}
+                onMouseOver={(e) =>
+                  (e.currentTarget.style.backgroundColor = '#f0f0f0')
+                }
+                onMouseOut={(e) =>
+                  (e.currentTarget.style.backgroundColor = 'transparent')
+                }
+                onClick={() => {
+                  props.selectedHandler(row.id);
+                  props.setEditMode(false);
+                }}
+              >
+                <TableCell sx={{ width: '20%' }}>{row.firstName}</TableCell>
+                <TableCell sx={{ width: '20%' }} align="right">
+                  {row.lastName}
+                </TableCell>
+                <TableCell sx={{ width: '20%' }} align="right">
+                  {row.experience}
+                </TableCell>
+                <TableCell sx={{ width: '20%' }} align="right">
+                  {row.position}
+                </TableCell>
+                <TableCell sx={{ width: '20%' }} align="right">
+                  {row.language}
+                </TableCell>
+                <TableCell sx={{ width: '20%' }} align="right">
+                  <Button
                     onClick={() => {
-                      props.selectedHandler(row.id)
+                      props.selectedHandler(row.id);
                       props.setEditMode(false);
                     }}
-            >
-              <TableCell sx={{ width: '20%'}} scope="row">
-                {row.firstName}
-              </TableCell>
-              <TableCell sx={{ width: '20%' }} align="right">
-                {row.lastName}
-              </TableCell>
-              <TableCell sx={{ width: '20%' }} align="right">
-                {row.experience}
-              </TableCell>
-              <TableCell sx={{ width: '20%' }} align="right">
-                {row.position}
-              </TableCell>
-              <TableCell sx={{ width: '20%' }} align="right">
-                {row.language}
-              </TableCell>
-              <TableCell sx={{ width: '20%' }} align="right">
-
-                  <Button 
-                      onClick={() => { 
-                          props.selectedHandler(row.id)
-                          props.setEditMode(false);
-                      }}
-                      variant="contained"
-                      sx={{ backgroundColor: '#1976d2', color: 'white', width: "40px", height: "30px"}}
+                    variant="contained"
+                    sx={{
+                      backgroundColor: '#1976d2',
+                      color: 'white',
+                      width: '40px',
+                      height: '30px',
+                    }}
                   >
-                      DETAILS
+                    DETAILS
                   </Button>
+                </TableCell>
+              </TableRow>
+            ))}
 
-              </TableCell>
-            </TableRow>
-          ))}
-          {emptyRows > 0 && (
-            <TableRow style={{ height: 53 * emptyRows }}>
-              <TableCell colSpan={6} />
-            </TableRow>
-          )}
-        </TableBody>
+            {emptyRows > 0 && (
+              <TableRow>
+                <TableCell colSpan={6} />
+              </TableRow>
+            )}
+          </TableBody>
 
-        <TableFooter>
-          <TableRow>
-            <TablePagination
-              rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
-              colSpan={4}
-              count={filteredCandidates.length}
-              rowsPerPage={rowsPerPage}
-              page={page}
-              slotProps={{
-                select: {
-                  inputProps: {
-                    'aria-label': 'Candidates per page',
+          <TableFooter>
+            <TableRow>
+              <TablePagination
+                // Make the pagination row stick to the bottom of the scroll area
+                sx={{
+                  position: 'sticky',
+                  bottom: 0,
+                  zIndex: 2,
+                  backgroundColor: (theme) => theme.palette.background.paper,
+                  borderTop: '1px solid',
+                  borderColor: 'divider',
+                  left: 0,
+                  right: 0,
+                }}
+                rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
+                colSpan={6} // match the number of columns
+                count={filteredCandidates.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                slotProps={{
+                  select: {
+                    inputProps: { 'aria-label': 'Candidates per page' },
+                    native: true,
                   },
-                  native: true,
-                },
-              }}
-              onPageChange={handleChangePage}
-              onRowsPerPageChange={handleChangeRowsPerPage}
-              ActionsComponent={TablePaginationActions}
-            />
-          </TableRow>
-        </TableFooter>
-      </Table>
-    </TableContainer>
+                }}
+                onPageChange={handleChangePage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+                ActionsComponent={TablePaginationActions}
+              />
+            </TableRow>
+          </TableFooter>
+        </Table>
+      </TableContainer>
     </div>
   );
 }

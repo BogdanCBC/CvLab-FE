@@ -123,6 +123,20 @@ export default function ViewMode({ jobInfo, setJobInfo, setEditMode, setJobs, se
                     <Chip key={s.skill} label={`${s.skill} (${s.years} yrs)`} />
                 ))}
             </Stack>
+            {
+                jobInfo.languages && jobInfo.languages.length > 0 && (
+                    <Box>
+                    <Typography variant="h6" component="div">
+                        LANGUAGES:
+                    </Typography>
+                    <Stack direction="row" spacing={1} flexWrap="wrap">
+                        {jobInfo.languages.map((l) => (
+                            <Chip key={l.language} label={`${l.language} (Level: ${l.level})`} />
+                        ))}
+                    </Stack>
+                    </Box>
+                )
+            }
         </Box>
     );
 }

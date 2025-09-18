@@ -222,6 +222,26 @@ export default function RawMatch({ jobId, jobTitle, setSelectedCandidate, matchC
                                 />
                             ))}
                         </Stack>
+                        {c.languages && c.languages.length > 0 && (
+                            <Box>
+                                <Typography
+                                    variant="body2"
+                                    sx={{mb: 1, fontWeight: "bold", mt: 1}}
+                                >
+                                    Matched Languages: {c.matched_languages}
+                                </Typography>
+                                <Stack direction="row" spacing={1}>
+                                    {c.languages.map((l, index) => (
+                                        <Chip
+                                            key={`${l.language}-${index}`}
+                                            label={`${l.language} (Level ${l.level})`}
+                                            color="primary"
+                                            variant="outlined"
+                                        />
+                                    ))}
+                                </Stack>
+                            </Box>
+                        ) }
                     </Paper>
                 ))}
             </Stack>
