@@ -21,7 +21,7 @@ function CandidateDetails(props) {
                         />) : 
                         (<Candidate
                             candidate={props.selectedCandidate}
-                            selectedHandler={props.selectedHandler}
+                            setSelectedCandaidate={props.setSelectedCandidate}
                             candidateId={props.selectedCandidate}
                             setEditMode={props.setEditMode}
                             editMode={props.editMode}

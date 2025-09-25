@@ -16,7 +16,7 @@ export default function AiMatch({ aiMatchedCandidates, jobTitle, setSelectedCand
 
     const handleSelect = (key) => {
         setSelectedCandidate(key);
-        navigate("/");
+        navigate("/candidates");
     };
 
     return (

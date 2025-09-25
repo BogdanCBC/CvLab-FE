@@ -115,7 +115,7 @@ export default function Candidate(props) {
         try {
             const response = await api.delete(`/candidates?id=${props.candidateId}`);
             if (response.status === 200) {
-                props.selectedHandler(null);
+                props.setSelectedCadnidate(null);
                 fetchCandidates().then(sortedCandidates => {
                     props.setCandidates(sortedCandidates);
                 });   

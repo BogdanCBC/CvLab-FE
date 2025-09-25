@@ -158,8 +158,7 @@ export default function CandidatesTable(props) {
                   (e.currentTarget.style.backgroundColor = 'transparent')
                 }
                 onClick={() => {
-                  props.selectedHandler(row.id);
-                  props.setEditMode(false);
+                    props.setSelectedCandidate(row.id);
                 }}
               >
                 <TableCell sx={{ width: '20%' }}>{row.firstName}</TableCell>
@@ -178,7 +177,7 @@ export default function CandidatesTable(props) {
                 <TableCell sx={{ width: '20%' }} align="right">
                   <Button
                     onClick={() => {
-                      props.selectedHandler(row.id);
+                      props.setSelectedCandidate(row.id);
                       props.setEditMode(false);
                     }}
                     variant="contained"

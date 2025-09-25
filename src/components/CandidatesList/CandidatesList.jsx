@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import './CandidatesList.css';
 import CandidatesTable from './CandidatesTable/CandidatesTable';
 import { Button } from '@mui/material';
@@ -7,12 +8,22 @@ import { fetchCandidates } from '../../utils/fetchCandidates';
 import AdvancedFilters from './AdvancedFilters/AdvancedFilters';
 
 function CandidatesList(props) {
+    const { candidateId } = useParams();
+    const navigate = useNavigate();
 
     useEffect(() => {
         fetchCandidates().then(sortedCandidates => {
             props.setCandidates(sortedCandidates);
         });
     }, []);
+
+    useEffect(() => {
+        if (candidateId) {
+            const normalize = isNaN(Number(candidateId)) ? candidateId : Number(candidateId);
+            console.log("Normalized", normalize);
+            props.setSelectedCandidate(normalize);
+        }
+    }, [candidateId]);
 
     const [modalState, setModalState] = useState(false);
 
@@ -40,7 +51,7 @@ function CandidatesList(props) {
             <CandidatesTable 
                 candidates={props.candidates}
                 candidate={props.selectedCandidate}
-                selectedHandler={props.selectedHandler}
+                setSelectedCandidate={props.setSelectedCandidate}
                 editMode={props.editMode}
                 setEditMode={props.setEditMode}
             />

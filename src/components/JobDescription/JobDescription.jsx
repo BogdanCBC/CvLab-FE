@@ -18,7 +18,7 @@ export default function JobDescription({setSelectedCandidate}) {
 
     useEffect(() => {
         fetchJobDescription().then(response => {
-            console.log(response)
+            // console.log(response)
             if(response.success) {
                 setJobs(response.jobs);
             } else {

@@ -13,7 +13,7 @@ export async function fetchCandidates() {
             position: candidate.position,
             language: candidate.language,
         }));
-        console.log(data);
+        // console.log(data);
         const sorted = data.sort((a, b) => b.id - a.id);
         return sorted;
     } catch (error) {

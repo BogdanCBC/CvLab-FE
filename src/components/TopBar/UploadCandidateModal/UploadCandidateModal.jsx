@@ -120,7 +120,7 @@ function UploadCandidateModal(props) {
 
     const response = await uploadSingleCV(file);
     
-    console.log(response)
+    // console.log(response)
     if (response.error) {
       setFiles(prev =>
         prev.map(f =>
@@ -199,8 +199,8 @@ function UploadCandidateModal(props) {
       prev.map((f) => (f.id === localId ? {...f, status: 'loading', progress: 75} : f))
     );
 
-    console.log(target)
-    console.log(target.duplicateInfo?.new_candidate_id)
+    // console.log(target)
+    // console.log(target.duplicateInfo?.new_candidate_id)
 
     try {
       const serverCandidateId = target.duplicateInfo.new_candidate_id;

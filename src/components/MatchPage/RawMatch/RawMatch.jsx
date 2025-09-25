@@ -42,7 +42,7 @@ export default function RawMatch({ jobId, jobTitle, setSelectedCandidate, matchC
                 params,
                 responseType: "blob"
             });
-            console.log(response)
+            // console.log(response)
             const disposition = response.headers['content-disposition'];
             const fileName = getFileNameFromDisposition(disposition);
 
@@ -69,7 +69,7 @@ export default function RawMatch({ jobId, jobTitle, setSelectedCandidate, matchC
 
     const handleSelect = (key) => {
         setSelectedCandidate(key);
-        navigate("/");
+        navigate("/candidates");
     };
 
     const renderTooltipContent = () => (

@@ -17,7 +17,7 @@ export async function fetchJobDescription() {
                 success: response.data.success,
                 jobs
             }
-            console.log(data)
+            // console.log(data)
             return data;
         }
     } catch (error) {
