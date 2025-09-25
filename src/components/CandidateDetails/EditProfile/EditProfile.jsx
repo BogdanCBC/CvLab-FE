@@ -1,4 +1,4 @@
-import React, { useState ,useEffect, use } from "react";
+import React, { useState ,useEffect } from "react";
 import "./EditProfile.css";
 import api from "../../../api";
 import GenerlInfo from "./GeneralInfo/GeneralInfo";
@@ -48,11 +48,20 @@ function EditProfile(props) {
     function formatValidationErrors(detail) {
         if (!Array.isArray(detail)) return "Validation error. Please check your input.";
 
-        return detail.map((err) => {
-            const path = err.loc.slice(1).join(" → "); // prettier separator
-            let msg = err.msg;
+        // turn snake_case or camelCase into "Title Case"
+        const humanize = (str) =>
+            str
+                .replace(/_/g, " ")
+                .replace(/([a-z])([A-Z])/g, "$1 $2")
+                .replace(/\s+/g, " ")
+                .trim()
+                .replace(/^./, (s) => s.toUpperCase());
 
-            // Optional: customize common cases
+        return detail.map((err) => {
+            const loc = err.loc;
+            let msg = err.msg;
+            console.log(err.msg)
+            console.log(err.loc)
             if (msg.includes("none is not an allowed value")) {
                 msg = "This field is required";
             } else if (msg.includes("ensure this value is greater than 0")) {
@@ -61,7 +70,30 @@ function EditProfile(props) {
                 msg = "Must be a valid email address";
             }
 
-            return `${path}: ${msg}`;
+            let section = "";
+            let fieldStr = "";
+            let fieldNumber = "";
+            let field = "";
+            let subIndex = "";
+
+            // example: ["body", "work_experience", 0, "responsibilities", 1]
+            if (loc.length >= 2) {
+                section = humanize(loc[1]); // work_experience → Work Experience
+            }
+            if (loc.length >= 3 && typeof loc[2] === "string"){
+                fieldStr = ` ${loc[2].charAt(0).toUpperCase() + loc[2].slice(1)} `
+            }
+            if (loc.length >= 3 && typeof loc[2] === "number") {
+                fieldNumber = ` at field ${loc[2] + 1}`;
+            }
+            if (loc.length >= 4) {
+                field = humanize(loc[3]); // end_date → End date
+            }
+            if (loc.length === 5 && typeof loc[4] === "number") {
+                subIndex = ` no ${loc[4] + 1}`;
+            }
+
+            return `${section}${fieldStr}${fieldNumber} ${field}${subIndex} is invalid. ${msg}`;
         }).join("\n");
     }
 
