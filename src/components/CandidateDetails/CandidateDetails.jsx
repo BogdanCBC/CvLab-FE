@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import "./CandidateDetails.css";
 import NoCandidate from "./NoCandidate/NoCandidate";
 import Candidate from "./Candidate/Candidate";

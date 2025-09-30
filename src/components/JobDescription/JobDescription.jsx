@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { Button } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
 import JDTable from "./JDTable/JDTable";
 import JDTopBar from "./JDTopBar/JDTopBar"
 import JDDetails from "./JDDetails/JDDetails";

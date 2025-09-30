@@ -1,10 +1,33 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, Outlet, useLocation } from 'react-router-dom';
 import Login from './Login/Login';
 import { isTokenValid } from '../utils/auth'
 import JobDescription from './JobDescription/JobDescription';
 import MatchPage from './MatchPage/MatchPage';
 import CandidatesPage from "./CandidatesPage/CandidatesPage";
+
+function ProtectedRoute({ isLoggedIn }) {
+    const location = useLocation();
+
+    if (!isLoggedIn) {
+        return <Navigate to="/login" replace state={{ from: location }} />;
+    }
+
+    return <Outlet />;
+}
+
+function LoginGate({ isLoggedIn, onLogin }) {
+    const location = useLocation();
+    const fromState = location.state?.from;
+    const from =
+        (fromState?.pathname || '') +
+        (fromState?.search || '') +
+        (fromState?.hash || '');
+
+    return isLoggedIn
+        ? <Navigate to={from || '/candidates'} replace />
+        : <Login onLogin={onLogin} />;
+}
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -32,67 +55,44 @@ function App() {
       <Routes>
           <Route
             path="/"
-            element={
-                isLoggedIn ? <Navigate to="/login"/> : <Navigate to="/candidates" />
-            }
+            element={<Navigate to={isLoggedIn ? "/candidates" : "/login"} replace />}
           />
 
         {/* Login Route */}
         <Route
           path="/login"
-          element={
-            isLoggedIn ? <Navigate to="/candidates" /> : <Login onLogin={handleLogin} />
-          }
+          element={<LoginGate isLoggedIn={isLoggedIn} onLogin={handleLogin} />}
         />
-        {/* Job description */}
-        <Route 
-            path="/job-description"
-            element={
-              isLoggedIn ? 
-                <JobDescription
-                  setSelectedCandidate={setSelectedCandidate}
-                /> : 
-                <Navigate to="/login" />
-            }
-        />
-        {/* Match page */}
-        <Route 
-          path="/match/:jobId"
-          element={
-            isLoggedIn ? (
-              <MatchPage
-                  setSelectedCandidate={setSelectedCandidate}
-              />
-            ) : (
-              <Navigate to="/login" />
-            )
-          }
-        />
+
         {/* Main App Route */}
-        <Route
-          path="/candidates"
-          element={
-            isLoggedIn ? (
-                <CandidatesPage
-                    candidates={candidates}
-                    setCandidates={setCandidates}
-                    selectedCandidate={selectedCandidate}
-                    setSelectedCandidate={setSelectedCandidate}
-                    editMode={editMode}
-                    setEditMode={setEditMode}
-                    advancedSearch={advancedSearch}
-                    setAdvancedSearch={setAdvancedSearch}
-                    setIsLoggedIn={setIsLoggedIn}
-                />
-            ) : (
-              <Navigate to="/login" />
-            )
-          }
-        />
-        <Route
-            path="/candidates/:candidateId"
-            element={
-                isLoggedIn ? (
+        <Route element={<ProtectedRoute isLoggedIn={isLoggedIn} />}>
+           <Route
+              path="/job-description"
+              element={<JobDescription setSelectedCandidate={setSelectedCandidate} />}
+           />
+           <Route
+              path="/match/:jobId"
+              element={<MatchPage setSelectedCandidate={setSelectedCandidate} />}
+           />
+           <Route
+               path="/candidates"
+               element={
+                   <CandidatesPage
+                       candidates={candidates}
+                       setCandidates={setCandidates}
+                       selectedCandidate={selectedCandidate}
+                       setSelectedCandidate={setSelectedCandidate}
+                       editMode={editMode}
+                       setEditMode={setEditMode}
+                       advancedSearch={advancedSearch}
+                       setAdvancedSearch={setAdvancedSearch}
+                       setIsLoggedIn={setIsLoggedIn}
+                   />
+                 }
+           />
+            <Route
+                path="/candidates/:candidateId"
+                element={
                     <CandidatesPage
                         candidates={candidates}
                         setCandidates={setCandidates}
@@ -104,11 +104,9 @@ function App() {
                         setAdvancedSearch={setAdvancedSearch}
                         setIsLoggedIn={setIsLoggedIn}
                     />
-                ) : (
-                    <Navigate to="/login" />
-                )
-            }
-        />
+                  }
+              />
+          </Route>
       </Routes>
     </BrowserRouter>
   );

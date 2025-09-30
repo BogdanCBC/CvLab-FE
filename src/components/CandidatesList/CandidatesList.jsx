@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import './CandidatesList.css';
 import CandidatesTable from './CandidatesTable/CandidatesTable';
 import { Button } from '@mui/material';
@@ -9,7 +9,6 @@ import AdvancedFilters from './AdvancedFilters/AdvancedFilters';
 
 function CandidatesList(props) {
     const { candidateId } = useParams();
-    const navigate = useNavigate();
 
     useEffect(() => {
         fetchCandidates().then(sortedCandidates => {
@@ -17,6 +16,7 @@ function CandidatesList(props) {
         });
     }, []);
 
+    // if an id is present in the url -> open selected candidate
     useEffect(() => {
         if (candidateId) {
             const normalize = isNaN(Number(candidateId)) ? candidateId : Number(candidateId);

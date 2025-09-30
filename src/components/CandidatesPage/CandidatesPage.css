@@ -1,0 +1,8 @@
+.candidates-page {
+    display: grid;
+    grid-template-rows: 15% 85%;
+    grid-template-columns: 48% 50%;
+    gap: 10px;
+    width: auto;
+    height: 900px;
+}

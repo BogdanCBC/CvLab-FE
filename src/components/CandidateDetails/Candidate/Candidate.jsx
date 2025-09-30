@@ -3,9 +3,21 @@ import api from "../../../api";
 import React, { useState, useEffect } from "react";
 import CheckIcon from '@mui/icons-material/Check';
 import EditIcon from '@mui/icons-material/Edit';
-import { Button, Alert, Box, FormControl, InputLabel, Select, MenuItem, Typography, Tooltip, IconButton } from "@mui/material";
+import {
+    Button,
+    Alert,
+    Box,
+    FormControl,
+    InputLabel,
+    Select,
+    MenuItem,
+    Typography,
+    Tooltip,
+    IconButton
+} from "@mui/material";
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import InfoOutlineIcon from '@mui/icons-material/InfoOutline';
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import {getFileNameFromDisposition, downloadFileFromBlob} from "../../../helperFunctions";
 import { fetchCandidates } from '../../../utils/fetchCandidates';
 
@@ -17,6 +29,8 @@ export default function Candidate(props) {
     const [downloadFileType, setDownloadFileType] = useState('');
 
     const [iseSubType, setIseSubType] = useState('');
+
+    const BASE_URL = process.env.REACT_APP_BASE_URL + '/candidates';
 
     const handleChangeTemplateType = (event) => {
         const value = event.target.value;
@@ -46,7 +60,8 @@ export default function Candidate(props) {
                 phone: response.data.phone || "N/A"
             };
 
-            console.log("candidate Object:", data);
+            // UNCOMMENT TO SEE CANDIDATE INFO
+            // console.log("candidate Object:", data);
 
             setCandidate(data);
             setSuccess(true);
@@ -125,6 +140,15 @@ export default function Candidate(props) {
         }
     }
 
+    const handleCopyLink = async () => {
+        try {
+            const contentToCopy = BASE_URL + `/${props.candidateId}`;
+            await navigator.clipboard.writeText(contentToCopy);
+        } catch (err) {
+            console.log(`Failed to copy! Error: ${err}`)
+        }
+    }
+
     const disableGetFormatted = ((downloadFileType === '') || (templateType === '')) || loading || (templateType === "ISE" && !iseSubType)
 
     const renderTooltipContent = () => (
@@ -167,6 +191,12 @@ export default function Candidate(props) {
                     <IconButton>
                         <InfoOutlineIcon />
                     </IconButton>
+                </Tooltip>
+
+                <Tooltip sx={{mr: 2}} title={"Copy candidate link to clipboard"}>
+                    <Button onClick={handleCopyLink}>
+                        <ContentCopyIcon />
+                    </Button>
                 </Tooltip>
 
                 {localStorage.getItem('role') === "admin" && (
