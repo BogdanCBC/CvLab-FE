@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import './TopBar.css';
 import { Button, Box, Tooltip, IconButton, Typography } from '@mui/material';
 import Alert from "@mui/material/Alert";
@@ -8,22 +8,39 @@ import { useNavigate } from 'react-router-dom';
 import UploadCandidateModal from './UploadCandidateModal/UploadCandidateModal';
 
 function TopBar(props) {
+    const storedRole = localStorage.getItem('role');
+
     const [open, setOpen] = useState(false);
     const [success, setSuccess] = useState(false);
     const [warning, setWarning] = useState(false);
     const [error, setError] = useState(false);
-    const navigateLogin = useNavigate();
+    const [logo, setLogo] = useState(require('../../images/logov2.png'));
+
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const storedUser = localStorage.getItem('username');
+
+        if (storedUser === 'rgis') {
+            setLogo(require('../../images/rgis.png'));
+        } else {
+            setLogo(require('../../images/logov2.png'));
+        }
+    }, []);
 
     function handleLogout() {
         localStorage.clear();
         props.setIsLoggedIn(false);
-        navigateLogin('/login'); 
+        navigate('/login');
     }
 
     const handleNavigateJob = () => {
-        navigateLogin('/job-description')
+        navigate('/job-description')
     }
 
+    const handleNavigateAdmin = () => {
+        navigate('/admin');
+    };
 
     const renderTooltipContent = () => (
         <>
@@ -75,7 +92,7 @@ function TopBar(props) {
             )}
 
             <div className="controls-row">
-                <img src={ require('../../images/logov2.png') } />
+                <img src={logo} alt='logo' style={{ maxHeight: '150px', marginTop: '5rem' }} />
  
                 <div className="button-wrapper">
                     <Tooltip title={renderTooltipContent()} sx={{mr: 2}}>
@@ -104,6 +121,16 @@ function TopBar(props) {
                 >
                     Job Description
                 </Button>
+
+                {storedRole === 'admin' && (
+                    <Button
+                        variant="outlined"
+                        onClick={handleNavigateAdmin}
+                        sx={{marginRight: "10px"}}
+                    >
+                        Admin Panel
+                    </Button>
+                )}
 
                 <Button
                     variant='outlined'

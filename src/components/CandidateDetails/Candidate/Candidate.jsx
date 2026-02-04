@@ -22,6 +22,8 @@ import {getFileNameFromDisposition, downloadFileFromBlob} from "../../../helperF
 import { fetchCandidates } from '../../../utils/fetchCandidates';
 
 export default function Candidate(props) {
+    const currentUser = localStorage.getItem('username');
+
     const [candidate, setCandidate] = useState(null);
     const [success, setSuccess] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -267,8 +269,15 @@ export default function Candidate(props) {
                             onChange={handleChangeTemplateType}
                             label="Template"
                         >
-                            <MenuItem value="FeelIT">FeelIT</MenuItem>
-                            <MenuItem value="ISE">ISE</MenuItem>
+                            {currentUser === 'rgis' ? (
+                                <MenuItem key="rgis" value="RGIS">RGIS</MenuItem>
+                            ) : (
+                                [
+                                    <MenuItem key="feelit" value="FeelIT">FeelIT</MenuItem>,
+                                    <MenuItem key="rgis" value="RGIS">RGIS</MenuItem>,
+                                    <MenuItem key="ise" value="ISE">ISE</MenuItem>
+                                ]
+                            )}
                         </Select>
                     </FormControl>
 

@@ -1,42 +1,44 @@
+/* src/components/MatchPage/AiMatch/AiMatch.css */
 .ai-match-box {
     background-color: #fff;
-    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.12);
-    padding: 32px;
-    max-width: 960px;
-    max-height: 90vh;
-    overflow-y: auto;
-    outline: none;
-    box-sizing: border-box;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    padding: 24px;
     width: 100%;
     height: 100%;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    overflow: hidden;
+    box-sizing: border-box;
+    /* Strict overflow control to solve the X-axis issue */
+    overflow-x: hidden;
 }
 
-.empty-icon {
-    font-size: 48px; 
+.matched-results-wrapper {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    width: 100%;
+    margin-top: 16px;
+    /* Prevent stack from leaking out */
+    padding-right: 5px;
 }
 
-.ai-match-box.empty {
-  justify-content: center;
+/* Specific padding for each individual candidate card */
+.ai-candidate-card {
+    padding: 20px !important;
+    cursor: pointer;
+    transition: background-color 0.2s;
 }
 
-.ai-match-box.empty .empty-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  text-align: center;
-  max-width: 720px;
+.ai-candidate-card:hover {
+    background-color: #fafafa;
 }
 
-.candidate-paper {
-  border: 1px solid #e9ecef;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.04);
-  padding: 2vh;
+.ai-description-text {
+    margin-top: 12px !important;
+    white-space: pre-line;
+    text-align: justify;
+    /* Force word wrap for long AI-generated strings */
+    word-break: break-word;
+    color: #555;
 }

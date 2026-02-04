@@ -2,22 +2,21 @@ import React, { useState, useEffect } from "react";
 import { useParams } from 'react-router-dom';
 import api from "../../api";
 import RawMatch from "./RawMatch/RawMatch";
-import './MatchPage.css'
+import './MatchPage.css';
 import AiMatch from "./AiMatch/AiMatch";
+import GenericHeader from "../GenericHeader/GenericHeader"; //
 
-
-export default function MatchPage({ setSelectedCandidate }) {
+export default function MatchPage({ setSelectedCandidate, setIsLoggedIn }) {
     const { jobId } = useParams();
-    
+
     const [jobTitle, setJobTitle] = useState("Macaroane");
     const [error, setError] = useState(null);
     const [matchCandidates, setMatchCandidates] = useState([]);
-    // foloseste asta ca sa randezi ce e in dreapta
     const [aiMatchedCandidates, setAiMatchedCandidates] = useState([]);
 
     useEffect(() => {
         const fetchData = async () => {
-            try{
+            try {
                 const jdDetails = await api.get(`/job-description/${jobId}`);
                 if (jdDetails.data.success) {
                     setJobTitle(jdDetails.data.data[0].title);
@@ -44,6 +43,9 @@ export default function MatchPage({ setSelectedCandidate }) {
 
     return (
         <div className="match-page">
+            {/* Unified Top Bar */}
+            <GenericHeader setIsLoggedIn={setIsLoggedIn} navigateLocation='/job-description' />
+
             <RawMatch
                 jobId={jobId}
                 jobTitle={jobTitle}
@@ -51,12 +53,11 @@ export default function MatchPage({ setSelectedCandidate }) {
                 matchCandidates={matchCandidates}
                 setAiMatchedCandidates={setAiMatchedCandidates}
             />
-            <AiMatch 
+            <AiMatch
                 aiMatchedCandidates={aiMatchedCandidates}
                 jobTitle={jobTitle}
                 setSelectedCandidate={setSelectedCandidate}
             />
         </div>
-
     );
 }

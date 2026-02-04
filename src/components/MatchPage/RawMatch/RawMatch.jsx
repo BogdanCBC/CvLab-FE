@@ -98,37 +98,16 @@ export default function RawMatch({ jobId, jobTitle, setSelectedCandidate, matchC
     )
 
     return (
-        <Box
-            className="raw-match-box"
-            sx={{
-                maxWidth: 700,
-                m: "32px auto",
-                background: "white",
-                boxShadow: 3,
-                borderRadius: 2,
-                p: 4
-            }}
-        >
+        <Box className="raw-match-box">
             <Typography variant="h4" align="center" gutterBottom>
                 Matched Candidates
             </Typography>
 
-            <Typography variant="h5" align="center" gutterBottom color="blue">
+            <Typography variant="h5" align="center" gutterBottom color="primary">
                 Job: {jobTitle}
             </Typography>
 
             <Box display="flex" justifyContent="center" sx={{ marginBottom: "2vh", marginTop: "2vh" }} columnGap={2}>
-                <Box 
-                    display="flex"
-                    justifyContent="center"
-                >
-                    <Button 
-                        variant="outlined"
-                        onClick={() => navigate(-1)}
-                    >
-                        Back
-                    </Button>
-                </Box>
                 <Button
                     loading={loading}
                     variant="contained"
@@ -166,85 +145,49 @@ export default function RawMatch({ jobId, jobTitle, setSelectedCandidate, matchC
                     </IconButton>
                 </Tooltip>
             </Box>
-            <Stack spacing={3}>
-                {matchCandidates.map((c) => (
-                    <Paper 
-                        key={c.id}
-                        className="candidate-paper"
-                        onClick={() => handleSelect(c.id)}
-                        sx={{p:2, cursor:"pointer"}}
-                    >
-                        <Box display="flex" alignItems="center" columnGap={1}>
-                            <Checkbox
-                                size="small"
-                                checked={selectedIds.has(c.id)}
-                                onChange={toggleCheckbox(c.id)}
-                                onClick={(e) => e.stopPropagation()}
-                            />
-                            <Typography variant="h6">
-                                {c.first_name} {c.last_name}
-                            </Typography>
-                        </Box>
-                        <Typography
-                            variant="body1"
-                            color="text.secondary"
-                            sx={{ mb: 1 }}
+
+            {/* This wrapper enables independent scrolling within the unified box */}
+            <Box className="candidates-list-wrapper">
+                <Stack spacing={3}>
+                    {matchCandidates.map((c) => (
+                        <Paper
+                            key={c.id}
+                            className="candidate-paper"
+                            onClick={() => handleSelect(c.id)}
+                            sx={{p: 2, cursor: "pointer"}}
                         >
-                            {c.position}
-                        </Typography>
-                        <Typography
-                            variant="body1"
-                            color="text.secondary"
-                            sx={{ mb: 1}}
-                        >
-                            Email: {c.email || "Not available"}
-                        </Typography>
-                        <Typography
-                            variant="body1"
-                            color="text.secondary"
-                            sx={{ mb: 1}}
-                        >
-                            Phone: {c.phone || "Not available"}
-                        </Typography>
-                        <Typography
-                            variant="body2"
-                            sx={{mb: 1, fontWeight: "bold"}}
-                        >
-                            Matched Skills: {c.matched_count}
-                        </Typography>
-                        <Stack direction="row" spacing={1}>
-                            {c.skills.map((s, index) => (
-                                <Chip 
-                                    key={`${s.skill}-${index}`}
-                                    label={`${s.skill} (${s.years} yrs)`}
-                                    color="primary"
-                                    variant="outlined"
+                            <Box display="flex" alignItems="center" columnGap={1}>
+                                <Checkbox
+                                    size="small"
+                                    checked={selectedIds.has(c.id)}
+                                    onChange={toggleCheckbox(c.id)}
+                                    onClick={(e) => e.stopPropagation()}
                                 />
-                            ))}
-                        </Stack>
-                        {c.languages && c.languages.length > 0 && (
-                            <Box>
-                                <Typography
-                                    variant="body2"
-                                    sx={{mb: 1, fontWeight: "bold", mt: 1}}
-                                >
-                                    Matched Languages: {c.matched_languages}
+                                <Typography variant="h6">
+                                    {c.first_name} {c.last_name}
                                 </Typography>
-                                <Stack direction="row" spacing={1}>
-                                    {c.languages.map((l, index) => (
-                                        <Chip
-                                            key={`${l.language}-${index}`}
-                                            label={`${l.language} (Level ${l.level})`}
-                                            color="primary"
-                                            variant="outlined"
-                                        />
-                                    ))}
-                                </Stack>
                             </Box>
-                        ) }
-                    </Paper>
-                ))}
-            </Stack>
+                            <Typography variant="body1" color="text.secondary" sx={{ mb: 1 }}>
+                                {c.position}
+                            </Typography>
+                            <Typography variant="body2" sx={{mb: 1, fontWeight: "bold"}}>
+                                Matched Skills: {c.matched_count}
+                            </Typography>
+                            <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
+                                {c.skills.map((s, index) => (
+                                    <Chip
+                                        key={`${s.skill}-${index}`}
+                                        label={`${s.skill} (${s.years} yrs)`}
+                                        color="primary"
+                                        variant="outlined"
+                                        size="small"
+                                    />
+                                ))}
+                            </Stack>
+                        </Paper>
+                    ))}
+                </Stack>
+            </Box>
         </Box>
     );
 }

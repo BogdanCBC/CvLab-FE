@@ -5,6 +5,7 @@ import { isTokenValid } from '../utils/auth'
 import JobDescription from './JobDescription/JobDescription';
 import MatchPage from './MatchPage/MatchPage';
 import CandidatesPage from "./CandidatesPage/CandidatesPage";
+import AdminPage from "./AdminPage/AdminPage";
 
 function ProtectedRoute({ isLoggedIn }) {
     const location = useLocation();
@@ -30,6 +31,8 @@ function LoginGate({ isLoggedIn, onLogin }) {
 }
 
 function App() {
+  const userRole = localStorage.getItem('role');
+
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [selectedCandidate, setSelectedCandidate] = useState(null);
   const [editMode, setEditMode] = useState(false);
@@ -68,11 +71,17 @@ function App() {
         <Route element={<ProtectedRoute isLoggedIn={isLoggedIn} />}>
            <Route
               path="/job-description"
-              element={<JobDescription setSelectedCandidate={setSelectedCandidate} />}
+              element={<JobDescription
+                  setSelectedCandidate={setSelectedCandidate}
+                  setIsloggedIn={setIsLoggedIn}
+              />}
            />
            <Route
               path="/match/:jobId"
-              element={<MatchPage setSelectedCandidate={setSelectedCandidate} />}
+              element={<MatchPage
+                  setSelectedCandidate={setSelectedCandidate}
+                  setIsloggedIn={setIsLoggedIn}
+              />}
            />
            <Route
                path="/candidates"
@@ -106,7 +115,14 @@ function App() {
                     />
                   }
               />
-          </Route>
+
+            {userRole === 'admin' && (
+                <Route
+                    path="/admin"
+                    element={<AdminPage setIsLoggedIn={setIsLoggedIn} />}
+                />
+            )}
+        </Route>
       </Routes>
     </BrowserRouter>
   );

@@ -35,9 +35,12 @@ function Login({ onLogin }) {
       if (response.status === 200 && response.data.access_token && response.data.refresh_token){
         const decoded = jwtDecode(response.data.access_token);
         localStorage.setItem('role', decoded.role);
-        
         localStorage.setItem('token', response.data.access_token);
         localStorage.setItem('refreshToken', response.data.refresh_token);
+
+        const usernameValue = decoded.username || decoded.sub;
+        localStorage.setItem('username', usernameValue);
+
         onLogin();
         navigate('/');
       } else if (response.status === 401 || response.status === 404) {

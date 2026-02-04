@@ -30,7 +30,7 @@ export default function JDTopBar({setUploadNew}){
 
     return (
         <div className="job-top-bar">
-            <h1>Job Description Page</h1>
+            <h1 className="h1-component">Job Description Page</h1>
             <Box
                 display="flex"
                 justifyContent="space-between"

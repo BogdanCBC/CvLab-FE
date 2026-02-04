@@ -24,12 +24,17 @@ const VisuallyHiddenInput = styled('input')({
 });
 
 function UploadCandidateModal(props) {
+  const currentUser = localStorage.getItem('username');
+
   const [files, setFiles] = useState([]);
   const [downloadType, setDownloadType] = useState('pdf');
   const [isUploading, setIsUploading] = useState(false);
   const [submitBtnStatus, setSubmitStatusBtn] = useState(false);
   const [fileLanguage, setFileLanguage] = useState('English');
-  const [templateType, setTemplateType] = useState('FeelIT');
+
+  // DEFAULT TEMPLATE
+  const [templateType, setTemplateType] = useState(currentUser === 'rgis' ? 'RGIS' : 'FeelIT');
+
   const [iseSubType, setIseSubType] = useState('');
 
   const hasUnresolvedDuplicates = files.some(f => f.status === "duplicate");
@@ -392,8 +397,15 @@ function UploadCandidateModal(props) {
                         label="Template"
                         disabled={submitBtnStatus}
                       >
-                        <MenuItem value="FeelIT">FeelIT</MenuItem>
-                        <MenuItem value="ISE">ISE</MenuItem>
+                        {currentUser === 'rgis' ? (
+                            <MenuItem key="rgis" value="RGIS">RGIS</MenuItem>
+                        ) : (
+                            [
+                                <MenuItem key="feelit" value="FeelIT">FeelIT</MenuItem>,
+                                <MenuItem key="rgis" value="RGIS">RGIS</MenuItem>,
+                                <MenuItem key="ise" value="ISE">ISE</MenuItem>
+                            ]
+                        )}
                       </Select>
                     </FormControl>
 

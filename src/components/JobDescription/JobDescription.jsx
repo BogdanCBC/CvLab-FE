@@ -5,10 +5,10 @@ import JDDetails from "./JDDetails/JDDetails";
 import "./JobDescription.css"
 
 import { fetchJobDescription } from "../../utils/fetchJobDescription";
+import GenericHeader from "../GenericHeader/GenericHeader";
 
 
-export default function JobDescription({setSelectedCandidate}) {
-
+export default function JobDescription({setSelectedCandidate, setIsLoggedIn}) {
     const [jobs, setJobs] = useState([]);
     const [selectedJob, setSelectedJob] = useState(null);
     const [failMessage, setFailMessage] = useState(null);
@@ -16,7 +16,6 @@ export default function JobDescription({setSelectedCandidate}) {
 
     useEffect(() => {
         fetchJobDescription().then(response => {
-            // console.log(response)
             if(response.success) {
                 setJobs(response.jobs);
             } else {
@@ -27,14 +26,22 @@ export default function JobDescription({setSelectedCandidate}) {
 
     return (
         <div className="job-description-page">
-            <JDTopBar 
+            {/* Row 1: Spans full width */}
+            <GenericHeader setIsLoggedIn={setIsLoggedIn} navigateLocation='/candidates'/>
+
+            {/* Row 2: Spans full width */}
+            <JDTopBar
                 setUploadNew={setUploadNew}
             />
-            <JDTable 
+
+            {/* Row 3, Column 1 */}
+            <JDTable
                 jobs={jobs}
                 setSelectedJob={setSelectedJob}
             />
-            <JDDetails 
+
+            {/* Row 3, Column 2 */}
+            <JDDetails
                 selectedJob={selectedJob}
                 setSelectedJob={setSelectedJob}
                 setJobs={setJobs}
