@@ -20,6 +20,7 @@ import InfoOutlineIcon from '@mui/icons-material/InfoOutline';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import {getFileNameFromDisposition, downloadFileFromBlob} from "../../../helperFunctions";
 import { fetchCandidates } from '../../../utils/fetchCandidates';
+import {getTenantConfig} from "../../../utils/tenantConfig";
 
 export default function Candidate(props) {
     const currentUser = localStorage.getItem('username');
@@ -201,7 +202,7 @@ export default function Candidate(props) {
                     </Button>
                 </Tooltip>
 
-                {localStorage.getItem('role') === "admin" && (
+                {(localStorage.getItem('role') === "admin" || localStorage.getItem('role') === "superadmin") && (
                     <Button
                         variant="contained"
                         size="small"
@@ -223,7 +224,7 @@ export default function Candidate(props) {
                 </Button>
                 </div>
 
-                {localStorage.getItem('role') === "admin" && (
+                {(localStorage.getItem('role') === "admin" || localStorage.getItem('role') === "superadmin") && (
                 <div className="uploader">
                     <h2>Candidate uploaded by: {candidate ? candidate.username : "Unknown"}</h2>
                 </div>
@@ -269,15 +270,9 @@ export default function Candidate(props) {
                             onChange={handleChangeTemplateType}
                             label="Template"
                         >
-                            {currentUser === 'rgis' ? (
-                                <MenuItem key="rgis" value="RGIS">RGIS</MenuItem>
-                            ) : (
-                                [
-                                    <MenuItem key="feelit" value="FeelIT">FeelIT</MenuItem>,
-                                    <MenuItem key="rgis" value="RGIS">RGIS</MenuItem>,
-                                    <MenuItem key="ise" value="ISE">ISE</MenuItem>
-                                ]
-                            )}
+                            {getTenantConfig().templates.map(t => (
+                                <MenuItem key={t.toLowerCase()} value={t}>{t}</MenuItem>
+                            ))}
                         </Select>
                     </FormControl>
 

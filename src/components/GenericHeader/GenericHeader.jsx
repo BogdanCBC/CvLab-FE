@@ -3,19 +3,15 @@ import { Box, Button } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useNavigate } from 'react-router-dom';
+import {getTenantConfig} from "../../utils/tenantConfig";
 
 const GenericHeader = ({ setIsLoggedIn, navigateLocation }) => {
     const [logo, setLogo] = useState(require('../../images/logov2.png'));
     const navigate = useNavigate();
 
     useEffect(() => {
-        const storedUser = localStorage.getItem('username');
-
-        if (storedUser === 'rgis') {
-            setLogo(require('../../images/rgis.png'));
-        } else {
-            setLogo(require('../../images/logov2.png'));
-        }
+        const config = getTenantConfig();
+        setLogo(config.logo);
     }, []);
 
     const handleLogout = () => {

@@ -73,14 +73,14 @@ function App() {
               path="/job-description"
               element={<JobDescription
                   setSelectedCandidate={setSelectedCandidate}
-                  setIsloggedIn={setIsLoggedIn}
+                  setIsLoggedIn={setIsLoggedIn}
               />}
            />
            <Route
               path="/match/:jobId"
               element={<MatchPage
                   setSelectedCandidate={setSelectedCandidate}
-                  setIsloggedIn={setIsLoggedIn}
+                  setIsLoggedIn={setIsLoggedIn}
               />}
            />
            <Route
@@ -116,7 +116,7 @@ function App() {
                   }
               />
 
-            {userRole === 'admin' && (
+            {(userRole === 'admin' || userRole === 'superadmin') && (
                 <Route
                     path="/admin"
                     element={<AdminPage setIsLoggedIn={setIsLoggedIn} />}

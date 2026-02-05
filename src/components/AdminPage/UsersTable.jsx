@@ -40,7 +40,6 @@ export default function UsersTable({ users, onResetPassword }) {
                 <Table stickyHeader sx={{ minWidth: 500 }}>
                     <TableHead>
                         <TableRow>
-                            <TableCell sx={{ backgroundColor: '#f5f5f5', fontWeight: 'bold' }}>User ID</TableCell>
                             <TableCell sx={{ backgroundColor: '#f5f5f5', fontWeight: 'bold' }}>Username</TableCell>
                             <TableCell sx={{ backgroundColor: '#f5f5f5', fontWeight: 'bold' }}>Role</TableCell>
                             <TableCell sx={{ backgroundColor: '#f5f5f5', fontWeight: 'bold' }} align="right">Actions</TableCell>
@@ -52,7 +51,6 @@ export default function UsersTable({ users, onResetPassword }) {
                             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                             .map((user) => (
                                 <TableRow key={user.user_id} hover>
-                                    <TableCell>{user.user_id}</TableCell>
                                     <TableCell>{user.username}</TableCell>
                                     <TableCell>{user.role}</TableCell>
                                     <TableCell align="right">

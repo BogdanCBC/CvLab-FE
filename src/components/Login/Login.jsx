@@ -39,7 +39,9 @@ function Login({ onLogin }) {
         localStorage.setItem('refreshToken', response.data.refresh_token);
 
         const usernameValue = decoded.username || decoded.sub;
+        const clientName = decoded.client_name;
         localStorage.setItem('username', usernameValue);
+        localStorage.setItem('clientName', clientName);
 
         onLogin();
         navigate('/');

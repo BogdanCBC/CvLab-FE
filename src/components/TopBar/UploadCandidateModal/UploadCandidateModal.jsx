@@ -10,6 +10,7 @@ import api from "../../../api.js"
 import { v4 as uuidv4 } from 'uuid';
 import { fetchCandidates } from '../../../utils/fetchCandidates.js';
 import { cleanupFailedCandidate } from '../../../utils/cleanupFailedCandidate.js';
+import {getTenantConfig} from "../../../utils/tenantConfig";
 
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
@@ -33,7 +34,8 @@ function UploadCandidateModal(props) {
   const [fileLanguage, setFileLanguage] = useState('English');
 
   // DEFAULT TEMPLATE
-  const [templateType, setTemplateType] = useState(currentUser === 'rgis' ? 'RGIS' : 'FeelIT');
+  const tenantTemplates = getTenantConfig().templates;
+ const [templateType, setTemplateType] = useState(tenantTemplates[0]);
 
   const [iseSubType, setIseSubType] = useState('');
 
@@ -397,15 +399,9 @@ function UploadCandidateModal(props) {
                         label="Template"
                         disabled={submitBtnStatus}
                       >
-                        {currentUser === 'rgis' ? (
-                            <MenuItem key="rgis" value="RGIS">RGIS</MenuItem>
-                        ) : (
-                            [
-                                <MenuItem key="feelit" value="FeelIT">FeelIT</MenuItem>,
-                                <MenuItem key="rgis" value="RGIS">RGIS</MenuItem>,
-                                <MenuItem key="ise" value="ISE">ISE</MenuItem>
-                            ]
-                        )}
+                          {getTenantConfig().templates.map(t => (
+                              <MenuItem key={t.toLowerCase()} value={t}>{t}</MenuItem>
+                          ))}
                       </Select>
                     </FormControl>
 

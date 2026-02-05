@@ -6,6 +6,7 @@ import CheckIcon from '@mui/icons-material/Check';
 import InfoOutlineIcon from '@mui/icons-material/InfoOutline';
 import { useNavigate } from 'react-router-dom';
 import UploadCandidateModal from './UploadCandidateModal/UploadCandidateModal';
+import {getTenantConfig} from "../../utils/tenantConfig";
 
 function TopBar(props) {
     const storedRole = localStorage.getItem('role');
@@ -19,13 +20,8 @@ function TopBar(props) {
     const navigate = useNavigate();
 
     useEffect(() => {
-        const storedUser = localStorage.getItem('username');
-
-        if (storedUser === 'rgis') {
-            setLogo(require('../../images/rgis.png'));
-        } else {
-            setLogo(require('../../images/logov2.png'));
-        }
+        const config = getTenantConfig();
+        setLogo(config.logo);
     }, []);
 
     function handleLogout() {
@@ -122,7 +118,7 @@ function TopBar(props) {
                     Job Description
                 </Button>
 
-                {storedRole === 'admin' && (
+                {(storedRole === 'admin' || storedRole === 'superadmin') && (
                     <Button
                         variant="outlined"
                         onClick={handleNavigateAdmin}
