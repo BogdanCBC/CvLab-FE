@@ -470,7 +470,11 @@ function EditProfile(props) {
                     <Button variant="contained" onClick={() => setSelectedSection('Skills')}>Skills</Button>
                     <Button variant="contained" onClick={() => setSelectedSection('Languages')}>Languages</Button>
                     <Button variant="contained" onClick={() => setSelectedSection('Certifications')}>Certifications</Button>
-                    <Button variant="contained" onClick={() => setSelectedSection('FeelIt')}>FeelIt</Button>
+                    {
+                        (localStorage.getItem('clientName') === 'default' ||  localStorage.getItem('clientName') === 'feelit') && (
+                            <Button variant="contained" onClick={() => setSelectedSection('FeelIt')}>FeelIt</Button>
+                        )
+                    }
                     <Button variant="contained" onClick={() => setSelectedSection('PersonalProjects')}>Personal Projects</Button>
                 </Box>
             </div>

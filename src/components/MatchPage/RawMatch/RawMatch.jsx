@@ -96,7 +96,7 @@ export default function RawMatch({ jobId, jobTitle, setSelectedCandidate, matchC
         </ul>
         </>
     )
-
+    console.log(matchCandidates);
     return (
         <Box className="raw-match-box">
             <Typography variant="h4" align="center" gutterBottom>
@@ -170,20 +170,25 @@ export default function RawMatch({ jobId, jobTitle, setSelectedCandidate, matchC
                             <Typography variant="body1" color="text.secondary" sx={{ mb: 1 }}>
                                 {c.position}
                             </Typography>
-                            <Typography variant="body2" sx={{mb: 1, fontWeight: "bold"}}>
-                                Matched Skills: {c.matched_count}
-                            </Typography>
-                            <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
-                                {c.skills.map((s, index) => (
-                                    <Chip
-                                        key={`${s.skill}-${index}`}
-                                        label={`${s.skill} (${s.years} yrs)`}
-                                        color="primary"
-                                        variant="outlined"
-                                        size="small"
-                                    />
-                                ))}
-                            </Stack>
+
+                            {c.skills && c.skills.length > 0 && (
+                                <>
+                                    <Typography variant="body2" sx={{mb: 1, fontWeight: "bold"}}>
+                                        Matched Skills: {c.matched_count}
+                                    </Typography>
+                                    <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
+                                        {c.skills.map((s, index) => (
+                                            <Chip
+                                                key={`${s.skill}-${index}`}
+                                                label={`${s.skill} (${s.years} yrs)`}
+                                                color="primary"
+                                                variant="outlined"
+                                                size="small"
+                                            />
+                                        ))}
+                                    </Stack>
+                                </>
+                            )}
                         </Paper>
                     ))}
                 </Stack>

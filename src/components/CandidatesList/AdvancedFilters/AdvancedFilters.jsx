@@ -89,7 +89,8 @@ export default function AdvancedFilters(props){
                     firstName: candidate.first_name,
                     lastName: candidate.last_name,
                     experience: candidate.experience,
-                    position: candidate.position
+                    position: candidate.position,
+                    language: candidate.language,
                 }));
 
                 props.setCandidates(mappedData);

@@ -52,15 +52,40 @@ export default function ViewMode({ jobInfo, setJobInfo, setEditMode, setJobs, se
 
 
     const handleNavigate = async () => {
-        try{
-            const matchResp = await api.get('/job-description/match', {
-                params: {
-                    "job_id": jobInfo.job_id
-                }
-            });
+        let matchResp;
 
-            if (matchResp.data.success){
-                navigate(`/match/${jobInfo.job_id}`)
+        try{
+            if (localStorage.getItem('clientName') === 'rgis') {
+                matchResp = await api.get('/job-description/match/rgis', {
+                    params: {
+                        job_id: jobInfo.job_id
+                    }
+                })
+            } else {
+                matchResp = await api.get('/job-description/match', {
+                    params: {
+                        "job_id": jobInfo.job_id
+                    }
+                });
+            }
+            if (matchResp.data.data.length === 0) {
+                setNoMatchMessage("No candidate matched for this job");
+                setNoMatchAlert(true);
+
+                setTimeout(() => {
+                    setNoMatchAlert(false);
+                    setNoMatchMessage("");
+                }, 3000);
+
+            } else {
+                if (matchResp.data.success) {
+                    navigate(`/match/${jobInfo.job_id}`, {
+                        state: {
+                            matchedData: matchResp.data.data,
+                            isRgis: localStorage.getItem('clientName') === 'rgis'
+                        }
+                    });
+                }
             }
         } catch (err) {
             setNoMatchMessage(err.response.data.message);

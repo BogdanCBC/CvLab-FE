@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from 'react-router-dom';
+import {useLocation, useParams} from 'react-router-dom';
 import api from "../../api";
 import RawMatch from "./RawMatch/RawMatch";
 import './MatchPage.css';
@@ -8,6 +8,7 @@ import GenericHeader from "../GenericHeader/GenericHeader"; //
 
 export default function MatchPage({ setSelectedCandidate, setIsLoggedIn }) {
     const { jobId } = useParams();
+    const location = useLocation();
 
     const [jobTitle, setJobTitle] = useState("Macaroane");
     const [error, setError] = useState(null);
@@ -18,28 +19,23 @@ export default function MatchPage({ setSelectedCandidate, setIsLoggedIn }) {
         const fetchData = async () => {
             try {
                 const jdDetails = await api.get(`/job-description/${jobId}`);
-                if (jdDetails.data.success) {
-                    setJobTitle(jdDetails.data.data[0].title);
-                }
-            } catch (err) {
-                setJobTitle("");
-            }
+                if (jdDetails.data.success) setJobTitle(jdDetails.data.data[0].title);
+            } catch (err) { setJobTitle(""); }
 
-            const params = new URLSearchParams();
-            params.append("job_id", jobId);
-            try {
-                const resp = await api.get('/job-description/match', { params });
-                if (resp.data.success) {
-                    setMatchCandidates(resp.data.data);
-                } else {
-                    setError('Failed to fetch matches');
-                }
-            } catch (err) {
-                setError('Failed to fetch matches');
+            if (location.state?.matchedData) {
+                setMatchCandidates(location.state.matchedData);
+            } else {
+                const isRgis = localStorage.getItem('clientName') === 'rgis';
+                const endpoint = isRgis ? '/job-description/match/rgis' : '/job-description/match';
+
+                try {
+                    const resp = await api.get(endpoint, { params: { job_id: jobId } });
+                    if (resp.data.success) setMatchCandidates(resp.data.data);
+                } catch (err) { setError('Failed to fetch matches'); }
             }
         };
         fetchData();
-    }, [jobId]);
+    }, [jobId, location.state]);
 
     return (
         <div className="match-page">
