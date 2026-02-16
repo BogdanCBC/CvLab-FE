@@ -1,15 +1,11 @@
 import { Box, Button, Tooltip, IconButton, Typography } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
 import InfoOutlineIcon from '@mui/icons-material/InfoOutline';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import "./JDTopBar.css"
+import {useTranslation} from "react-i18next";
 
 export default function JDTopBar({setUploadNew}){
-    const navigate = useNavigate();
-
-    const handleBack = () => {
-        navigate('/');
-    }
+    const {t} = useTranslation();
 
     const renderTooltipContent = () => (
         <>
@@ -17,30 +13,24 @@ export default function JDTopBar({setUploadNew}){
             variant="subtitle2"
             sx={{ fontWeight: 'bold', mb: 0.2, textAlign: "justify" }}
         >
-            Job Description Page:
+            {t("jdTopBar.pageTitle")}:
         </Typography>
         <ul style={{ margin: 0, paddingLeft: '1.2rem', textAlign: "justify" }}>
-            <li style={{ marginBottom: "0.2rem"}}>View all uploaded jobs in a clear table format</li>
-            <li style={{ marginBottom: "0.2rem"}}>Click the "Upload New" button to add a new job with its title and description</li>
-            <li style={{ marginBottom: "0.2rem"}}>Select an existing job to preview it and use the edit option to modify its details</li>
-            <li style={{ marginBottom: "0.2rem"}}>Use the "Match" button to find candidates who could be a fit for the selected job</li>
+            <li style={{ marginBottom: "0.2rem"}}>{t("jdTopBar.view")}</li>
+            <li style={{ marginBottom: "0.2rem"}}>{t("jdTopBar.click")}</li>
+            <li style={{ marginBottom: "0.2rem"}}>{t("jdTopBar.select")}</li>
+            <li style={{ marginBottom: "0.2rem"}}>{t("jdTopBar.use")}</li>
         </ul>
         </>
 )
 
     return (
         <div className="job-top-bar">
-            <h1 className="h1-component">Job Description Page</h1>
             <Box
                 display="flex"
                 justifyContent="space-between"
             >
-                    <Button
-                        variant="contained"
-                        onClick={handleBack}
-                    >
-                        Back to candidates
-                    </Button>
+                <h1 className="h1-component">{t("jdTopBar.pageTitle")}</h1>
                     <Box display="flex" alignItems="center" gap={1}>
                         <Tooltip title={renderTooltipContent()} sx={{mr: 2}}>
                             <IconButton>
@@ -53,7 +43,7 @@ export default function JDTopBar({setUploadNew}){
                             onClick={() => setUploadNew(true)}
                             startIcon={<AddCircleOutlineIcon />}
                         >
-                            Upload New
+                            {t("jdTopBar.uploadNew")}
                         </Button>
                     </Box>
             </Box>

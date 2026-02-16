@@ -3,6 +3,7 @@ import { Modal, Box, Typography, Button, Alert, Fade } from '@mui/material';
 import CheckIcon from '@mui/icons-material/Check';
 import api from '../../api';
 import PasswordField from './PasswordField';
+import {useTranslation} from 'react-i18next';
 
 const modalStyle = {
     position: 'absolute',
@@ -17,6 +18,7 @@ const modalStyle = {
 };
 
 const ResetPasswordModal = ({ open, onClose, targetUser }) => {
+    const {t} = useTranslation();
     const [newPassword, setNewPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [success, setSuccess] = useState(false);
@@ -44,7 +46,7 @@ const ResetPasswordModal = ({ open, onClose, targetUser }) => {
         } catch (error) {
             const detail = error.response?.data?.detail;
             const message = typeof detail === 'string' ? detail : JSON.stringify(detail);
-            setErrorMsg(message || "Error updating password");
+            setErrorMsg(message || t("resetPassword.errMsg"));
         }
     };
 
@@ -59,7 +61,7 @@ const ResetPasswordModal = ({ open, onClose, targetUser }) => {
                 {success && (
                     <Fade in={success}>
                         <Alert icon={<CheckIcon fontSize="inherit" />} severity="success" sx={{ mb: 2 }}>
-                            Password updated successfully!
+                            {t("resetPassword.successMsg")}
                         </Alert>
                     </Fade>
                 )}
@@ -70,21 +72,21 @@ const ResetPasswordModal = ({ open, onClose, targetUser }) => {
                     </Alert>
                 )}
 
-                <Typography variant="h6" mb={1}>Reset Password</Typography>
+                <Typography variant="h6" mb={1}>{t("resetPassword.resetPass")}</Typography>
                 <Typography variant="body2" color="textSecondary" mb={2}>
-                    Changing password for user: <strong>{targetUser?.username}</strong>
+                    {t("resetPassword.changingFor")} <strong>{targetUser?.username}</strong>
                 </Typography>
 
                 {/* Primary Password Input */}
                 <PasswordField
-                    label="New Password"
+                    label={t("resetPassword.newPassword")}
                     value={newPassword}
                     onChange={(e) => setNewPassword(e.target.value)}
                 />
 
                 {/* Confirmation Password Input with Error Feedback */}
                 <PasswordField
-                    label="Confirm New Password"
+                    label={t("resetPassword.confirmPassword")}
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     error={confirmPassword !== '' && !passwordsMatch}
@@ -98,7 +100,7 @@ const ResetPasswordModal = ({ open, onClose, targetUser }) => {
                         onClick={onClose}
                         disabled={success}
                     >
-                        Cancel
+                        {t("resetPassword.cancel")}
                     </Button>
                     <Button
                         fullWidth
@@ -107,7 +109,7 @@ const ResetPasswordModal = ({ open, onClose, targetUser }) => {
                         onClick={handleReset}
                         disabled={isButtonDisabled}
                     >
-                        Save Changes
+                        {t("resetPassword.saveChanges")}
                     </Button>
                 </Box>
             </Box>

@@ -8,6 +8,7 @@ import CheckIcon from '@mui/icons-material/Check';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import api from '../../api';
+import {useTranslation} from "react-i18next";
 
 const modalStyle = {
     position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
@@ -15,6 +16,8 @@ const modalStyle = {
 };
 
 const CreateUserModal = ({ open, onClose, onUserCreated }) => {
+    const {t} = useTranslation();
+
     const [formData, setFormData] = useState({ username: '', password: '', role: 'demo' });
     const [confirmPassword, setConfirmPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
@@ -55,24 +58,26 @@ const CreateUserModal = ({ open, onClose, onUserCreated }) => {
                 {success && (
                     <Fade in={success}>
                         <Alert icon={<CheckIcon fontSize="inherit" />} severity="success" sx={{ mb: 2 }}>
-                            User created successfully!
+                            {t("createUserModal.createdMsg")}
                         </Alert>
                     </Fade>
                 )}
 
                 {errorMsg && <Alert severity="error" sx={{ mb: 2 }}>{errorMsg}</Alert>}
 
-                <Typography variant="h6" mb={2}>Create New Account</Typography>
+                <Typography variant="h6" mb={2}>{t("createUserModal.createNewAcc")}</Typography>
 
                 <TextField
-                    fullWidth label="Username" margin="normal"
+                    fullWidth
+                    label={t("createUserModal.username")}
+                    margin="normal"
                     value={formData.username}
                     onChange={(e) => setFormData({...formData, username: e.target.value})}
                 />
 
                 <TextField
                     fullWidth
-                    label="Password"
+                    label={t("createUserModal.password")}
                     type={showPassword ? 'text' : 'password'}
                     margin="normal"
                     value={formData.password}
@@ -96,7 +101,7 @@ const CreateUserModal = ({ open, onClose, onUserCreated }) => {
 
                 <TextField
                     fullWidth
-                    label="Confirm Password"
+                    label={t("createUserModal.confirmPass")}
                     type="password"
                     margin="normal"
                     value={confirmPassword}
@@ -106,14 +111,14 @@ const CreateUserModal = ({ open, onClose, onUserCreated }) => {
                 />
 
                 <FormControl fullWidth margin="normal">
-                    <InputLabel>Role</InputLabel>
+                    <InputLabel>{t("createUserModal.role")}</InputLabel>
                     <Select
-                        value={formData.role} label="Role"
+                        value={formData.role} label={t("createUserModal.role")}
                         onChange={(e) => setFormData({...formData, role: e.target.value})}
                     >
-                        <MenuItem value="admin">Admin</MenuItem>
-                        <MenuItem value="hr">HR</MenuItem>
-                        <MenuItem value="demo">Demo</MenuItem>
+                        <MenuItem value="admin">{t("createUserModal.admin")}</MenuItem>
+                        <MenuItem value="hr">{t("createUserModal.hr")}</MenuItem>
+                        <MenuItem value="demo">{t("createUserModal.demo")}</MenuItem>
                     </Select>
                 </FormControl>
 
@@ -124,7 +129,7 @@ const CreateUserModal = ({ open, onClose, onUserCreated }) => {
                     onClick={handleSubmit}
                     disabled={isButtonDisabled}
                 >
-                    Create User
+                    {t("createUserModal.createUser")}
                 </Button>
             </Box>
         </Modal>

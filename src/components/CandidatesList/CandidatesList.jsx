@@ -6,15 +6,18 @@ import { Button } from '@mui/material';
 import RefreshButton from './RefreshButton/RefreshButton';
 import { fetchCandidates } from '../../utils/fetchCandidates';
 import AdvancedFilters from './AdvancedFilters/AdvancedFilters';
+import {useTranslation} from "react-i18next";
 
 function CandidatesList(props) {
+    const { t, i18n } = useTranslation();
     const { candidateId } = useParams();
 
     useEffect(() => {
-        fetchCandidates().then(sortedCandidates => {
+        // 2. Pass i18n.language to fetchCandidates
+        fetchCandidates(i18n.language).then(sortedCandidates => {
             props.setCandidates(sortedCandidates);
         });
-    }, []);
+    }, [i18n.language]);
 
     // if an id is present in the url -> open selected candidate
     useEffect(() => {
@@ -34,8 +37,8 @@ function CandidatesList(props) {
                     variant='contained'
                     sx={{height: 40}}
                     onClick={() => setModalState(true)}
-                > 
-                    Open advanced filters
+                >
+                    {t("candidatesList.advancedFiltersBtn")}
                 </Button>
                 <RefreshButton
                     setCandidates={props.setCandidates}

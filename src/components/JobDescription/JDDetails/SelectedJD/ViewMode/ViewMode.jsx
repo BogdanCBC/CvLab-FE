@@ -5,11 +5,12 @@ import EditIcon from '@mui/icons-material/Edit';
 
 import api from "../../../../../api";
 import { fetchJobDescription } from "../../../../../utils/fetchJobDescription";
-
-
 import { useNavigate } from 'react-router-dom';
 
+import {useTranslation} from "react-i18next";
+
 export default function ViewMode({ jobInfo, setJobInfo, setEditMode, setJobs, setSelectedJob }) {
+    const {t, i18n} = useTranslation();
     const [noMatchAlert, setNoMatchAlert] = useState(false);
     const [noMatchMessage, setNoMatchMessage] = useState("");
 
@@ -24,12 +25,12 @@ export default function ViewMode({ jobInfo, setJobInfo, setEditMode, setJobs, se
             });
             if (deleteRes.data.success) {
                 try{
-                    const jobsRes = await fetchJobDescription();
-                    console.log("Fetch result:", jobsRes);
+                    const jobsRes = await fetchJobDescription(i18n.language);
+
                     if (jobsRes.success && Array.isArray(jobsRes.jobs)) {
                         setJobInfo(null);
                         setSelectedJob(null);
-                        setJobs(jobsRes.jobs);
+                        setJobs(jobsRes.jobs || [])
                     } else {
                         setJobs([]);
                         setJobInfo(null);
@@ -49,7 +50,6 @@ export default function ViewMode({ jobInfo, setJobInfo, setEditMode, setJobs, se
             setJobs([]);
         }
     }
-
 
     const handleNavigate = async () => {
         let matchResp;
@@ -113,7 +113,7 @@ export default function ViewMode({ jobInfo, setJobInfo, setEditMode, setJobs, se
                     variant="contained"
                     onClick={() => handleNavigate()}    
                 >
-                    Match
+                    {t("jdViewMode.match")}
                 </Button>
                 <Stack direction="row" spacing={2}>
                     <Button
@@ -121,7 +121,7 @@ export default function ViewMode({ jobInfo, setJobInfo, setEditMode, setJobs, se
                         onClick={() => setEditMode(true)}
                         startIcon={<EditIcon />}
                     >
-                        Edit
+                        {t("jdViewMode.edit")}
                     </Button>
                     <Button
                         variant="contained"
@@ -130,7 +130,7 @@ export default function ViewMode({ jobInfo, setJobInfo, setEditMode, setJobs, se
                         startIcon={<DeleteForeverIcon />}
                         onClick={() => handleDelete()}
                     >
-                        Delete
+                        {t("jdViewMode.delete")}
                     </Button>
                 </Stack>
             </Stack>
@@ -141,7 +141,7 @@ export default function ViewMode({ jobInfo, setJobInfo, setEditMode, setJobs, se
                 {jobInfo.description}
             </Typography>
             <Typography variant="h6" component="div">
-                SKILLS:
+                {t("jdViewMode.skills")}
             </Typography>
             <Stack direction="row" spacing={1} flexWrap="wrap">
                 {jobInfo.skills.map((s) => (
@@ -152,7 +152,7 @@ export default function ViewMode({ jobInfo, setJobInfo, setEditMode, setJobs, se
                 jobInfo.languages && jobInfo.languages.length > 0 && (
                     <Box>
                     <Typography variant="h6" component="div">
-                        LANGUAGES:
+                        {t("jdViewMode.language")}
                     </Typography>
                     <Stack direction="row" spacing={1} flexWrap="wrap">
                         {jobInfo.languages.map((l) => (

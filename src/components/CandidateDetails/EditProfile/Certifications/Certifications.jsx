@@ -3,14 +3,15 @@ import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import TextField from '@mui/material/TextField';
 import './Certifications.css'
+import {useTranslation} from "react-i18next";
 
 export default function Certifications(props) {
-
+    const {t} = useTranslation();
 
     return (
         <div className="certifications">
             <div className="certifications-header">
-                <h2 sx={{fontSize: 30}}>Certifications</h2>
+                <h2 sx={{fontSize: 30}}>{t("certifications.certifications")}</h2>
                 <Button
                     className="add-certification-button"
                     variant="contained"
@@ -18,7 +19,7 @@ export default function Certifications(props) {
                     sx={{margin: 1, marginBottom: 2}}
                     onClick={() => props.addCertification()}
                 > 
-                    <AddIcon />Add Certification
+                    <AddIcon />{t("certifications.addCert")}
                 </Button>
             </div>
 
@@ -26,7 +27,7 @@ export default function Certifications(props) {
                 <div key={index} className="certification-item">
                     <TextField 
                         value={certification || ""}
-                        placeholder='Enter certification...'
+                        placeholder={t("certifications.enterCert")}
                         onChange={(e) => {
                             props.updateCertifications(index, e.target.value);
                         }}

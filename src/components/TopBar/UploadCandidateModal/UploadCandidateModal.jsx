@@ -11,6 +11,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { fetchCandidates } from '../../../utils/fetchCandidates.js';
 import { cleanupFailedCandidate } from '../../../utils/cleanupFailedCandidate.js';
 import {getTenantConfig} from "../../../utils/tenantConfig";
+import {useTranslation} from "react-i18next";
 
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
@@ -25,17 +26,17 @@ const VisuallyHiddenInput = styled('input')({
 });
 
 function UploadCandidateModal(props) {
-  const currentUser = localStorage.getItem('username');
-
+  const { t, i18n} = useTranslation();
   const [files, setFiles] = useState([]);
   const [downloadType, setDownloadType] = useState('pdf');
   const [isUploading, setIsUploading] = useState(false);
   const [submitBtnStatus, setSubmitStatusBtn] = useState(false);
-  const [fileLanguage, setFileLanguage] = useState('English');
+
+  const fileLanguage = i18n.language?.startsWith('fr') ? 'French' : 'English';
 
   // DEFAULT TEMPLATE
   const tenantTemplates = getTenantConfig().templates;
- const [templateType, setTemplateType] = useState(tenantTemplates[0]);
+  const [templateType, setTemplateType] = useState(tenantTemplates[0]);
 
   const [iseSubType, setIseSubType] = useState('');
 
@@ -73,10 +74,6 @@ function UploadCandidateModal(props) {
     setDownloadType(event.target.value);  
   }
 
-  const handleChangeFileLanguage = (event) => {
-    setFileLanguage(event.target.value);
-  }
-
   const handleChangeTemplateType = (event) => {
     const value = event.target.value;
     setTemplateType(value);
@@ -93,7 +90,7 @@ function UploadCandidateModal(props) {
     setFiles([]);
     props.setModalState(false);
     setSubmitStatusBtn(false);
-    fetchCandidates().then(sortedCandidates => {
+    fetchCandidates(i18n.language).then(sortedCandidates => {
       props.setCandidates(sortedCandidates);
     });
   }
@@ -189,13 +186,13 @@ function UploadCandidateModal(props) {
   };
 
   const handleSubmit = async () => {
-    setSubmitStatusBtn(true);
-    setIsUploading(true);
-    for (const file of files) {
-      await processFile(file);
-    }
-    setIsUploading(false);
-    await fetchCandidates();
+      setSubmitStatusBtn(true);
+      setIsUploading(true);
+      for (const file of files) {
+        await processFile(file);
+      }
+      setIsUploading(false);
+      await fetchCandidates(i18n.language).then(data => props.setCandidates(data));
   }
 
   const handleKeepDuplicate = async (localId) => {
@@ -292,7 +289,7 @@ function UploadCandidateModal(props) {
           )
         );
 
-        await fetchCandidates();
+        fetchCandidates(i18n.language).then(data => props.setCandidates(data));
     } catch (err) {
       console.error('Delete duplicates + keep new failed', err);
       setFiles((prev) => 
@@ -325,7 +322,7 @@ function UploadCandidateModal(props) {
             component="form"
         >
             <div className="modal-header">
-                <h2 id="modal-modal-title">Choose PDF Files</h2>
+                <h2 id="modal-modal-title">{t('uploadCandidateModal.chooseFile')}</h2>
                 <Button
                   component="label"
                   variant="contained"
@@ -333,7 +330,7 @@ function UploadCandidateModal(props) {
                   tabIndex={-1}
                   style={{ marginBottom: '20px' }}
                 >
-                  Upload PDF files
+                    {t('uploadCandidateModal.uploadBtn')}
                   <VisuallyHiddenInput
                     type="file"
                     accept=".pdf"
@@ -347,19 +344,19 @@ function UploadCandidateModal(props) {
             {files.length > 0 && (
               <div className='files-section'>
                 <div className='files-header'>
-                  <h3>Uploaded Files ({files.length})</h3>
+                  <h3>{t('uploadCandidateModal.uploadedFiles')} ({files.length})</h3>
                   <Box 
                     sx={{ 
                       display: 'grid',
                       gap: 2 ,
                       gridTemplateColumns: { 
-                        xs: '1fr',
-                        sm: hasFourth ? 'repeat(2, 1fr)' : 'repeat(3, 1fr)'
+                          xs: '1fr',
+                          sm: hasFourth ? 'repeat(3, 1fr)' : 'repeat(2, 1fr)'
                       },    
                     }}
                   >
                     <FormControl variant='outlined' fullWidth>
-                      <InputLabel id="file-type-label">Download File Type</InputLabel>
+                      <InputLabel id="file-type-label">{t('uploadCandidateModal.downloadFileType')}</InputLabel>
                       <Select 
                         labelId='file-type-label'
                         id="file-type-select"
@@ -375,22 +372,7 @@ function UploadCandidateModal(props) {
                     </FormControl>
                     
                     <FormControl variant="outlined" fullWidth>
-                      <InputLabel id="file-language-label">CV Language</InputLabel>
-                      <Select
-                        labelId="file-language-label"
-                        id="file-language-select"
-                        value={fileLanguage}
-                        onChange={handleChangeFileLanguage}
-                        label="CV Language"
-                        disabled={submitBtnStatus}
-                      >
-                        <MenuItem value="English">English</MenuItem>
-                        <MenuItem value="French">French</MenuItem>
-                      </Select>
-                    </FormControl>
-                    
-                    <FormControl variant="outlined" fullWidth>
-                      <InputLabel id="template-type-label">Template</InputLabel>
+                      <InputLabel id="template-type-label">{t('uploadCandidateModal.template')}</InputLabel>
                       <Select
                         labelId="template-type-label"
                         id="template-type-select"
@@ -407,7 +389,7 @@ function UploadCandidateModal(props) {
 
                     {templateType === "ISE" && (
                       <FormControl variant="outlined" fullWidth>
-                        <InputLabel id="ise-subtype-label">ISE Template</InputLabel>
+                        <InputLabel id="ise-subtype-label">ISE {t('uploadCandidateModal.template')}</InputLabel>
                         <Select
                           labelId="ise-subtype-label"
                           id="ise-subtype-select"
@@ -416,9 +398,9 @@ function UploadCandidateModal(props) {
                           label="ISE Template"
                           disabled={submitBtnStatus}
                         >
-                          <MenuItem value="ISE1">Template 1</MenuItem>
-                          <MenuItem value="ISE2">Template 2</MenuItem>
-                          <MenuItem value="ISE3">Template 3</MenuItem>
+                          <MenuItem value="ISE1">{t('uploadCandidateModal.template')} 1</MenuItem>
+                          <MenuItem value="ISE2">{t('uploadCandidateModal.template')} 2</MenuItem>
+                          <MenuItem value="ISE3">{t('uploadCandidateModal.template')} 3</MenuItem>
                         </Select>
                       </FormControl>
                     )}
@@ -446,14 +428,14 @@ function UploadCandidateModal(props) {
                   disabled={isUploading || hasUnresolvedDuplicates}
                   onClick={handleModalClose}
                 >
-                  Close Window
+                    {t('uploadCandidateModal.closeBtn')}
                 </Button>
                 <Button
                   variant="contained"
                   disabled={isSubmitDisabled}
                   onClick={handleSubmit}
                 >
-                  Submit ({files.length}) file(s)
+                    {t('uploadCandidateModal.submit')} ({files.length}) {t('uploadCandidateModal.file')}(s)
                 </Button>
 
               </div>

@@ -1,14 +1,16 @@
 import TextField from '@mui/material/TextField';
 import PersonIcon from '@mui/icons-material/Person';
 import './GeneralInfo.css';
+import {useTranslation} from "react-i18next";
 
 export default function GenerlInfo(props) {
-    
+    const {t} = useTranslation();
+
     return (
         <div className="general-info">
-            <h2><PersonIcon sx={{fontSize: 30}}/>General Info</h2>
+            <h2><PersonIcon sx={{fontSize: 30}}/>{t("generalInfo.general")}</h2>
             <TextField
-                label="First Name"
+                label={t("generalInfo.firstName")}
                 multiline
                 value={props.profileData.general_info.first_name || ""}
                 onChange={(e) => {
@@ -16,7 +18,7 @@ export default function GenerlInfo(props) {
                 }}
             />
             <TextField
-                label="Last Name"
+                label={t("generalInfo.lastName")}
                 multiline
                 value={props.profileData.general_info.last_name || ""}
                 onChange={(e) => {
@@ -24,7 +26,7 @@ export default function GenerlInfo(props) {
                 }}
             />
             <TextField
-                label="Experience"
+                label={t("generalInfo.experience")}
                 multiline
                 value={props.profileData.general_info.experience || ""}
                 onChange={(e) => {
@@ -32,7 +34,7 @@ export default function GenerlInfo(props) {
                 }}
             />
             <TextField
-                label="Position"
+                label={t("generalInfo.position")}
                 multiline
                 value={props.profileData.general_info.position || ""}
                 onChange={(e) => {
@@ -40,7 +42,7 @@ export default function GenerlInfo(props) {
                 }}
             />
             <TextField
-                label="Email"
+                label={t("generalInfo.email")}
                 multiline
                 value={props.profileData.general_info.email || ""}
                 onChange={(e) => {
@@ -48,7 +50,7 @@ export default function GenerlInfo(props) {
                 }}
             />
             <TextField
-                label="Phone"
+                label={t("generalInfo.phone")}
                 multiline
                 value={props.profileData.general_info.phone || ""}
                 onChange={(e) => {
@@ -56,7 +58,7 @@ export default function GenerlInfo(props) {
                 }}
             />
             <TextField 
-                label="Description"
+                label={t("generalInfo.description")}
                 multiline
                 maxRows={6}
                 value={props.profileData.general_info.description || ""}

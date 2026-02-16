@@ -5,7 +5,8 @@ import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import AddIcon from "@mui/icons-material/Add"; // ← this was missing
+import AddIcon from "@mui/icons-material/Add";
+import {useTranslation} from "react-i18next";
 
 export default function FeelITItem({
   client,
@@ -16,6 +17,8 @@ export default function FeelITItem({
   updateFeelItResponsibility,
   removeFeelItResponsibility,
 }) {
+  const { t } = useTranslation();
+
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: index.toString() });
 
@@ -53,7 +56,7 @@ export default function FeelITItem({
         </div>
 
         <TextField
-          label="client_name"
+          label={t("feelIT.clientName")}
           multiline
           value={client.client_name || ""}
           onChange={(e) => {
@@ -62,7 +65,7 @@ export default function FeelITItem({
         />
 
         <TextField
-          label="client_description"
+          label={t("feelIT.clientDescription")}
           multiline
           value={client.client_description || ""}
           onChange={(e) => {
@@ -71,7 +74,7 @@ export default function FeelITItem({
         />
 
         <TextField
-          label="link"
+          label={t("feelIT.link")}
           multiline
           value={client.link || ""}
           onChange={(e) => {
@@ -81,7 +84,7 @@ export default function FeelITItem({
 
         <div className="responsibilities">
           <div className="responsibilities-header">
-            <h3>Responsibilities</h3>
+            <h3>{t("feelIT.resp")}</h3>
             <Button
               variant="text"
               size="small"
@@ -89,7 +92,7 @@ export default function FeelITItem({
               onClick={() => addFeelItResponsibility(index)}
               startIcon={<AddIcon />}
             >
-              Add Responsibility
+                {t("feelIT.addResp")}
             </Button>
           </div>
 
@@ -98,7 +101,7 @@ export default function FeelITItem({
               <div className="responsibility-item" key={respIndex}>
                 <TextField
                   key={respIndex}
-                  label={`Responsibility ${respIndex + 1}`}
+                  label={`${t("feelIT.responsibility")} ${respIndex + 1}`}
                   multiline
                   value={resp || ""}
                   onChange={(e) => {

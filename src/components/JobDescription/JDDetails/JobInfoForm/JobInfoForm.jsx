@@ -1,10 +1,13 @@
 import { Box, TextField, Stack, Button, Typography, Alert  } from "@mui/material";
 import React, { useState } from "react";
+import {useTranslation} from "react-i18next";
 
 import api from "../../../../api";
 import { fetchJobDescription } from "../../../../utils/fetchJobDescription";
 
+
 export default function JobInfoForm({setJobs, setUploadNew}) {
+    const { i18n } = useTranslation();
     const [uploading, setUploading] = useState(false);
     const [responseMessage, setResponseMessage] = useState("");
     const [success, setSuccess] = useState(false);
@@ -27,9 +30,17 @@ export default function JobInfoForm({setJobs, setUploadNew}) {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setUploading(true);
+
+        const currentLang = i18n.language?.startsWith('fr') ? 'French' : 'English';
+
+        const payload = {
+            ...formData,
+            language: currentLang
+        };
+
         try {
-            const response = await api.post('/job-description', formData);
-            console.log(response.data);
+            const response = await api.post('/job-description', payload);
+
             if (response.data.success) {
                 setResponseMessage(response.data.message);
 
@@ -38,9 +49,9 @@ export default function JobInfoForm({setJobs, setUploadNew}) {
                     description: "",
                 });
 
-                fetchJobDescription().then(response => {
+                fetchJobDescription(i18n.language).then(response => {
                     if(response.success) {
-                        setJobs(response.jobs)
+                        setJobs(response.jobs || []);
                     }
                 });
             }

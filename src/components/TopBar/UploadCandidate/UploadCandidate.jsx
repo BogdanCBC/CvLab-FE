@@ -4,10 +4,12 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import CheckIcon from '@mui/icons-material/CheckCircle';
 import ErrorIcon from '@mui/icons-material/Error';
 import WarningIcon from '@mui/icons-material/WarningAmber';
+import {useTranslation} from "react-i18next";
 
 
 function UploadCandidate({ fileData, onDescriptionChange, onRemove, onKeepDuplicate, onDeleteDuplicate }) {
   const {id, fileName, additionalInfo, progress, status } = fileData;
+  const { t } = useTranslation();
 
   const getProgressColor = () => {
     switch (status) {
@@ -62,7 +64,7 @@ function UploadCandidate({ fileData, onDescriptionChange, onRemove, onKeepDuplic
             suppressContentEditableWarning
             onBlur={(e) => onDescriptionChange(id, e.target.textContent)}
           >
-            {additionalInfo || 'Add description…'}
+            {additionalInfo || t("uploadCandidate.addDescription")}
           </Typography>
         </Box>
 
@@ -88,7 +90,7 @@ function UploadCandidate({ fileData, onDescriptionChange, onRemove, onKeepDuplic
             color="success"
             onClick={() => onKeepDuplicate(id)}
           >
-            Keep Duplicate
+              {t("uploadCandidate.keepDuplicates")}
           </Button>
           <Button
             size="small"
@@ -96,7 +98,7 @@ function UploadCandidate({ fileData, onDescriptionChange, onRemove, onKeepDuplic
             color="error"
             onClick={() => onDeleteDuplicate(id)}
           >
-            Delete Duplicate
+              {t("uploadCandidate.deleteDuplicates")}
           </Button>
         </Stack>
       )}

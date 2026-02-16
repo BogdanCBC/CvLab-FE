@@ -2,14 +2,14 @@ import React, { useState, useEffect } from "react";
 
 import "./JDDetails.css"
 import api from "../../../api";
-import { Button } from "@mui/material";
 import JobInfoForm from "./JobInfoForm/JobInfoForm";
 import SelectedJD from "./SelectedJD/SelectedJD";
 import NothingSelected from "./NothingSelected/NothingSelected";
+import {useTranslation} from "react-i18next";
 
 export default function JDDetails({ selectedJob, setSelectedJob, setJobs, uploadNew, setUploadNew, setSelectedCandidate }) {
+    const {t} = useTranslation();
     const [jobInfo, setJobInfo] = useState(null);
-    
 
     useEffect(() => { fetchSelectedJob() }, [selectedJob])
 

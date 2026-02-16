@@ -21,9 +21,10 @@ import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import {getFileNameFromDisposition, downloadFileFromBlob} from "../../../helperFunctions";
 import { fetchCandidates } from '../../../utils/fetchCandidates';
 import {getTenantConfig} from "../../../utils/tenantConfig";
+import {useTranslation} from "react-i18next";
 
 export default function Candidate(props) {
-    const currentUser = localStorage.getItem('username');
+    const {t} = useTranslation();
 
     const [candidate, setCandidate] = useState(null);
     const [success, setSuccess] = useState(false);
@@ -160,19 +161,16 @@ export default function Candidate(props) {
             variant="subtitle2"
             sx={{ fontWeight: "bold", mb: 0.2, textAlign: "justify" }}
         >
-            Candidate details:
+            {t("candidate.description")}
         </Typography>
         <ul style={{ margin: 0, paddingLeft: "1.2rem", textAlign: "justify" }}>
-            <li style={{ marginBottom: "0.2rem"}}>See candidate short description, phone number, and email</li>
+            <li style={{ marginBottom: "0.2rem"}}>{t("candidate.seeCandidateTooltip")}</li>
             <li style={{ marginBottom: "0.2rem"}}>
-                Get formatted CV in <strong>DOCX, PDF, or PPTX</strong> using
-            <strong> FeelIT</strong> or <strong> ISE</strong> templates
+                {t("candidate.getFormatedTooltip")}
             </li>
-            <li style={{ marginBottom: "0.2rem"}}>Choose from 3 different templates when exporting with ISE</li>
-            <li style={{ marginBottom: "0.2rem"}}>Download the original CV as submitted by the candidate</li>
+            <li style={{ marginBottom: "0.2rem"}}>{t("candidate.downloadTooltip")}</li>
             <li style={{ marginBottom: "0.2rem"}}>
-                Edit details that will appear in the formatted CV, including:
-            <em> general information, skills, work experience, certifications, education, languages</em>
+                {t("candidate.editTooltip")}
             </li>
         </ul>
         </>
@@ -182,13 +180,13 @@ export default function Candidate(props) {
         <Box sx={{ padding: 2 }}>
             {success && (
                 <Alert icon={<CheckIcon fontSize="inherit" />} severity="success">
-                    Candidate data fetched successfully!
+                    {t("candidate.successFetchMessage")}
                 </Alert>
             )}
 
             <div className="candidate-wrapper">
                 <div className="candidate-header">
-                <h2>Candidate Name: {candidate ? candidate.firstName : "none"}</h2>
+                <h2>{ t("candidate.candidateName") }: {candidate ? candidate.firstName : t("candidate.noName")}</h2>
                 
                 <Tooltip sx={{mr: 2}} title={renderTooltipContent()}>
                     <IconButton>
@@ -210,7 +208,7 @@ export default function Candidate(props) {
                         onClick={deleteCandidate}
                         startIcon={<DeleteForeverIcon />}
                     >
-                        Delete
+                        {t("candidate.deleteBtn")}
                     </Button>
                 )}
                 <Button
@@ -220,40 +218,40 @@ export default function Candidate(props) {
                     sx={{ marginLeft: 2 }}
                     startIcon={<EditIcon />}
                 >
-                    Edit
+                    {t("candidate.editButton")}
                 </Button>
                 </div>
 
                 {(localStorage.getItem('role') === "admin" || localStorage.getItem('role') === "superadmin") && (
                 <div className="uploader">
-                    <h2>Candidate uploaded by: {candidate ? candidate.username : "Unknown"}</h2>
+                    <h2>{t("candidate.uploadedBy")} {candidate ? candidate.username : "Unknown"}</h2>
                 </div>
                 )}
 
                 <Box className="candidate-data">
                 <Typography variant="h6" gutterBottom>
-                    Details
+                    {t("candidate.details")}
                 </Typography>
                 <Typography>
-                    <strong>Phone Number:</strong> {candidate?.phone || "Not Specified"}
+                    <strong>{t("candidate.phoneNo")}</strong> {candidate?.phone || "Not Specified"}
                 </Typography>
                 <Typography>
-                    <strong>Email:</strong> {candidate?.email || "Not Specified"}
+                    <strong>{t("candidate.email")}</strong> {candidate?.email || "Not Specified"}
                 </Typography>
                 <Typography sx={{ whiteSpace: "pre-line", textAlign: "justify" }}>
-                    <strong>Candidate description:</strong>{" "}
+                    <strong>{t("candidate.description")}</strong>{" "}
                     {candidate ? candidate.description : "none"}
                 </Typography>
 
                 <div className="candidate-cv-buttons">
                     <FormControl sx={{ minWidth: 130 }}>
-                        <InputLabel id="file-type-select-label">File Format</InputLabel>
+                        <InputLabel id="file-type-select-label">{t("candidate.fileFormat")}</InputLabel>
                         <Select
                             labelId="file-type-select-label"
                             id="file-type-select"
                             value={downloadFileType}
                             onChange={(e) => setDownloadFileType(e.target.value)}
-                            label="File Format"
+                            label={t("candidate.fileFormat")}
                         >
                             <MenuItem value="pdf">PDF</MenuItem>
                             <MenuItem value="pptx">PPTX</MenuItem>
@@ -268,7 +266,7 @@ export default function Candidate(props) {
                             id="template-type-select"
                             value={templateType}
                             onChange={handleChangeTemplateType}
-                            label="Template"
+                            label={t("candidate.template")}
                         >
                             {getTenantConfig().templates.map(t => (
                                 <MenuItem key={t.toLowerCase()} value={t}>{t}</MenuItem>
@@ -284,11 +282,11 @@ export default function Candidate(props) {
                                 id="ise-subtype-select"
                                 value={iseSubType}
                                 onChange={handleChangeIseSubType}
-                                label="ISE Template"
+                                label="ISE"
                             >
-                                <MenuItem value="ISE1">Template 1</MenuItem>
-                                <MenuItem value="ISE2">Template 2</MenuItem>
-                                <MenuItem value="ISE3">Template 3</MenuItem>
+                                <MenuItem value="ISE1">{t("candidate.template")} 1</MenuItem>
+                                <MenuItem value="ISE2">{t("candidate.template")} 2</MenuItem>
+                                <MenuItem value="ISE3">{t("candidate.template")} 3</MenuItem>
                             </Select>
                         </FormControl>
                     )}
@@ -300,7 +298,7 @@ export default function Candidate(props) {
                         disabled={disableGetFormatted}
                         onClick={() => getFormattedCV()}
                     >
-                        Get formatted CV
+                        {t("candidate.getFormatedCV")}
                     </Button>
 
                     <Button
@@ -309,7 +307,7 @@ export default function Candidate(props) {
                         onClick={() => getOriginalCV()}
                         sx={{ marginLeft: 1 }}
                     >
-                        Get original CV
+                        {t("candidate.getOriginalCV")}
                     </Button>
                 </div>
                 </Box>

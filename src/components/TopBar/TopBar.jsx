@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import './TopBar.css';
-import { Button, Box, Tooltip, IconButton, Typography } from '@mui/material';
+import {Button, Box, Tooltip, IconButton, Typography, FormControl, Select, MenuItem} from '@mui/material';
+import LanguageIcon from '@mui/icons-material/Language';
 import Alert from "@mui/material/Alert";
 import CheckIcon from '@mui/icons-material/Check';
 import InfoOutlineIcon from '@mui/icons-material/InfoOutline';
@@ -8,7 +9,11 @@ import { useNavigate } from 'react-router-dom';
 import UploadCandidateModal from './UploadCandidateModal/UploadCandidateModal';
 import {getTenantConfig} from "../../utils/tenantConfig";
 
+import { useTranslation } from 'react-i18next';
+import { fetchCandidates } from '../../utils/fetchCandidates';
+
 function TopBar(props) {
+    const {t, i18n } = useTranslation();
     const storedRole = localStorage.getItem('role');
 
     const [open, setOpen] = useState(false);
@@ -23,6 +28,17 @@ function TopBar(props) {
         const config = getTenantConfig();
         setLogo(config.logo);
     }, []);
+
+    const handleLanguageChange = (event) => {
+        const newLang = event.target.value;
+        i18n.changeLanguage(newLang);
+
+        fetchCandidates(newLang).then(data => {
+            if (props.setCandidates) {
+                props.setCandidates(data);
+            }
+        });
+    }
 
     function handleLogout() {
         localStorage.clear();
@@ -91,6 +107,19 @@ function TopBar(props) {
                 <img src={logo} alt='logo' style={{ maxHeight: '150px', marginTop: '5rem' }} />
  
                 <div className="button-wrapper">
+                    <FormControl size="small" sx={{ minWidth: 130 }}>
+                        <Select
+                            value={i18n.language || 'en'}
+                            onChange={handleLanguageChange}
+                            displayEmpty
+                            startAdornment={<LanguageIcon sx={{ mr: 1, fontSize: '1.2rem', color: 'gray' }} />}
+                            sx={{ height: '40px', borderRadius: '8px' }}
+                        >
+                            <MenuItem value="en">English</MenuItem>
+                            <MenuItem value="fr">Français</MenuItem>
+                        </Select>
+                    </FormControl>
+
                     <Tooltip title={renderTooltipContent()} sx={{mr: 2}}>
                         <IconButton>
                             <InfoOutlineIcon/>
@@ -100,7 +129,7 @@ function TopBar(props) {
                         onClick={() => setOpen(true)}
                         variant="contained"
                     >
-                        Upload Candidate
+                        {t('topbar.upload')}
                     </Button>
                 </div>
             </div>
@@ -115,7 +144,7 @@ function TopBar(props) {
                     onClick={handleNavigateJob}
                     sx={{marginRight: "10px"}}
                 >
-                    Job Description
+                    {t('topbar.job_desc')}
                 </Button>
 
                 {(storedRole === 'admin' || storedRole === 'superadmin') && (
@@ -124,7 +153,7 @@ function TopBar(props) {
                         onClick={handleNavigateAdmin}
                         sx={{marginRight: "10px"}}
                     >
-                        Admin Panel
+                        {t('topbar.admin')}
                     </Button>
                 )}
 
@@ -133,7 +162,7 @@ function TopBar(props) {
                     className="logout-button"
                     onClick={handleLogout}
                 >
-                    Logout
+                    {t('topbar.logout')}
                 </Button>
             </Box>
             <div className="logout-button-wrapper">

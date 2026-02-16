@@ -1,0 +1,253 @@
+{
+  "topbar": {
+    "upload": "Télécharger Candidat",
+    "job_desc": "Description du Poste",
+    "admin": "Panneau Admin",
+    "logout": "Déconnexion",
+    "tooltip_title": "Barre Supérieure :",
+    "tooltip_upload": "Accédez à 'Télécharger Candidat' : pour télécharger de nouveaux CV",
+    "tooltip_job": "Accéder à la page de description du poste",
+    "tooltip_logout": "Se déconnecter"
+  },
+  "uploadCandidateModal": {
+    "chooseFile": "Choisissez le fichier PDF",
+    "uploadBtn": "TÉLÉCHARGER DES FICHIERS PDF",
+    "uploadedFiles": "Fichiers téléchargés",
+    "downloadFileType": "Télécharger le type de fichier",
+    "template": "Modèle",
+    "cvLanguage": "Langue du cv",
+    "closeBtn": "Fermer la fenêtre",
+    "submit": "soumettre",
+    "file": "fichier"
+  },
+  "uploadCandidate": {
+    "addDescription": "Ajouter une description...",
+    "keepDuplicates": "Conserver les copies",
+    "deleteDuplicates": "Supprimer les doublons"
+  },
+  "candidatesList": {
+    "advancedFiltersBtn": "Ouvrir les filtres avancés"
+  },
+  "advancedFilters": {
+    "title": "Filtres avancés",
+    "position": "Poste",
+    "experience": "Expérience",
+    "skills": "Compétences",
+    "skillPlaceholder": "Compétence",
+    "yearsPlaceholder": "années",
+    "years": "ans",
+    "language": "Langue",
+    "certification": "Attestation",
+    "submitBtn": "Soumettre",
+    "tip": "Utilisez les filtres avancés pour affiner votre recherche de candidats par poste, années d'expérience, compétences (avec un minimum d'années d'expérience requises), langues et certifications. Vous pouvez ajouter plusieurs critères et les supprimer au besoin avant de soumettre votre candidature.",
+    "boldTip": "Utilisez le bouton '+' pour ajouter la compétence, la langue ou la certification souhaitée."
+  },
+  "candidateTable": {
+    "searchCandidates": "Recherche de candidats",
+    "firstName": "Prénom",
+    "lastName": "Nom de famille",
+    "experience": "Expérience",
+    "role": "Poste",
+    "language": "Langue",
+    "actions": "Actes"
+  },
+  "noCandidate": {
+    "noCandidateMessage": "Sélectionnez un candidat pour voir ses détails."
+  },
+  "candidate": {
+    "successFetchMessage": "Données du candidat récupérées avec succès !",
+    "candidateName": "Nom du candidat",
+    "noName": "Non spécifié",
+    "deleteBtn": "Supprimer",
+    "editButton": "Modifier",
+    "uploadedBy": "Candidat ajouté par:",
+    "details": "Détails",
+    "phoneNo": "Numéro de téléphone:",
+    "email": "Email:",
+    "description": "Description du candidat:",
+    "fileFormat": "Format du fichier",
+    "template": "Template",
+    "getFormatedCV": "CV mis en forme",
+    "getOriginalCV": "CV original",
+    "seeCandidateTooltip": "Voir la description courte, le numéro de téléphone et l'e-mail du candidat",
+    "getFormatedTooltip": "Obtenir le CV mis en forme en PDF, DOCX ou PPTX à l'aide de l'un des modèles disponibles",
+    "downloadTooltip": "Télécharger le CV original tel qu'il a été transmis par le candidat",
+    "editTooltip": "Modifier les informations du CV mis en forme, notamment:\n informations générales, compétences, expériences professionnelles, certifications, formation, langues"
+  },
+  "editProfile": {
+    "general": "Infos générales",
+    "education": "Formation",
+    "workExperience": "Expériences",
+    "skills": "Compétences",
+    "lang": "Langues",
+    "certifications": "Certifications",
+    "personalProj": "Projets personnels",
+    "saveBtn": "Enregistrer",
+    "goBackBtn": "Retour",
+    "validationError": "Erreur de validation. Veuillez vérifier vos informations.",
+    "requiredField": "Ce champ est obligatoire",
+    "greaterThan": "Doit être supérieur à 0",
+    "validEmail": "Veuillez saisir une adresse e-mail valide",
+    "candidateSaved": "Candidat enregistré avec succès.",
+    "loadingData": "Chargement des données..."
+  },
+  "generalInfo": {
+    "general": "Infos générales",
+    "firstName": "Prénom",
+    "lastName": "Nom de famille",
+    "experience": "Expérience",
+    "position": "Poste",
+    "email": "Email",
+    "phone": "Numéro de téléphone",
+    "description": "Description du candidat:"
+  },
+  "education": {
+    "education": "Formation",
+    "addEducation": "Ajouter une formation",
+    "instituteName": "Nom de l'établissement",
+    "degree": "Diplôme",
+    "startYear": "Année de début",
+    "endYear": "Année de fin"
+  },
+  "workExperience": {
+    "workExp": "Expériences professionnelles",
+    "addWorkBtn": "Ajouter une expérience",
+    "companyName": "Nom de l'entreprise",
+    "jobTitle": "Intitulé du poste",
+    "country": "Pays",
+    "link": "Lien",
+    "startDate": "Année de début",
+    "endDate": "Année de fin",
+    "description": "Description",
+    "responsibility": "Mission",
+    "addResponsibility": "Ajouter une mission",
+    "responsibilities": "Missions et responsabilités"
+  },
+  "skills": {
+    "skills": "Compétences",
+    "addSkill": "Ajouter une compétence",
+    "skill": "Compétence",
+    "years": "Années",
+    "enterSkill": "Saisir une compétence",
+    "enterYears": "Saisir le nombre d'années"
+  },
+  "languages": {
+    "languages": "Langues",
+    "language": "Langue",
+    "addLang": "Ajouter une langue",
+    "level": "Niveau",
+    "beginner": "Débutant",
+    "intermediate": "Intermédiaire",
+    "advanced": "Avancé",
+    "proficient": "Courant",
+    "native": "Langue maternelle"
+  },
+  "certifications": {
+    "certifications": "Certifications",
+    "addCert": "Ajouter une certification",
+    "enterCert": "Saisir une certification..."
+  },
+  "personalProjects": {
+    "personalProj": "Projets personnels",
+    "addPersonalProj": "Ajouter un projet",
+    "project": "Projet",
+    "projectName": "Nom du projet",
+    "achievement": "Réalisation",
+    "achievements": "Réalisations",
+    "addAchievements": "Ajouter une réalisation"
+  },
+  "adminPage": {
+    "userManagement": "Gestion des utilisateurs",
+    "createNewUser": "Créer un utilisateur",
+    "searchUser": "Rechercher un utilisateur",
+    "username": "Nom d'utilisateur",
+    "role": "Rôle",
+    "actions": "Actions",
+    "resetPassword": "Réinitialiser le mot de passe"
+  },
+  "createUserModal": {
+    "createNewAcc": "Créer un nouveau compte",
+    "createdMsg": "Utilisateur créé avec succès!",
+    "createUser": "Créer l'utilisateur",
+    "username": "Nom d'utilisateur",
+    "password": "Mot de passe",
+    "confirmPass": "Confirmer le mot de passe",
+    "role": "Role",
+    "admin": "Administrateur",
+    "hr": "RH",
+    "demo": "Démo"
+  },
+  "resetPassword": {
+    "resetPass": "Réinitialiser le mot de passe",
+    "changingFor": "Changement du mot de passe pour:",
+    "newPassword": "Nouveau mot de passe",
+    "confirmPassword": "Confirmer le nouveau mot de passe",
+    "cancel": "Annuler",
+    "saveChanges": "Enregistrer les modifications",
+    "errMsg": "Erreur lors de la mise à jour du mot de passe",
+    "successMsg": "Mot de passe mis à jour avec succès!"
+  },
+  "genericTopBar": {
+    "backBtn": "Retour",
+    "logOut": "Déconnexion"
+  },
+  "jdTopBar": {
+    "pageTitle": "Page de description du poste",
+    "uploadNew": "Importer",
+    "view": "Visualisez tous les postes importés dans un tableau clair.",
+    "click": "Cliquez sur le bouton « En ajouter un nouveau » pour créer un poste avec son intitulé et sa description.",
+    "select": "Sélectionnez un poste existant pour le prévisualiser et utilisez l'option d'édition pour modifier ses détails.",
+    "use": "Utilisez le bouton « Trouver des candidats » pour trouver les candidats qui pourraient correspondre au poste sélectionné."
+  },
+  "jdTable": {
+    "title": "Titre",
+    "shortDescription": "Description courte"
+  },
+  "jdNothingSelected":{
+    "message": "Aucune fiche de poste sélectionnée",
+    "createNew": "En créer une nouvelle?",
+    "createBtn": "En ajouter un nouveau"
+  },
+  "jdViewMode": {
+    "match": "Matcher",
+    "edit": "Modifier",
+    "delete": "Supprimer",
+    "skills": "Compétences:",
+    "language": "Langues:"
+  },
+  "jdEditMode": {
+    "title": "Titre",
+    "jobDescription": "Description du poste",
+    "addSkill": "Ajouter une compétence",
+    "years": "Années",
+    "yrs": "ans",
+    "addLanguage": "Ajouter une langue",
+    "level": "Niveau",
+    "beginner": "Débutant",
+    "intermediate": "Intermédiaire",
+    "advanced": "Avancé",
+    "proficient": "Courant",
+    "native": "Langue maternelle",
+    "cancel": "Annuler",
+    "confirm": "Confirmer"
+  },
+  "rawMatch": {
+    "title": "Candidats correspondants",
+    "job": "Poste:",
+    "aiBtn": "Match IA",
+    "downloadBtn": "Télécharger le Docx",
+    "matchedSkills": "Compétences validées:",
+    "yrs": "ans",
+    "matchTooltip": "Page de Matching:",
+    "left": "Dans la colonne de gauche, consultez la liste des candidats possédant au moins une compétence requise avec les années d'expérience correspondantes. Cliquez sur un candidat pour accéder à son profil.",
+    "select": "Sélectionnez les candidats à l'aide des cases à cocher, puis utilisez le bouton \"Match IA\" pour générer une évaluation et une courte description de l'adéquation du candidat avec les exigences du poste.",
+    "download": "Téléchargez un rapport DOCX contenant ces mêmes informations de matching."
+  },
+  "aiMatch": {
+    "noMatch": "Aucun matching effectué pour le poste:",
+    "toPerform": "Pour lancer l'analyse, sélectionnez des candidats dans le panneau de gauche et cliquez sur le bouton MATCH IA.",
+    "docxTip": "Ou téléchargez le fichier Docx.",
+    "aiResults": "Résultats du Match IA",
+    "job": "Poste:"
+  }
+}

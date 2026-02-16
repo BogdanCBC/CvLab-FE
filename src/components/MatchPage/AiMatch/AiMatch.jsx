@@ -2,8 +2,10 @@ import { Box, Typography, Rating, Stack, Paper } from "@mui/material";
 import PersonOffIcon from "@mui/icons-material/PersonOff";
 import "./AiMatch.css";
 import { useNavigate } from 'react-router-dom';
+import {useTranslation} from "react-i18next";
 
 export default function AiMatch({ aiMatchedCandidates, jobTitle, setSelectedCandidate }) {
+    const {t} = useTranslation();
     const navigate = useNavigate();
     const list = Array.isArray(aiMatchedCandidates) ? aiMatchedCandidates : [];
     const isEmpty = list.length === 0;
@@ -25,20 +27,20 @@ export default function AiMatch({ aiMatchedCandidates, jobTitle, setSelectedCand
                 <Box className="empty-content">
                     <PersonOffIcon className="empty-icon" />
                     <Typography align="center">
-                        No match performed for job: <b>{jobTitle}</b>.
-                        To perform it, select candidates from the left panel and click the AI MATCH button.
+                        {t("aiMatch.noMatch")} <b>{jobTitle}</b>.
+                        {t("aiMatch.toPerform")}
                     </Typography>
                     <Typography align="center" sx={{ mt: 1 }}>
-                        Or download the Docx.
+                        {t("aiMatch.docxTip")}
                     </Typography>
                 </Box>
             ) : (
                 <>
                     <Typography variant="h4" align="center" gutterBottom>
-                        AI Match Results
+                        {t("aiMatch.aiResults")}
                     </Typography>
                     <Typography variant="h5" align="center" gutterBottom color="primary">
-                        Job: {jobTitle}
+                        {t("aiMatch.job")} {jobTitle}
                     </Typography>
 
                     {/* Scrollable area for the AI results */}

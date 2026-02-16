@@ -6,8 +6,11 @@ import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from '@dnd-kit/utilities';
+import {useTranslation} from "react-i18next";
 
 export default function SkillItem({ id, skill_obj, index, updateSkills, removeSkill }) {
+  const {t} = useTranslation();
+
   const {
     attributes,
     listeners,
@@ -41,7 +44,7 @@ export default function SkillItem({ id, skill_obj, index, updateSkills, removeSk
       
       <TextField
         value={skill_obj.skill}
-        placeholder="Enter skill..."
+        placeholder={t("skills.enterSkill")}
         onChange={(e) => updateSkills(index, "skill", e.target.value)}
         fullWidth
       />

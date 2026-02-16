@@ -1,0 +1,261 @@
+{
+  "topbar": {
+    "upload": "Upload Candidate",
+    "job_desc": "Job Description",
+    "admin": "Admin Panel",
+    "logout": "Logout",
+    "tooltip_title": "Top Bar:",
+    "tooltip_upload": "Access the 'Upload Candidate': in order to upload new CVs",
+    "tooltip_job": "Navigate to Job Description Page",
+    "tooltip_logout": "Log out"
+  },
+  "uploadCandidateModal": {
+    "chooseFile": "Choose PDF File",
+    "uploadBtn": "UPLOAD PDF FILES",
+    "uploadedFiles": "Uploaded Files",
+    "downloadFileType": "Download File Type",
+    "template": "Template",
+    "cvLanguage": "CV Language",
+    "closeBtn": "Close Window",
+    "submit": "Submit",
+    "file": "file"
+  },
+  "uploadCandidate": {
+    "addDescription": "Add description...",
+    "keepDuplicates": "Keep Duplicates",
+    "deleteDuplicates": "Delete Duplicates"
+  },
+  "candidatesList": {
+    "advancedFiltersBtn": "Open advanced filters"
+  },
+  "advancedFilters": {
+    "title": "Advanced Filters",
+    "position": "Position",
+    "experience": "Experience",
+    "skills": "Skills",
+    "skillPlaceholder": "Skill",
+    "yearsPlaceholder": "Years",
+    "years": "yrs",
+    "language": "Language",
+    "certification": "Certification",
+    "submitBtn": "Submit",
+    "tip": "Use the advanced filters to refine your candidate search by position, years of experience, skills with minimum years, languages, and certifications. You can add multiple entries and remove them as needed before submitting.",
+    "boldTip": "Use the \"+\" button to add the desired skill, language or certification."
+  },
+  "candidateTable": {
+    "searchCandidates": "Search candidates",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "experience": "Experience",
+    "role": "Role",
+    "language": "Language",
+    "actions": "Actions"
+  },
+  "noCandidate": {
+    "noCandidateMessage": "No candidate selected."
+  },
+  "candidate": {
+    "successFetchMessage": "Candidate data fetched successfully!",
+    "candidateName": "Candidate Name:",
+    "noName": "Unspecified",
+    "deleteBtn": "Delete",
+    "editButton": "Edit",
+    "uploadedBy": "Candidate uploaded by:",
+    "details": "Details",
+    "phoneNo": "Phone number:",
+    "email": "Email:",
+    "description": "Candidate description:",
+    "fileFormat": "File format",
+    "template": "Template",
+    "getFormatedCV": "Get formated CV",
+    "getOriginalCV": "Get original CV",
+    "seeCandidateTooltip": "See candidate short description, phone number, and email",
+    "getFormatedTooltip": "Get formated CV in PDF, DOCX or PPTX using one of the available templates",
+    "downloadTooltip": "Download the original CV as submitted by the candidate",
+    "editTooltip": "Edit details that will appear in the formatted CV, including:\n general information, skills, work experience, certifications, education, languages"
+  },
+  "editProfile": {
+    "general": "General Info",
+    "education": "Education",
+    "workExperience": "Work Experience",
+    "skills": "Skills",
+    "lang": "Languages",
+    "certifications": "Certifications",
+    "personalProj": "Personal Projects",
+    "saveBtn": "Save",
+    "goBackBtn": "GO BACK",
+    "validationError": "Validation error. Please check your input.",
+    "requiredField": "This field is required",
+    "greaterThan": "Must be greater than 0",
+    "validEmail": "Must be a valid email address",
+    "candidateSaved": "Candidate saved successfully.",
+    "loadingData": "Loading profile data..."
+  },
+  "generalInfo": {
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "experience": "Experience",
+    "position": "Position",
+    "email": "Email",
+    "phone": "Phone",
+    "description": "Description"
+  },
+  "education": {
+    "education": "Education",
+    "addEducation": "Add Education",
+    "instituteName": "Institute Name",
+    "degree": "Degree",
+    "startYear": "Start Year",
+    "endYear": "End Year"
+  },
+  "workExperience": {
+    "workExp": "Work Experience",
+    "addWorkBtn": "Add work experience",
+    "companyName": "Company Name",
+    "jobTitle": "Job Title",
+    "country": "Country",
+    "link": "Link",
+    "startDate": "Start Date",
+    "endDate": "End Date",
+    "description": "Description",
+    "addResponsibility": "Add responsibility",
+    "responsibilities": "Responsibilities"
+  },
+  "skills": {
+    "skills": "Skills",
+    "addSkill": "Add skills",
+    "skill": "skill",
+    "years": "Years",
+    "enterSkill": "Enter skill..."
+  },
+  "languages": {
+    "languages": "Languages",
+    "language": "Language",
+    "addLang": "Add language",
+    "level": "Level",
+    "beginner": "Beginner",
+    "intermediate": "Intermediate",
+    "advanced": "Advanced",
+    "proficient": "Proficient",
+    "native": "Native"
+  },
+  "certifications": {
+    "certifications": "Certifications",
+    "addCert": "Add Certification",
+    "enterCert": "Enter certification..."
+  },
+  "feelIT": {
+    "projects": "FeelIT projects",
+    "addFeel": "Add FeelIT Client",
+    "client": "client",
+    "clientName": "Client name",
+    "clientDescription": "Client Description",
+    "link": "Link",
+    "resp": "Responsibilities",
+    "responsibility": "Responsibility",
+    "addResp": "Add Responsibility"
+  },
+  "personalProjects": {
+    "personalProj": "Personal Projects",
+    "addPersonalProj": "Add Personal Projects",
+    "project": "Project",
+    "projectName": "Project Name",
+    "achievement": "Achievement",
+    "achievements": "Achievements",
+    "addAchievements": "Add Achievements"
+  },
+  "adminPage": {
+    "userManagement": "User Management",
+    "createNewUser": "Create new user",
+    "searchUser": "Search User",
+    "username": "Username",
+    "role": "Role",
+    "actions": "Actions",
+    "resetPassword": "Reset Password"
+  },
+  "createUserModal": {
+    "createNewAcc": "Create new user",
+    "createdMsg": "User created successfully",
+    "createUser": "Create User",
+    "username": "Username",
+    "password": "Password",
+    "confirmPass": "Confirm Password",
+    "role": "Role",
+    "admin": "Admin",
+    "hr": "HR",
+    "demo": "Demo"
+  },
+  "resetPassword": {
+    "resetPass": "Reset Password",
+    "changingFor": "Changing password for user:",
+    "newPassword": "New Password",
+    "confirmPassword": "Confirm New Password",
+    "cancel": "Cancel",
+    "saveChanges": "Save Changes",
+    "errMsg": "Error updating the password",
+    "successMsg": "Password updated successfully!"
+  },
+  "genericTopBar": {
+    "backBtn": "Back",
+    "logOut": "Logout"
+  },
+  "jdTopBar": {
+    "pageTitle": "Job Description Page",
+    "uploadNew": "Upload new",
+    "view": "View all uploaded jobs in a clear table format",
+    "click": "Click the \"Upload New\" button to add a new job with its title and description",
+    "select": "Select an existing job to preview it and use the edit option to modify its details",
+    "use": "Use the \"Match\" button to find candidates who could be a fit for the selected job"
+  },
+  "jdTable": {
+    "title": "Title",
+    "shortDescription": "Short Description"
+  },
+  "jdNothingSelected":{
+    "message": "No job description was selected",
+    "createNew": "Create a new one?",
+    "createBtn": "Upload New"
+  },
+  "jdViewMode": {
+    "match": "Match",
+    "edit": "Edit",
+    "delete": "Delete",
+    "skills": "SKILLS:",
+    "language": "LANGUAGES:"
+  },
+  "jdEditMode": {
+    "title": "Title",
+    "jobDescription": "Job Description",
+    "addSkill": "Add Skill",
+    "years": "Years",
+    "yrs": "yrs",
+    "addLanguage": "Add Language",
+    "level": "Level",
+    "beginner": "Beginner",
+    "intermediate": "Intermediate",
+    "advanced": "Advanced",
+    "proficient": "Proficient",
+    "native": "Native",
+    "cancel": "Cancel",
+    "confirm": "Confirm"
+  },
+  "rawMatch": {
+    "title": "Matched Candidates",
+    "job": "Job:",
+    "aiBtn": "AI Match",
+    "downloadBtn": "Download Docx",
+    "matchedSkills": "Matched Skills:",
+    "yrs": "yrs",
+    "matchTooltip": "Match Page:",
+    "left": "On the left side, view a list of candidates who have at least one required skill with the required years of experience. Click a candidate to be redirected to their details.",
+    "select": "Select desired candidates using the checkboxes, then use the \"AI Match\" button to generate a rating and a short description of how well each candidate fits the job requirements.",
+    "download": "Download a DOCX report containing the same matching information."
+  },
+  "aiMatch": {
+    "noMatch": "No match performed for job:",
+    "toPerform": "To perform it, select candidates from the left panel and click the AI MATCH button.",
+    "docxTip": "Or download the Docx.",
+    "aiResults": "AI Match Results",
+    "job": "Job:"
+  }
+}

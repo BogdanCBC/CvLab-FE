@@ -5,8 +5,10 @@ import InfoOutlineIcon from '@mui/icons-material/InfoOutline';
 import "./RawMatch.css"
 import api from "../../../api";
 import { downloadFileFromBlob, getFileNameFromDisposition } from "../../../helperFunctions";
+import {useTranslation} from "react-i18next";
 
 export default function RawMatch({ jobId, jobTitle, setSelectedCandidate, matchCandidates, setAiMatchedCandidates }) {
+    const {t} = useTranslation();
     const navigate = useNavigate();
     const [fileLanguage, setFileLanguage] = useState("English");
     const [selectedIds, setSelectedIds] = useState(new Set());
@@ -78,33 +80,30 @@ export default function RawMatch({ jobId, jobTitle, setSelectedCandidate, matchC
             variant="subtitle2"
             sx={{ fontWeight: 'bold', mb: 0.2, textAlign: "justify" }}
         >
-            Match Page:
+            {t("rawMatch.matchTooltip")}
         </Typography>
         <ul style={{ margin: 0, paddingLeft: '1.2rem', textAlign: "justify" }}>
             <li style={{ marginBottom: "0.2rem"}}>
-            On the left side, view a list of candidates who have at least one required skill with the required years of experience. Click a candidate to be redirected to their details.
+                {t("rawMatch.left")}
             </li >
             <li style={{ marginBottom: "0.2rem"}}>
-            Select desired candidates using the checkboxes, then use the "AI Match" button to generate a rating and a short description of how well each candidate fits the job requirements.
+                {t("rawMatch.select")}
             </li>
             <li style={{ marginBottom: "0.2rem"}}>
-            Download a DOCX report containing the same matching information.
-            </li>
-            <li style={{ marginBottom: "0.2rem"}}>
-            The description can be generated in <strong>English</strong> or <strong>French</strong>.
+                {t("rawMatch.download")}
             </li>
         </ul>
         </>
     )
-    console.log(matchCandidates);
+
     return (
         <Box className="raw-match-box">
             <Typography variant="h4" align="center" gutterBottom>
-                Matched Candidates
+                {t("rawMatch.title")}
             </Typography>
 
             <Typography variant="h5" align="center" gutterBottom color="primary">
-                Job: {jobTitle}
+                {t("rawMatch.job")} {jobTitle}
             </Typography>
 
             <Box display="flex" justifyContent="center" sx={{ marginBottom: "2vh", marginTop: "2vh" }} columnGap={2}>
@@ -113,7 +112,7 @@ export default function RawMatch({ jobId, jobTitle, setSelectedCandidate, matchC
                     variant="contained"
                     onClick={handleAIMatch}
                 >
-                    AI Match
+                    {t("rawMatch.aiBtn")}
                 </Button>
 
                 <Button
@@ -121,7 +120,7 @@ export default function RawMatch({ jobId, jobTitle, setSelectedCandidate, matchC
                     variant="outlined"
                     onClick={handleDocxDownload}
                 >
-                    Download docx
+                    {t("rawMatch.downloadBtn")}
                 </Button>
 
                 <FormControl>
@@ -174,13 +173,13 @@ export default function RawMatch({ jobId, jobTitle, setSelectedCandidate, matchC
                             {c.skills && c.skills.length > 0 && (
                                 <>
                                     <Typography variant="body2" sx={{mb: 1, fontWeight: "bold"}}>
-                                        Matched Skills: {c.matched_count}
+                                        {t("rawMatch.matchedSkills")} {c.matched_count}
                                     </Typography>
                                     <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
                                         {c.skills.map((s, index) => (
                                             <Chip
                                                 key={`${s.skill}-${index}`}
-                                                label={`${s.skill} (${s.years} yrs)`}
+                                                label={`${s.skill} (${s.years} ${t("rawMatch.yrs")})`}
                                                 color="primary"
                                                 variant="outlined"
                                                 size="small"

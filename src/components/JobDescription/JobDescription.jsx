@@ -6,23 +6,29 @@ import "./JobDescription.css"
 
 import { fetchJobDescription } from "../../utils/fetchJobDescription";
 import GenericHeader from "../GenericHeader/GenericHeader";
+import { useTranslation } from "react-i18next";
 
 
 export default function JobDescription({setSelectedCandidate, setIsLoggedIn}) {
+    const { i18n } = useTranslation();
     const [jobs, setJobs] = useState([]);
     const [selectedJob, setSelectedJob] = useState(null);
     const [failMessage, setFailMessage] = useState(null);
     const [uploadNew, setUploadNew] = useState(false);
 
     useEffect(() => {
-        fetchJobDescription().then(response => {
-            if(response.success) {
-                setJobs(response.jobs);
+        // Pass language to fetch
+        fetchJobDescription(i18n.language).then(response => {
+            // Check if response exists and has data
+            if (response && response.success) {
+                // FALLBACK: If response.data is undefined, default to empty array []
+                setJobs(response.jobs || []);
             } else {
-                setFailMessage(response.message)
+                setJobs([]); // Ensure it's always an array on failure
+                setFailMessage(response?.message || "Failed to load");
             }
-        })
-    }, [])
+        });
+    }, [i18n.language]);
 
     return (
         <div className="job-description-page">

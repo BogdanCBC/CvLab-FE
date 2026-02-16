@@ -3,10 +3,12 @@ import AddIcon from '@mui/icons-material/Add';
 import SkillsList from './SkillsList/SkillsList';
 import { closestCorners, DndContext } from '@dnd-kit/core';
 import './Skills.css';
-import { Typography } from '@mui/material';
+import {useTranslation} from "react-i18next";
 
 export default function Skills(props) {
-  const handleDragEnd = (event) => {
+  const {t} = useTranslation()
+
+    const handleDragEnd = (event) => {
     const { active, over } = event;
     if (!over || active.id === over.id) return;
 
@@ -23,7 +25,7 @@ export default function Skills(props) {
   return (
     <div className="skills">
       <div className="skills-header">
-        <h2>Skills</h2>
+        <h2>{t("skills.skills")}</h2>
         <Button
           className="add-skill-button"
           variant="contained"
@@ -32,14 +34,14 @@ export default function Skills(props) {
           onClick={props.addSkill}
         >
           <AddIcon />
-          Add Skill
+            {t("skills.addSkill")}
         </Button>
       </div>
       
       <div className="skills-columns" style={{ display: "flex", alignItems: "center", gap: "8px", fontWeight: "bold", marginBottom: "8px" }}>
         <span style={{ width: 40 }} />
-        <span style={{ flex: 1 }}>Skill</span>
-        <span style={{ width: 130 }}>Years</span>
+        <span style={{ flex: 1 }}>{t("skills.skill")}</span>
+        <span style={{ width: 130 }}>{t("skills.years")}</span>
         <span style={{ width: 56 }} />
       </div>
 

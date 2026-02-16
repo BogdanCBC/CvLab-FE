@@ -1,8 +1,11 @@
 import * as React from 'react';
 import { Box, Table, TableHead, TableBody, TableCell, TableContainer, TableFooter, TablePagination, TableRow, Paper, Button, TextField } from '@mui/material';
 import Fuse from 'fuse.js';
+import {useTranslation} from "react-i18next";
 
 export default function UsersTable({ users, onResetPassword }) {
+    const {t} = useTranslation();
+
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
     const [searchTerm, setSearchTerm] = React.useState('');
@@ -25,7 +28,7 @@ export default function UsersTable({ users, onResetPassword }) {
     return (
         <Box>
             <TextField
-                label="Search Users"
+                label={t("adminPage.searchUser")}
                 variant="outlined"
                 fullWidth
                 margin="normal"
@@ -40,9 +43,9 @@ export default function UsersTable({ users, onResetPassword }) {
                 <Table stickyHeader sx={{ minWidth: 500 }}>
                     <TableHead>
                         <TableRow>
-                            <TableCell sx={{ backgroundColor: '#f5f5f5', fontWeight: 'bold' }}>Username</TableCell>
-                            <TableCell sx={{ backgroundColor: '#f5f5f5', fontWeight: 'bold' }}>Role</TableCell>
-                            <TableCell sx={{ backgroundColor: '#f5f5f5', fontWeight: 'bold' }} align="right">Actions</TableCell>
+                            <TableCell sx={{ backgroundColor: '#f5f5f5', fontWeight: 'bold' }}>{t("adminPage.username")}</TableCell>
+                            <TableCell sx={{ backgroundColor: '#f5f5f5', fontWeight: 'bold' }}>{t("adminPage.role")}</TableCell>
+                            <TableCell sx={{ backgroundColor: '#f5f5f5', fontWeight: 'bold' }} align="right">{t("adminPage.actions")}</TableCell>
                         </TableRow>
                     </TableHead>
 
@@ -63,7 +66,7 @@ export default function UsersTable({ users, onResetPassword }) {
                                             size="small"
                                             sx={{ backgroundColor: '#1976d2', color: 'white' }}
                                         >
-                                            RESET PASSWORD
+                                            {t("adminPage.resetPassword")}
                                         </Button>
                                     </TableCell>
                                 </TableRow>

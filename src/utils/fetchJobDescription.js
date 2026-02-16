@@ -1,11 +1,21 @@
 import api from "../api";
 
-export async function fetchJobDescription() {
+export async function fetchJobDescription(language) {
+    const token = localStorage.getItem('token');
+    if (!token) return [];
+
+    let url = "/job-description";
+    if (language) {
+        const langMap = {
+            'en': 'English',
+            'fr': 'French'
+        };
+        const mappedLang = langMap[language] || 'English';
+        url += `?language=${mappedLang}`;
+    }
+
     try{
-        const token = localStorage.getItem('token');
-        if (!token) return [];
-        
-        const response = await api.get("/job-description");
+        const response = await api.get(url);
         if (response.data.success) {
             const jobs = response.data.data.map(job => ({
                 job_id: job.job_id,

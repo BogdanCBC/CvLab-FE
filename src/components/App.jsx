@@ -6,6 +6,7 @@ import JobDescription from './JobDescription/JobDescription';
 import MatchPage from './MatchPage/MatchPage';
 import CandidatesPage from "./CandidatesPage/CandidatesPage";
 import AdminPage from "./AdminPage/AdminPage";
+import '../i18n';
 
 function ProtectedRoute({ isLoggedIn }) {
     const location = useLocation();

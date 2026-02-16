@@ -14,6 +14,7 @@ import { Button, Box, Alert, Typography } from '@mui/material';
 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { green, grey } from '@mui/material/colors';
+import {useTranslation} from "react-i18next";
 
 const theme = createTheme({
   palette: {
@@ -23,6 +24,8 @@ const theme = createTheme({
 });
 
 function EditProfile(props) {
+    const {t} = useTranslation();
+
     const { candidateId, setEditMode } = props;
     const [profileData, setProfileData] = useState(null);
     const [selectedSection, setSelectedSection] = useState('GeneralInfo');
@@ -46,7 +49,7 @@ function EditProfile(props) {
     }
 
     function formatValidationErrors(detail) {
-        if (!Array.isArray(detail)) return "Validation error. Please check your input.";
+        if (!Array.isArray(detail)) return t("editProfile.validationError");
 
         // turn snake_case or camelCase into "Title Case"
         const humanize = (str) =>
@@ -63,11 +66,11 @@ function EditProfile(props) {
             console.log(err.msg)
             console.log(err.loc)
             if (msg.includes("none is not an allowed value")) {
-                msg = "This field is required";
+                msg = t("editProfile.requiredField");
             } else if (msg.includes("ensure this value is greater than 0")) {
-                msg = "Must be greater than 0";
+                msg = t("editProfile.greaterThan");
             } else if (msg.includes("value is not a valid email address")) {
-                msg = "Must be a valid email address";
+                msg = t("editProfile.validEmail");
             }
 
             let section = "";
@@ -105,7 +108,7 @@ function EditProfile(props) {
                 setUnvalidMessage("");
                 setUnvalidError(false);
 
-                setSaveSuccessMessage("Candidate saved successfully.");
+                setSaveSuccessMessage(t("editProfile.candidateSaved"));
                 setSaveSuccess(true);
                 setTimeout(() => {
                     setSaveSuccessMessage("");
@@ -464,18 +467,18 @@ function EditProfile(props) {
                     flexWrap="wrap"
                     gap={1}
                 >
-                    <Button variant="contained" onClick={() => setSelectedSection('GeneralInfo')}>General Info</Button>
-                    <Button variant="contained" onClick={() => setSelectedSection('Education')}>Education</Button>
-                    <Button variant="contained" onClick={() => setSelectedSection('WorkExperience')}>Work Experience</Button>
-                    <Button variant="contained" onClick={() => setSelectedSection('Skills')}>Skills</Button>
-                    <Button variant="contained" onClick={() => setSelectedSection('Languages')}>Languages</Button>
-                    <Button variant="contained" onClick={() => setSelectedSection('Certifications')}>Certifications</Button>
+                    <Button variant="contained" onClick={() => setSelectedSection('GeneralInfo')}>{t("editProfile.general")}</Button>
+                    <Button variant="contained" onClick={() => setSelectedSection('Education')}>{t("editProfile.education")}</Button>
+                    <Button variant="contained" onClick={() => setSelectedSection('WorkExperience')}>{t("editProfile.workExperience")}</Button>
+                    <Button variant="contained" onClick={() => setSelectedSection('Skills')}>{t("editProfile.skills")}</Button>
+                    <Button variant="contained" onClick={() => setSelectedSection('Languages')}>{t("editProfile.lang")}</Button>
+                    <Button variant="contained" onClick={() => setSelectedSection('Certifications')}>{t("editProfile.certifications")}</Button>
                     {
                         (localStorage.getItem('clientName') === 'default' ||  localStorage.getItem('clientName') === 'feelit') && (
                             <Button variant="contained" onClick={() => setSelectedSection('FeelIt')}>FeelIt</Button>
                         )
                     }
-                    <Button variant="contained" onClick={() => setSelectedSection('PersonalProjects')}>Personal Projects</Button>
+                    <Button variant="contained" onClick={() => setSelectedSection('PersonalProjects')}>{t("editProfile.personalProj")}</Button>
                 </Box>
             </div>
 
@@ -508,7 +511,7 @@ function EditProfile(props) {
                             // console.log(JSON.stringify(profileData.languages, null, 4));
                         }}
                     >
-                        GO BACK
+                        {t("editProfile.goBackBtn")}
                     </Button>
 
                     <Button
@@ -517,7 +520,7 @@ function EditProfile(props) {
                             saveNewObject(profileData);
                         }}
                     >
-                        Save
+                        {t("editProfile.saveBtn")}
                     </Button>
                 </div>
             </ThemeProvider>
@@ -600,7 +603,7 @@ function EditProfile(props) {
                     )}
                 </div>
             ) : (
-                <p>Loading profile data...</p>
+                <p>{t("editProfile.loadingData")}</p>
             )}
 
         </div>

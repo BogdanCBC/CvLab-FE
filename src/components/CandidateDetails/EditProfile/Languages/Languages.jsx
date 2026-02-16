@@ -4,21 +4,23 @@ import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
 import DeleteIcon from '@mui/icons-material/Delete';
 import "./Languages.css";
+import {useTranslation} from "react-i18next";
 
 export default function Languages(props) {
+    const {t} = useTranslation();
 
     const languageLevels = [
-        { label: "Beginner", value: "Beginner" },
-        { label: "Intermediate", value: "Intermediate" },
-        { label: "Advanced", value: "Advanced" },
-        { label: "Proficient", value: "Proficient" },
-        { label: "Native", value: "Native" }
+        { label: "Beginner", value: t("languages.beginner") },
+        { label: "Intermediate", value: t("languages.intermediate") },
+        { label: "Advanced", value: t("languages.advanced") },
+        { label: "Proficient", value: t("languages.proficient") },
+        { label: "Native", value: t("languages.native") },
     ];
 
     return (
         <div className="languages">
             <div className="languages-header">
-                <h2 sx={{fontSize: 30}}>Languages</h2>
+                <h2 sx={{fontSize: 30}}>{t("languages.languages")}</h2>
                 <Button 
                     className="add-language-button"
                     variant="contained"
@@ -26,14 +28,14 @@ export default function Languages(props) {
                     sx={{margin: 1, marginBottom: 2}}
                     onClick={() => props.addLanguage()}
                 >
-                    <AddIcon />Add Language
+                    <AddIcon />{t("languages.addLang")}
                 </Button>
             </div>
 
             {props.profileData.languages.map((language, index) => (
                 <div key={index} className="language-item">
                     <TextField 
-                        label="Language"
+                        label={t("languages.language")}
                         multiline
                         value={language.language || ""}
                         onChange={(e) => {
@@ -44,7 +46,7 @@ export default function Languages(props) {
 
                     <TextField
                         select
-                        label="Level"
+                        label={t("languages.level")}
                         value={language.level || ""}
                         onChange={(e) => {
                             props.updateLanguage(index, "level", e.target.value);

@@ -19,6 +19,7 @@ import FirstPageIcon from '@mui/icons-material/FirstPage';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import LastPageIcon from '@mui/icons-material/LastPage';
+import {useTranslation} from "react-i18next";
 
 
 // Table actions
@@ -85,6 +86,7 @@ TablePaginationActions.propTypes = {
 
 
 export default function JDTable({jobs, setSelectedJob}) {
+    const {t} = useTranslation();
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
 
@@ -113,8 +115,8 @@ export default function JDTable({jobs, setSelectedJob}) {
                 <Table sx={{minWidth: 650, minHeight: 650}} aria-label="simple table">
                     <TableHead>
                         <TableRow sx={{ backgroundColor: 'rgba(200, 215, 216, 0.92)'}}>
-                            <TableCell>Title</TableCell>
-                            <TableCell>Short Description</TableCell>
+                            <TableCell>{t("jdTable.title")}</TableCell>
+                            <TableCell>{t("jdTable.shortDescription")}</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>

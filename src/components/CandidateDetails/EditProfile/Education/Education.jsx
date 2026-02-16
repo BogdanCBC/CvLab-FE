@@ -3,26 +3,28 @@ import Button from '@mui/material/Button';
 import "./Education.css"
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
+import {useTranslation} from "react-i18next";
 
 export default function Education(props) {
-    
+    const {t} = useTranslation();
+
     return (
         <div className="education">
             <div className="education-header">
-            <h2 sx={{fontSize: 30}}>Education</h2>
+            <h2 sx={{fontSize: 30}}>{t("education.education")}</h2>
                 <Button
                     className = "add-education-button"
                     variant = "contained"
                     size = "small"
                     sx = {{margin: 1, marginBottom: 2}}
                     onClick={() => props.addEducation()}
-                > <AddIcon />Add Education</Button>
+                > <AddIcon />{t("education.addEducation")}</Button>
             </div>
             
             {props.profileData.education.map((edu, index) => (
                 <div key={index} className='education-item'>
                     <div className="education-item-header">
-                        <h3>Education {index + 1}</h3>
+                        <h3>{t("education.education")} {index + 1}</h3>
                         <Button
                             variant='contained'
                             size='small'
@@ -34,7 +36,7 @@ export default function Education(props) {
                     </div>
 
                     <TextField
-                        label="Institute Name"
+                        label={t("education.instituteName")}
                         multiline
                         value={edu.institute_name || ""}
                         onChange={(e) => {
@@ -42,7 +44,7 @@ export default function Education(props) {
                         }}
                     />
                     <TextField
-                        label="Degree"
+                        label={t("education.degree")}
                         multiline
                         value={edu.degree || ""}
                         onChange={(e) => {
@@ -50,7 +52,7 @@ export default function Education(props) {
                         }}
                     />
                     <TextField
-                        label="Start Year"
+                        label={t("education.startYear")}
                         type="number"
                         value={edu.start_year || new Date().getFullYear()}
                         onChange={(e) => {
@@ -58,7 +60,7 @@ export default function Education(props) {
                         }}
                     />
                     <TextField
-                        label="End Year"
+                        label={t("education.endYear")}
                         type="number"
                         value={edu.end_year || ""}
                         onChange={(e) => {

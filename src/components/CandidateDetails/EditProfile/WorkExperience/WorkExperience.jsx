@@ -3,26 +3,28 @@ import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import TextField from '@mui/material/TextField';
 import "./WorkExperience.css"
+import {useTranslation} from "react-i18next";
 
 export default function WorkExperience(props) {
+    const {t} = useTranslation();
 
     return (
         <div className = "work-experience">
             <div className="work-experience-header">
-                <h2 sx={{fontSize: 30}}>Work Experience</h2>
+                <h2 sx={{fontSize: 30}}>{t("workExperience.workExp")}</h2>
                 <Button
                     className = "add-work-experience-button"
                     variant = "contained"
                     size = "small"
                     sx = {{margin: 1, marginBottom: 2}}
                     onClick={() => props.addWorkExperience()}
-                > <AddIcon />Add Work Experience</Button>
+                > <AddIcon />{t("workExperience.addWorkBtn")}</Button>
             </div>
 
             {props.profileData.work_experience.map((work, index) => (
                 <div key={index} className = "work-experience-item">
                     <div className = "work-experience-item-header">
-                        <h3>Work Experience {index+1}</h3>
+                        <h3>{t("workExperience.workExp")} {index+1}</h3>
                         <Button
                             variant="contained"
                             size="small"
@@ -34,7 +36,7 @@ export default function WorkExperience(props) {
                     </div>
 
                     <TextField 
-                        label="Company Name"
+                        label={t("workExperience.companyName")}
                         multiline
                         value={work.company_name || ""}
                         onChange={(e) => {
@@ -43,7 +45,7 @@ export default function WorkExperience(props) {
                     />
 
                     <TextField 
-                        label="Job Title"
+                        label={t("workExperience.jobTitle")}
                         multiline
                         value={work.job_title || ""}
                         onChange={(e) => {
@@ -52,7 +54,7 @@ export default function WorkExperience(props) {
                     />
 
                     <TextField
-                        label="Country"
+                        label={t("workExperience.country")}
                         multiline
                         value={work.country || ""}
                         onChange={(e) => {
@@ -60,7 +62,7 @@ export default function WorkExperience(props) {
                         }}
                     />
                     <TextField
-                        label="Link"
+                        label={t("workExperience.link")}
                         multiline
                         value={work.link || ""}
                         onChange={(e) => {
@@ -68,7 +70,7 @@ export default function WorkExperience(props) {
                         }}
                     />
                     <TextField
-                        label="Start Date"
+                        label={t("workExperience.startDate")}
                         type="date"
                         value={work.start_date || new Date().getFullYear()}
                         onChange={(e) => {
@@ -77,7 +79,7 @@ export default function WorkExperience(props) {
                         InputLabelProps={{shrink:true}}
                     />
                     <TextField
-                        label="End Date"
+                        label={t("workExperience.endDate")}
                         type="date"
                         value={work.end_date || new Date().getFullYear()}
                         onChange={(e) => {
@@ -86,7 +88,7 @@ export default function WorkExperience(props) {
                         InputLabelProps={{shrink:true}}
                     />
                     <TextField
-                        label="Description"
+                        label={t("workExperience.description")}
                         multiline
                         value={work.work_description || ""}
                         onChange={(e) => {
@@ -95,7 +97,7 @@ export default function WorkExperience(props) {
                     />
                     <div className="responsibilities">
                         <div className="responsibilities-header">
-                            <h3>Responsibilities</h3>
+                            <h3>{t("workExperience.responsibilities")}</h3>
                             <Button
                                 variant="text" // Makes it transparent / ghost style
                                 size="small"
@@ -103,7 +105,7 @@ export default function WorkExperience(props) {
                                 onClick={() => props.addResponsability(index)}
                                 startIcon={<AddIcon />}
                             >
-                                Add Responsibility
+                                {t("workExperience.responsibilities")}
                             </Button>
                         </div>
 
@@ -111,7 +113,7 @@ export default function WorkExperience(props) {
                             <div className="responsibility-item" key={respIndex}>
                                 <TextField
                                     key={respIndex}
-                                    label={`Responsibility ${respIndex + 1}`}
+                                    label={`${t("workExperience.responsibility")} ${respIndex + 1}`}
                                     multiline
                                     value={resp || ""}
                                     onChange={(e) => {

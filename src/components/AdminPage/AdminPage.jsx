@@ -8,14 +8,15 @@ import ResetPasswordModal from "./ResetPasswordModal";
 import api from '../../api';
 import GenericHeader from "../GenericHeader/GenericHeader";
 
+import {useTranslation} from "react-i18next";
+
 const AdminPage = ({ setIsLoggedIn }) => {
+    const {t} = useTranslation();
+
     const [users, setUsers] = useState([]);
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
     const [isResetModalOpen, setIsResetModalOpen] = useState(false);
     const [selectedUser, setSelectedUser] = useState(null);
-
-    const navigate = useNavigate();
-    const logo = require('../../images/logov2.png');
 
     const fetchUsers = async () => {
         try {
@@ -30,12 +31,6 @@ const AdminPage = ({ setIsLoggedIn }) => {
         fetchUsers();
     }, []);
 
-    const handleLogout = () => {
-        localStorage.clear();
-        setIsLoggedIn(false);
-        navigate('/login');
-    };
-
     const openResetDialog = (user) => {
         setSelectedUser(user);
         setIsResetModalOpen(true);
@@ -47,10 +42,12 @@ const AdminPage = ({ setIsLoggedIn }) => {
 
             <Container maxWidth="lg" sx={{ mt: 6 }}>
                 <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
-                    <Typography variant="h4" sx={{ fontWeight: 'bold', color: '#1976d2' }}>User Management</Typography>
+                    <Typography variant="h4" sx={{ fontWeight: 'bold', color: '#1976d2' }}>
+                        {t("adminPage.userManagement")}
+                    </Typography>
 
                     <Button variant="contained" color="success" onClick={() => setIsCreateModalOpen(true)}>
-                        Create New User
+                        {t("adminPage.createNewUser")}
                     </Button>
                 </Box>
 

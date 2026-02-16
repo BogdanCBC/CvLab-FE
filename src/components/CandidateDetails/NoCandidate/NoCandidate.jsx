@@ -1,8 +1,9 @@
 import { Box, Typography } from '@mui/material';
 import PersonOffIcon from '@mui/icons-material/PersonOff';
-
+import {useTranslation} from "react-i18next";
 
 export default function NoCandidate() {
+    const {t} = useTranslation();
     return (
         <Box
             display="flex"
@@ -13,7 +14,7 @@ export default function NoCandidate() {
         >
             <PersonOffIcon color="disabled" sx={{ fontSize: 40, mb: 1 }} />
             <Typography variant="h6" color="text.secondary">
-                No candidate selected
+                {t("noCandidate.noCandidateMessage")}
             </Typography>
         </Box>
     );

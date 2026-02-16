@@ -3,15 +3,17 @@ import { Box, Button, Chip, FormControl, IconButton, Input, Stack, TextField, Me
 import AddIcon from "@mui/icons-material/Add";
 import { fetchJobDescription } from "../../../../../utils/fetchJobDescription";
 import api from "../../../../../api";
+import {useTranslation} from "react-i18next";
 
 export default function EditMode({jobInfo, setEditMode, setJobs, setJobInfo, selectedJob, updateJobInfoFromJobs}) {
-    
+    const { t, i18n} = useTranslation();
+
     const languageLevels = [
-        { label: "Beginner", value: "Beginner" },
-        { label: "Intermediate", value: "Intermediate" },
-        { label: "Advanced", value: "Advanced" },
-        { label: "Proficient", value: "Proficient" },
-        { label: "Native", value: "Native" }
+        { label: t("jdEditMode.beginner"), value: "Beginner" },
+        { label: t("jdEditMode.intermediate"), value: "Intermediate" },
+        { label: t("jdEditMode.advanced"), value: "Advanced" },
+        { label: t("jdEditMode.proficient"), value: "Proficient" },
+        { label: t("jdEditMode.native"), value: "Native" }
     ];
 
     const [jobData, setJobData] = useState(jobInfo);
@@ -67,17 +69,17 @@ export default function EditMode({jobInfo, setEditMode, setJobs, setJobInfo, sel
             skills: skills,
             languages: languages
         };
-        
+
         try {
             const result = await api.put('/job-description', dataToSubmit);
             if(result.data.success) {
-                if (result.data.success) {
-                    const response = await fetchJobDescription();
-                    if (response.success) {
-                        setJobs(response.jobs);
-                        updateJobInfoFromJobs(response.jobs, selectedJob);
-                    }
+                const response = await fetchJobDescription(i18n.language);
+                if (response.success) {
+                    const jobsList = response.jobs || [];
+                    setJobs(jobsList);
+                    updateJobInfoFromJobs(jobsList, selectedJob);
                 }
+
                 const updateJobInfo = {
                     ...jobData,
                     skills: skills,
@@ -87,7 +89,7 @@ export default function EditMode({jobInfo, setEditMode, setJobs, setJobInfo, sel
                 setEditMode(false);
             }
         } catch(err) {
-            console.log("Crapaaa");
+            console.log("Error updating");
         }
     }
     return(
@@ -99,14 +101,14 @@ export default function EditMode({jobInfo, setEditMode, setJobs, setJobInfo, sel
                 gap={2}
             >
                 <TextField
-                    label="Title"
+                    label={t("jdEditMode.title")}
                     id="title"
                     maxRows={2}
                     value={jobData.title}
                     onChange={handleChange}
                 />
                 <TextField
-                    label="Job description"
+                    label={t("jdEditMode.jobDescription")}
                     id="description"
                     value={jobData.description}
                     multiline
@@ -116,12 +118,12 @@ export default function EditMode({jobInfo, setEditMode, setJobs, setJobInfo, sel
 
                 <Box sx={{display: 'flex', alignItems: 'center', gap: 1}}>
                     <Input
-                        placeholder="Add Skills"
+                        placeholder={t("jdEditMode.addSkill")}
                         value={newSkill}
                         onChange={e => setNewSkill(e.target.value)}
                     />
                     <Input
-                        placeholder="Years"
+                        placeholder={t("jdEditMode.years")}
                         type="number"
                         inputProps={{min: 0}}
                         value={yearsInput}
@@ -135,7 +137,7 @@ export default function EditMode({jobInfo, setEditMode, setJobs, setJobInfo, sel
                     {skills.map((s, index) => (
                         <Chip 
                             key={index}
-                            label={`${s.skill} (${s.years} yrs)`}
+                            label={`${s.skill} (${s.years} ${t("jdEditMode.yrs")})`}
                             onClick={() => handleDeleteSkill(index)}
                         />
                     ))}
@@ -143,14 +145,14 @@ export default function EditMode({jobInfo, setEditMode, setJobs, setJobInfo, sel
       
                 <Box sx={{display: 'flex', alignItems: 'center', gap: 1}}>
                     <Input
-                        placeholder="Add Language"
+                        placeholder={t("jdEditMode.addLanguage")}
                         value={newLanguage}
                         onChange={e => setNewLanguage(e.target.value)}
                     />
 
                     <TextField
                         select
-                        label="Level"
+                        label={t("jdEditMode.level")}
                         value={languageLevel}
                         onChange={e => setLanguageLevel(e.target.value)}
                         size="small"
@@ -183,13 +185,13 @@ export default function EditMode({jobInfo, setEditMode, setJobs, setJobInfo, sel
                         variant="contained"
                         onClick={() => setEditMode(false)}
                     >
-                        Cancel
+                        {t("jdEditMode.cancel")}
                     </Button>
                     <Button 
                         variant="contained"
                         type="submit"
                     >
-                        Confirm
+                        {t("jdEditMode.confirm")}
                     </Button>
                 </Stack>
             </Box>

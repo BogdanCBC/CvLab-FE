@@ -19,6 +19,7 @@ import LastPageIcon from '@mui/icons-material/LastPage';
 import { Button, TextField } from '@mui/material';
 import './CandidatesTable.css'
 import Fuse from 'fuse.js';
+import {useTranslation} from "react-i18next";
 
 
 function TablePaginationActions(props) {
@@ -84,6 +85,7 @@ TablePaginationActions.propTypes = {
 
 
 export default function CandidatesTable(props) {
+  const { t } = useTranslation();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [searchTerm, setSearchTerm] = React.useState('');
@@ -113,7 +115,7 @@ export default function CandidatesTable(props) {
   return (
     <div>
       <TextField
-        label="Search Candidates"
+        label={ t("candidateTable.searchCandidates") }
         variant="outlined"
         fullWidth
         margin="normal"
@@ -132,12 +134,12 @@ export default function CandidatesTable(props) {
         >
           <TableHead sx={{ backgroundColor: '#f5f5f5' }}>
             <TableRow>
-              <TableCell style={{ width: '30%' }}>First Name</TableCell>
-              <TableCell align="right">Last Name</TableCell>
-              <TableCell align="right">Experience</TableCell>
-              <TableCell align="right">Role</TableCell>
-              <TableCell align="right">Language</TableCell>
-              <TableCell align="right">Actions</TableCell>
+              <TableCell style={{ width: '25%' }}>{ t("candidateTable.firstName") }</TableCell>
+              <TableCell align="right">{ t("candidateTable.lastName") }</TableCell>
+              <TableCell align="right">{ t("candidateTable.experience") }</TableCell>
+              <TableCell align="right">{ t("candidateTable.role") }</TableCell>
+              <TableCell align="right">{ t("candidateTable.language") }</TableCell>
+              <TableCell align="right">{ t("candidateTable.actions") }</TableCell>
             </TableRow>
           </TableHead>
 

@@ -6,8 +6,10 @@ import AddIcon from "@mui/icons-material/Add";
 import React, { useState, useEffect } from "react";
 import './AdvancedFilters.css';
 import api from "../../../api.js";
+import { useTranslation } from 'react-i18next';
 
 export default function AdvancedFilters(props){
+    const { t, i18n } = useTranslation();
     const [formData, setFormData] = useState({
         skills: [],
         position: '',
@@ -15,7 +17,6 @@ export default function AdvancedFilters(props){
         languages: [],
         certifications: []
     });
-
     const [skillInput, setSkillInput] = useState("");
     const [yearsInput, setYearsInput] = useState("");
     const [languageInput, setLanguageInput] = useState("");
@@ -74,8 +75,10 @@ export default function AdvancedFilters(props){
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        const currentLang = i18n.language?.startsWith('fr') ? 'French' : 'English';
+
         try {
-            const response = await api.post('/filters', {
+            const response = await api.post(`/filters?language=${currentLang}`, {
                 position: formData.position,
                 experience: formData.experience.trim() === '' ? undefined : parseInt(formData.experience, 10),
                 skills: formData.skills,
@@ -130,13 +133,13 @@ export default function AdvancedFilters(props){
         >
             <Box className="modal-box">
                 <Typography display="flex" justifyContent="center" variant="h4">
-                    Advanced Filters
+                    {t('advancedFilters.title')}
                 </Typography>
                 <form onSubmit={handleSubmit}>
                     <Box sx={{display: 'flex', flexDirection: 'column', gap: 2}}>
                         {/* Position */}
                         <FormControl fullWidth margin="normal">
-                            <InputLabel htmlFor="position">Position</InputLabel>
+                            <InputLabel htmlFor="position"> {t('advancedFilters.position')} </InputLabel>
                             <Input 
                                 id="position"
                                 value={formData.position}
@@ -146,7 +149,7 @@ export default function AdvancedFilters(props){
 
                         {/* General Experience */}
                         <FormControl fullWidth margin="normal">
-                            <InputLabel htmlFor="experience">Experience</InputLabel>
+                            <InputLabel htmlFor="experience"> {t('advancedFilters.experience')} </InputLabel>
                             <Input
                                 id="experience"
                                 type="number"
@@ -166,15 +169,15 @@ export default function AdvancedFilters(props){
 
                         {/* Skills with years */}
                         <FormControl fullWidth margin="normal">
-                            <FormLabel>Skills</FormLabel>
+                            <FormLabel> {t('advancedFilters.skills')} </FormLabel>
                             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mt: 2 }}>                            
                                 <Input 
-                                    placeholder="Skill"
+                                    placeholder={t('advancedFilters.skillPlaceholder')}
                                     value={skillInput}
                                     onChange={(e) => setSkillInput(e.target.value)}
                                 />
                                 <Input
-                                    placeholder="Years"
+                                    placeholder={t('advancedFilters.yearsPlaceholder')}
                                     type="number"
                                     inputProps={{ min: 0 }}
                                     value={yearsInput}
@@ -189,7 +192,7 @@ export default function AdvancedFilters(props){
                                 {formData.skills.map((s, index) => (
                                     <Chip
                                         key={index}
-                                        label={`${s.skill} (${s.years} yrs)`}
+                                        label={`${s.skill} (${s.years} ${t('advancedFilters.years')})`}
                                         onClick={() => handleDelete('skills', index)}
                                     />
                                 ))}
@@ -198,7 +201,7 @@ export default function AdvancedFilters(props){
                         
                         {/* Languages */}
                         <FormControl>
-                            <InputLabel htmlFor="languages">Language</InputLabel>
+                            <InputLabel htmlFor="languages">{t('advancedFilters.language')}</InputLabel>
                             <Box sx={{display: 'flex', alignContent: 'center'}}>    
                                 <Input
                                     id="languages"
@@ -223,7 +226,7 @@ export default function AdvancedFilters(props){
                         
                         {/* Certifications */}
                         <FormControl>
-                            <InputLabel htmlFor="certification">Certification</InputLabel>
+                            <InputLabel htmlFor="certification">{t('advancedFilters.certification')}</InputLabel>
                             <Box sx={{display: 'flex', alignItems: 'center'}}>
                                 <Input
                                     id="certification"
@@ -254,18 +257,18 @@ export default function AdvancedFilters(props){
                                 sx={{ width: '40%' }}
                                 disabled={!isValid}
                             >
-                                Submit
+                                {t('advancedFilters.submitBtn')}
                             </Button>
                         </Box>
                     </Box>
                 </form>
 
                 <Typography display="flex" justifyContent="center" variant="h7" sx={{ mt: 6, textAlign: "justify" }}>
-                    Use the advanced filters to refine your candidate search by position, years of experience, skills with minimum years, languages, and certifications. You can add multiple entries and remove them as needed before submitting.
+                    {t('advancedFilters.tip')}
                 </Typography>
                 
                 <Typography display="flex" justifyContent="center" variant="h7" sx={{ mt: 1, textAlign: "justify" }}>
-                   <b> Use the "+" button to add the desired skill, language or certification.</b>
+                   <b> {t('advancedFilters.boldTip')} </b>
                 </Typography>
             </Box>
         </Modal>

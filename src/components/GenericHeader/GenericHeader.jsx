@@ -4,8 +4,11 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useNavigate } from 'react-router-dom';
 import {getTenantConfig} from "../../utils/tenantConfig";
+import {useTranslation} from "react-i18next";
 
 const GenericHeader = ({ setIsLoggedIn, navigateLocation }) => {
+    const {t} = useTranslation();
+
     const [logo, setLogo] = useState(require('../../images/logov2.png'));
     const navigate = useNavigate();
 
@@ -37,7 +40,7 @@ const GenericHeader = ({ setIsLoggedIn, navigateLocation }) => {
                     onClick={() => navigate(navigateLocation)}
                     variant="outlined"
                 >
-                    Back
+                    {t("genericTopBar.backBtn")}
                 </Button>
                 <Button
                     startIcon={<LogoutIcon />}
@@ -45,7 +48,7 @@ const GenericHeader = ({ setIsLoggedIn, navigateLocation }) => {
                     variant="outlined"
                     color="error"
                 >
-                    Logout
+                    {t("genericTopBar.logOut")}
                 </Button>
             </Box>
         </Box>
