@@ -57,22 +57,22 @@ function TopBar(props) {
     const renderTooltipContent = () => (
         <>
             <Typography variant="subtitle2" sx={{ fontWeight: 'bold', mb: 0.2, textAlign: "justify" }}>
-                Top Bar:
+                {t("topbar.tooltip_title")}
             </Typography>
             <ul style={{ margin: 0, paddingLeft: '1.2rem', textAlign: "justify" }}>
-                <li>Access the "Upload Candidate": in order to upload new CVs</li>
-                <li>Navigate to Job Description Page</li>
-                <li>Log out</li>
+                <li>{t("topbar.accessTooltip")}</li>
+                <li>{t("topbar.navigateTooltip")}</li>
+                <li>{t("topbar.logoutTooltip")}</li>
             </ul>
             
             <Typography variant="subtitle2" sx={{ fontWeight: 'bold', mb: 0.2, mt: 1, textAlign: "justify" }}>
-                Left Side:
+                {t("topbar.leftSideTooltip")}
             </Typography>
             <ul style={{ margin: 0, paddingLeft: '1.2rem', textAlign: "justify" }}>
-                <li>The table will display uploaded candidates</li>
-                <li>Search for the desired candidate using the searchbar or filter them using "Advanced Filters"</li>
-                <li>Fetch back all the candidates by clicking the "Refresh button"</li>
-                <li>Select a candidate from the table and it will be displayed on the right side</li>
+                <li>{t("topbar.tableTooltip")}</li>
+                <li>{t("topbar.searchTooltip")}</li>
+                <li>{t("topbar.fetchTooltip")}</li>
+                <li>{t("topbar.selectTooltip")}</li>
             </ul>
         </>
     )
@@ -82,7 +82,7 @@ function TopBar(props) {
             {success && (
                 <div className="alert-wrapper">
                     <Alert icon={<CheckIcon fontSize="inherit" />} severity="success">
-                        File(s) processed successfully!
+                        {t("topbar.successAlert")}
                     </Alert>
                 </div>
             )}
@@ -90,7 +90,7 @@ function TopBar(props) {
             {warning && (
                 <div className="alert-wrapper">
                     <Alert severity="warning">
-                        Warning message here!
+                        {t("topbar.warningAlert")}
                     </Alert>
                 </div>
             )}
@@ -98,7 +98,7 @@ function TopBar(props) {
             {error && (
                 <div className="alert-wrapper">
                     <Alert severity="error">
-                        Error occurred!
+                        {t("topbar.errorAlert")}
                     </Alert>
                 </div>
             )}
@@ -109,14 +109,14 @@ function TopBar(props) {
                 <div className="button-wrapper">
                     <FormControl size="small" sx={{ minWidth: 130 }}>
                         <Select
-                            value={i18n.language || 'en'}
+                            value={i18n.language?.startsWith('fr') ? 'fr' : 'en'}
                             onChange={handleLanguageChange}
                             displayEmpty
                             startAdornment={<LanguageIcon sx={{ mr: 1, fontSize: '1.2rem', color: 'gray' }} />}
                             sx={{ height: '40px', borderRadius: '8px' }}
                         >
-                            <MenuItem value="en">English</MenuItem>
-                            <MenuItem value="fr">Français</MenuItem>
+                            <MenuItem value="en">UK</MenuItem>
+                            <MenuItem value="fr">France</MenuItem>
                         </Select>
                     </FormControl>
 

@@ -7,7 +7,18 @@
     "tooltip_title": "Barre Supérieure :",
     "tooltip_upload": "Accédez à 'Télécharger Candidat' : pour télécharger de nouveaux CV",
     "tooltip_job": "Accéder à la page de description du poste",
-    "tooltip_logout": "Se déconnecter"
+    "tooltip_logout": "Se déconnecter",
+    "accessTooltip": "Accédez à \"Télécharger un candidat\" : pour télécharger de nouveaux CV",
+    "navigateTooltip": "Accéder à la page Description du poste",
+    "logoutTooltip": "Se déconnecter",
+    "leftSideTooltip": "Côté gauche :",
+    "tableTooltip": "Le tableau affichera les candidats téléchargés",
+    "searchTooltip": "Recherchez le candidat souhaité à l'aide de la barre de recherche ou filtrez-les à l'aide des \"Filtres avancés\"",
+    "fetchTooltip": "Récupérez tous les candidats en cliquant sur le \"Bouton Actualiser\"",
+    "selectTooltip": "Sélectionnez un candidat dans le tableau et il sera affiché sur le côté droit",
+    "successAlert": "Fichier(s) traité(s) avec succès !",
+    "warningAlert": "Message d'avertissement ici !",
+    "errorAlert": "Une erreur s'est produite !"
   },
   "uploadCandidateModal": {
     "chooseFile": "Choisissez le fichier PDF",
@@ -49,7 +60,8 @@
     "experience": "Expérience",
     "role": "Poste",
     "language": "Langue",
-    "actions": "Actes"
+    "actions": "Actes",
+    "details": "Détails"
   },
   "noCandidate": {
     "noCandidateMessage": "Sélectionnez un candidat pour voir ses détails."

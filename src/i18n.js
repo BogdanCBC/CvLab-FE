@@ -16,7 +16,6 @@ i18n
     .init({
         resources,
         fallbackLng: 'en',
-        debug: true, // Useful for development, turn off for production
         interpolation: {
             escapeValue: false,
         },

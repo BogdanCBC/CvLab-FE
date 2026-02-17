@@ -138,70 +138,70 @@ export default function CandidatesTable(props) {
               <TableCell align="right">{ t("candidateTable.lastName") }</TableCell>
               <TableCell align="right">{ t("candidateTable.experience") }</TableCell>
               <TableCell align="right">{ t("candidateTable.role") }</TableCell>
-              <TableCell align="right">{ t("candidateTable.language") }</TableCell>
               <TableCell align="right">{ t("candidateTable.actions") }</TableCell>
             </TableRow>
           </TableHead>
 
-          <TableBody>
-            {(rowsPerPage > 0
-              ? filteredCandidates.slice(
-                  page * rowsPerPage,
-                  page * rowsPerPage + rowsPerPage
-                )
-              : filteredCandidates
-            ).map((row) => (
-              <TableRow
-                key={row.id}
-                onMouseOver={(e) =>
-                  (e.currentTarget.style.backgroundColor = '#f0f0f0')
-                }
-                onMouseOut={(e) =>
-                  (e.currentTarget.style.backgroundColor = 'transparent')
-                }
-                onClick={() => {
-                    props.setSelectedCandidate(row.id);
-                }}
-              >
-                <TableCell sx={{ width: '20%' }}>{row.firstName}</TableCell>
-                <TableCell sx={{ width: '20%' }} align="right">
-                  {row.lastName}
-                </TableCell>
-                <TableCell sx={{ width: '20%' }} align="right">
-                  {row.experience}
-                </TableCell>
-                <TableCell sx={{ width: '20%' }} align="right">
-                  {row.position}
-                </TableCell>
-                <TableCell sx={{ width: '20%' }} align="right">
-                  {row.language}
-                </TableCell>
-                <TableCell sx={{ width: '20%' }} align="right">
-                  <Button
-                    onClick={() => {
-                      props.setSelectedCandidate(row.id);
-                      props.setEditMode(false);
-                    }}
-                    variant="contained"
-                    sx={{
-                      backgroundColor: '#1976d2',
-                      color: 'white',
-                      width: '40px',
-                      height: '30px',
-                    }}
-                  >
-                    DETAILS
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))}
+            <TableBody>
+                {(rowsPerPage > 0
+                        ? filteredCandidates.slice(
+                            page * rowsPerPage,
+                            page * rowsPerPage + rowsPerPage
+                        )
+                        : filteredCandidates
+                ).map((row) => (
+                    <TableRow
+                        key={row.id}
+                        onMouseOver={(e) =>
+                            (e.currentTarget.style.backgroundColor = '#f0f0f0')
+                        }
+                        onMouseOut={(e) =>
+                            (e.currentTarget.style.backgroundColor = 'transparent')
+                        }
+                        onClick={() => {
+                            props.setSelectedCandidate(row.id);
+                        }}
+                    >
+                        <TableCell sx={{ width: '15%' }}>{row.firstName}</TableCell>
 
-            {emptyRows > 0 && (
-              <TableRow>
-                <TableCell colSpan={6} />
-              </TableRow>
-            )}
-          </TableBody>
+                        <TableCell sx={{ width: '15%' }} align="right">
+                            {row.lastName}
+                        </TableCell>
+
+                        <TableCell sx={{ width: '10%' }} align="right">
+                            {row.experience}
+                        </TableCell>
+
+                        <TableCell sx={{ width: '45%' }} align="right">
+                            {row.position}
+                        </TableCell>
+
+                        <TableCell sx={{ width: '15%' }} align="right">
+                            <Button
+                                onClick={() => {
+                                    props.setSelectedCandidate(row.id);
+                                    props.setEditMode(false);
+                                }}
+                                variant="contained"
+                                sx={{
+                                    backgroundColor: '#1976d2',
+                                    color: 'white',
+                                    width: '40px',
+                                    height: '30px',
+                                }}
+                            >
+                                { t("candidateTable.details") }
+                            </Button>
+                        </TableCell>
+                    </TableRow>
+                ))}
+
+                {emptyRows > 0 && (
+                    <TableRow>
+                        <TableCell colSpan={5} />
+                    </TableRow>
+                )}
+            </TableBody>
 
           <TableFooter>
             <TableRow>

@@ -7,7 +7,18 @@
     "tooltip_title": "Top Bar:",
     "tooltip_upload": "Access the 'Upload Candidate': in order to upload new CVs",
     "tooltip_job": "Navigate to Job Description Page",
-    "tooltip_logout": "Log out"
+    "tooltip_logout": "Log out",
+    "accessTooltip": "Access the \"Upload Candidate\": in order to upload new CVs",
+    "navigateTooltip": "Navigate to Job Description Page",
+    "logoutTooltip": "Log out",
+    "leftSideTooltip": "Left Side:",
+    "tableTooltip": "The table will display uploaded candidates",
+    "searchTooltip": "Search for the desired candidate using the searchbar or filter them using \"Advanced Filters\"",
+    "fetchTooltip": "Fetch back all the candidates by clicking the \"Refresh button\"",
+    "selectTooltip": "Select a candidate from the table and it will be displayed on the right side",
+    "successAlert": "File(s) processed successfully!",
+    "warningAlert": "Warning message here!",
+    "errorAlert": "Error occurred!"
   },
   "uploadCandidateModal": {
     "chooseFile": "Choose PDF File",
@@ -49,7 +60,8 @@
     "experience": "Experience",
     "role": "Role",
     "language": "Language",
-    "actions": "Actions"
+    "actions": "Actions",
+    "details": "Details"
   },
   "noCandidate": {
     "noCandidateMessage": "No candidate selected."

@@ -8,18 +8,20 @@ import { downloadFileFromBlob, getFileNameFromDisposition } from "../../../helpe
 import {useTranslation} from "react-i18next";
 
 export default function RawMatch({ jobId, jobTitle, setSelectedCandidate, matchCandidates, setAiMatchedCandidates }) {
-    const {t} = useTranslation();
+    const {t, i18n} = useTranslation();
     const navigate = useNavigate();
-    const [fileLanguage, setFileLanguage] = useState("English");
+
     const [selectedIds, setSelectedIds] = useState(new Set());
     const [loading, setLoading] = useState(false);
+
+    const systemLanguage = i18n.language?.startsWith('fr') ? 'French' : 'English';
 
     const handleAIMatch = async () => {
         setLoading(true);
         const params = new URLSearchParams();
         params.append("job_id", String(jobId));
         selectedIds.forEach(id => params.append("candidate_id", String(id)));
-        params.append("response_language", fileLanguage);
+        params.append("response_language", systemLanguage);
 
         try{
             const response = await api.get("/job-description/ai-match", { params });
@@ -37,7 +39,7 @@ export default function RawMatch({ jobId, jobTitle, setSelectedCandidate, matchC
         const params = new URLSearchParams();
         params.append("job_id", String(jobId));
         selectedIds.forEach(id => params.append("candidate_id", String(id)));
-        params.append("response_language", fileLanguage);
+        params.append("response_language", systemLanguage);
 
         try {
             const response = await api.get("/job-description/generate-docx", { 
@@ -55,9 +57,6 @@ export default function RawMatch({ jobId, jobTitle, setSelectedCandidate, matchC
         }
     }
 
-    const handleFileLanguageChange = (event) => {
-        setFileLanguage(event.target.value);
-    };
 
     const toggleCheckbox = (id) => (event) => {
         event.stopPropagation();
@@ -122,21 +121,6 @@ export default function RawMatch({ jobId, jobTitle, setSelectedCandidate, matchC
                 >
                     {t("rawMatch.downloadBtn")}
                 </Button>
-
-                <FormControl>
-                    <InputLabel id="file-language-label" sx={{minWidth: 200}}>File Language</InputLabel>
-                    <Select
-                        sx={{minWidth: 120}}
-                        labelId="file-language-label"
-                        id="file-language-select"
-                        value={fileLanguage}
-                        onChange={handleFileLanguageChange}
-                        label="File Type"
-                    >
-                        <MenuItem value="English" sx={{width: 120}}>English</MenuItem>
-                        <MenuItem value="French" sx={{width: 120}}>French</MenuItem>
-                    </Select>
-                </FormControl>
 
                 <Tooltip title={renderTooltipContent()} sx={{mr: 2}}>
                     <IconButton>
