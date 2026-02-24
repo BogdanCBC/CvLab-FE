@@ -186,7 +186,7 @@ export default function Candidate(props) {
 
             <div className="candidate-wrapper">
                 <div className="candidate-header">
-                <h2>{ t("candidate.candidateName") }: {candidate ? candidate.firstName : t("candidate.noName")}</h2>
+                <h2>{ t("candidate.candidateName") } {candidate ? candidate.firstName : t("candidate.noName")}</h2>
                 
                 <Tooltip sx={{mr: 2}} title={renderTooltipContent()}>
                     <IconButton>
@@ -194,7 +194,7 @@ export default function Candidate(props) {
                     </IconButton>
                 </Tooltip>
 
-                <Tooltip sx={{mr: 2}} title={"Copy candidate link to clipboard"}>
+                <Tooltip sx={{mr: 2}} title={t("candidate.clipboard")}>
                     <Button onClick={handleCopyLink}>
                         <ContentCopyIcon />
                     </Button>

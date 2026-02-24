@@ -77,6 +77,7 @@
     "phoneNo": "Phone number:",
     "email": "Email:",
     "description": "Candidate description:",
+    "clipboard": "Copy candidate link to clipboard",
     "fileFormat": "File format",
     "template": "Template",
     "getFormatedCV": "Get formated CV",
