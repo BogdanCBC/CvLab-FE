@@ -18,18 +18,35 @@ const AdminPage = ({ setIsLoggedIn }) => {
     const [isResetModalOpen, setIsResetModalOpen] = useState(false);
     const [selectedUser, setSelectedUser] = useState(null);
 
+    // Pagination
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(5);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [totalCount, setTotalCount] = useState(0);
+
     const fetchUsers = async () => {
         try {
-            const response = await api.get('/user');
-            setUsers(response.data);
+            const response = await api.get('/user', {
+                params: {
+                    skip: page * rowsPerPage,
+                    limit: rowsPerPage,
+                    search_term: searchTerm
+                }
+            });
+            setUsers(response.data.items);
+            setTotalCount(response.data.total);
         } catch (error) {
             console.error("Error fetching users:", error);
         }
     };
 
     useEffect(() => {
-        fetchUsers();
-    }, []);
+        const delayDebounceFn = setTimeout(() => {
+            fetchUsers();
+        }, 500);
+
+        return () => clearTimeout(delayDebounceFn);
+    }, [page, rowsPerPage, searchTerm]);
 
     const openResetDialog = (user) => {
         setSelectedUser(user);
@@ -54,6 +71,13 @@ const AdminPage = ({ setIsLoggedIn }) => {
                 <UsersTable
                     users={users}
                     onResetPassword={openResetDialog}
+                    page={page}
+                    setPage={setPage}
+                    rowsPerPage={rowsPerPage}
+                    setRowsPerPage={setRowsPerPage}
+                    searchTerm={searchTerm}
+                    setSearchTerm={setSearchTerm}
+                    totalCount={totalCount}
                 />
             </Container>
 

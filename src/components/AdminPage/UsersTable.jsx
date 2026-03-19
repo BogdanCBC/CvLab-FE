@@ -1,23 +1,12 @@
 import * as React from 'react';
 import { Box, Table, TableHead, TableBody, TableCell, TableContainer, TableFooter, TablePagination, TableRow, Paper, Button, TextField } from '@mui/material';
-import Fuse from 'fuse.js';
-import {useTranslation} from "react-i18next";
+import { useTranslation } from "react-i18next";
 
-export default function UsersTable({ users, onResetPassword }) {
-    const {t} = useTranslation();
-
-    const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(5);
-    const [searchTerm, setSearchTerm] = React.useState('');
-
-    const fuse = new Fuse(users, {
-        keys: ['username', 'role'],
-        threshold: 0.3,
-    });
-
-    const filteredUsers = searchTerm
-        ? fuse.search(searchTerm).map(result => result.item)
-        : users;
+export default function UsersTable({
+                                       users, onResetPassword, page, setPage,
+                                       rowsPerPage, setRowsPerPage, searchTerm, setSearchTerm, totalCount
+                                   }) {
+    const { t } = useTranslation();
 
     const handleChangePage = (event, newPage) => setPage(newPage);
     const handleChangeRowsPerPage = (event) => {
@@ -35,7 +24,7 @@ export default function UsersTable({ users, onResetPassword }) {
                 value={searchTerm}
                 onChange={(e) => {
                     setSearchTerm(e.target.value);
-                    setPage(0);
+                    setPage(0); // Reset to page 1 when searching
                 }}
             />
 
@@ -50,34 +39,32 @@ export default function UsersTable({ users, onResetPassword }) {
                     </TableHead>
 
                     <TableBody>
-                        {filteredUsers
-                            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                            .map((user) => (
-                                <TableRow key={user.user_id} hover>
-                                    <TableCell>{user.username}</TableCell>
-                                    <TableCell>{user.role}</TableCell>
-                                    <TableCell align="right">
-                                        <Button
-                                            onClick={(e) => {
-                                                e.stopPropagation();
-                                                onResetPassword(user);
-                                            }}
-                                            variant="contained"
-                                            size="small"
-                                            sx={{ backgroundColor: '#1976d2', color: 'white' }}
-                                        >
-                                            {t("adminPage.resetPassword")}
-                                        </Button>
-                                    </TableCell>
-                                </TableRow>
-                            ))}
+                        {users.map((user) => (
+                            <TableRow key={user.user_id} hover>
+                                <TableCell>{user.username}</TableCell>
+                                <TableCell>{user.role}</TableCell>
+                                <TableCell align="right">
+                                    <Button
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            onResetPassword(user);
+                                        }}
+                                        variant="contained"
+                                        size="small"
+                                        sx={{ backgroundColor: '#1976d2', color: 'white' }}
+                                    >
+                                        {t("adminPage.resetPassword")}
+                                    </Button>
+                                </TableCell>
+                            </TableRow>
+                        ))}
                     </TableBody>
 
                     <TableFooter>
                         <TableRow>
                             <TablePagination
-                                rowsPerPageOptions={[5, 10, 25]}
-                                count={filteredUsers.length}
+                                rowsPerPageOptions={[5, 10, 25, 100]}
+                                count={totalCount}
                                 rowsPerPage={rowsPerPage}
                                 page={page}
                                 onPageChange={handleChangePage}

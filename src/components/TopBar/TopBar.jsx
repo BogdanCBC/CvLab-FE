@@ -32,12 +32,6 @@ function TopBar(props) {
     const handleLanguageChange = (event) => {
         const newLang = event.target.value;
         i18n.changeLanguage(newLang);
-
-        fetchCandidates(newLang).then(data => {
-            if (props.setCandidates) {
-                props.setCandidates(data);
-            }
-        });
     }
 
     function handleLogout() {

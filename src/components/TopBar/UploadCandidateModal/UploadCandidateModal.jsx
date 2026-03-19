@@ -90,9 +90,8 @@ function UploadCandidateModal(props) {
     setFiles([]);
     props.setModalState(false);
     setSubmitStatusBtn(false);
-    fetchCandidates(i18n.language).then(sortedCandidates => {
-      props.setCandidates(sortedCandidates);
-    });
+
+    window.dispatchEvent(new Event('refreshCandidates'));
   }
 
   const uploadSingleCV = async (fileData) => {
@@ -189,10 +188,12 @@ function UploadCandidateModal(props) {
       setSubmitStatusBtn(true);
       setIsUploading(true);
       for (const file of files) {
-        await processFile(file);
+          await processFile(file);
       }
       setIsUploading(false);
-      await fetchCandidates(i18n.language).then(data => props.setCandidates(data));
+
+      // FIX: Shout to the app that a refresh is needed!
+      window.dispatchEvent(new Event('refreshCandidates'));
   }
 
   const handleKeepDuplicate = async (localId) => {

@@ -72,58 +72,33 @@ export default function AdvancedFilters(props){
         }));
     };
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
 
-        const currentLang = i18n.language?.startsWith('fr') ? 'French' : 'English';
+        // Prepare the payload
+        const filterPayload = {
+            position: formData.position,
+            experience: formData.experience.trim() === '' ? undefined : parseInt(formData.experience, 10),
+            skills: formData.skills,
+            languages: formData.languages,
+            certifications: formData.certifications
+        };
 
-        try {
-            const response = await api.post(`/filters?language=${currentLang}`, {
-                position: formData.position,
-                experience: formData.experience.trim() === '' ? undefined : parseInt(formData.experience, 10),
-                skills: formData.skills,
-                languages: formData.languages,
-                certifications: formData.certifications
-            });
+        // Pass payload up to the parent component!
+        props.onApplyFilters(filterPayload);
 
-            if (response.status === 200) {
-                const mappedData = response.data.map(candidate => ({
-                    id: candidate.id,
-                    firstName: candidate.first_name,
-                    lastName: candidate.last_name,
-                    experience: candidate.experience,
-                    position: candidate.position,
-                    language: candidate.language,
-                }));
-
-                props.setCandidates(mappedData);
-                console.log(mappedData);
-
-                props.setModalState(false);
-                setFormData({
-                    skills: [],
-                    position: '',
-                    experience: '',
-                    languages: [],
-                    certifications: []
-                });
-            } else {
-                alert(response.data.Status || 'Unexpected response');
-            }
-        } catch (error) {
-            if (error.response) {
-                const status = error.response.status;
-                const backendMessage = error.response.data?.Status || 'An error occurred';
-
-                if (status === 404 || status === 500) {
-                    alert(backendMessage);
-                } else {
-                    alert(`Error ${status}: ${backendMessage}`);
-                }
-            } else {
-                alert('Network error or no response from server.');
-            }
-        }
+        // Reset the form
+        setFormData({
+            skills: [],
+            position: '',
+            experience: '',
+            languages: [],
+            certifications: []
+        });
+        setSkillInput("");
+        setYearsInput("");
+        setLanguageInput("");
+        setCertificationInput("");
     };
 
     return(
