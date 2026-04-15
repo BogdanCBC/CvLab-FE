@@ -1,6 +1,7 @@
 {
   "topbar": {
     "upload": "Importer un candidat",
+    "pasteText": "Importer via texte",
     "job_desc": "Description du poste",
     "admin": "Administration",
     "logout": "Déconnexion ",
@@ -30,6 +31,12 @@
     "closeBtn": "Fermer",
     "submit": "Envoyer le(s)",
     "file": "fichier"
+  },
+  "uploadTextModal" : {
+    "title": "Coller le profil du candidat",
+    "rawTextLabel": "Coller le texte brut du CV ou de LinkedIn ici",
+    "additionalInfo": "Notes RH supplémentaires (Optionnel)",
+    "processing": "Traitement en cours..."
   },
   "uploadCandidate": {
     "addDescription": "Ajouter une description...",

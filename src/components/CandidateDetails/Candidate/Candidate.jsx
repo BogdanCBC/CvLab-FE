@@ -61,7 +61,9 @@ export default function Candidate(props) {
                 description: response.data.description || "N/A",
                 username: response.data.username || "N/A",
                 email: response.data.email || "N/A",
-                phone: response.data.phone || "N/A"
+                phone: response.data.phone || "N/A",
+                // Check if it has an original CV
+                hasOriginalCv: !!response.data.s3_key
             };
 
             // UNCOMMENT TO SEE CANDIDATE INFO
@@ -100,44 +102,49 @@ export default function Candidate(props) {
     const getFormattedCV = async () => {
         try {
             setLoading(true);
-            const formData = new FormData();
-            formData.append("candidate_id", props.candidateId);
-            formData.append("template_type", templateType === "ISE" ? iseSubType : templateType)
 
-            const generateCandidateCV = await api.post(`/template`, formData, {
-                headers: { "Content-Type" : "application/json" }
-            })
-            if (generateCandidateCV) {
-                const response = await api.get(`/template/${props.candidateId}?file_type=${downloadFileType}`, {
+            // 1. Determine the correct template type
+            const finalTemplateType = templateType === "ISE" ? iseSubType : templateType;
+
+            // 2. Make a single GET request matching your backend route
+            const response = await api.get(
+                `/template/${props.candidateId}?file_type=${downloadFileType}&template_type=${finalTemplateType}`,
+                {
                     responseType: 'blob',
-                })
+                }
+            );
 
-                const disposition = response.headers['content-disposition'];
-                let filename = getFileNameFromDisposition(disposition);
-                const blobFile = new Blob([response.data]);
+            // 3. Process the file download
+            const disposition = response.headers['content-disposition'];
+            let filename = getFileNameFromDisposition(disposition);
 
-                downloadFileFromBlob(blobFile, filename);
-
-                setLoading(false);
-            } else {
-                console.log('Failed to generate new CV.')
-                setLoading(false);
+            if (!filename) {
+                filename = `CV_${props.candidateId}.${downloadFileType}`;
             }
+
+            const blobFile = new Blob([response.data]);
+            downloadFileFromBlob(blobFile, filename);
+
         } catch (error) {
             console.error("Error fetching formatted CV:", error);
             alert("An error occurred while fetching the formatted CV. Please try again.");
-            setLoading(false)
+        } finally {
+            setLoading(false);
         }
     }
-    
+
     const deleteCandidate = async () => {
         try {
             const response = await api.delete(`/candidates?id=${props.candidateId}`);
             if (response.status === 200) {
-                props.setSelectedCadnidate(null);
+                props.setSelectedCandidate(null);
+
+                // Refresh the list
                 fetchCandidates().then(sortedCandidates => {
                     props.setCandidates(sortedCandidates);
-                });   
+                });
+
+                window.dispatchEvent(new Event('refreshCandidates'));
             }
         } catch (error) {
             console.error("Error deleting candidate:", error);
@@ -229,87 +236,94 @@ export default function Candidate(props) {
                 )}
 
                 <Box className="candidate-data">
-                <Typography variant="h6" gutterBottom>
-                    {t("candidate.details")}
-                </Typography>
-                <Typography>
-                    <strong>{t("candidate.phoneNo")}</strong> {candidate?.phone || "Not Specified"}
-                </Typography>
-                <Typography>
-                    <strong>{t("candidate.email")}</strong> {candidate?.email || "Not Specified"}
-                </Typography>
-                <Typography sx={{ whiteSpace: "pre-line", textAlign: "justify" }}>
-                    <strong>{t("candidate.description")}</strong>{" "}
-                    {candidate ? candidate.description : "none"}
-                </Typography>
+                    <Typography variant="h6" gutterBottom>
+                        {t("candidate.details")}
+                    </Typography>
+                    <Typography>
+                        <strong>{t("candidate.phoneNo")}</strong> {candidate?.phone || "Not Specified"}
+                    </Typography>
+                    <Typography>
+                        <strong>{t("candidate.email")}</strong> {candidate?.email || "Not Specified"}
+                    </Typography>
+                    <Typography sx={{ whiteSpace: "pre-line", textAlign: "justify" }}>
+                        <strong>{t("candidate.description")}</strong>{" "}
+                        {candidate ? candidate.description : "none"}
+                    </Typography>
 
-                <div className="candidate-cv-buttons">
-                    <FormControl sx={{ minWidth: 130 }}>
-                        <InputLabel id="file-type-select-label">{t("candidate.fileFormat")}</InputLabel>
-                        <Select
-                            labelId="file-type-select-label"
-                            id="file-type-select"
-                            value={downloadFileType}
-                            onChange={(e) => setDownloadFileType(e.target.value)}
-                            label={t("candidate.fileFormat")}
-                        >
-                            <MenuItem value="pdf">PDF</MenuItem>
-                            <MenuItem value="pptx">PPTX</MenuItem>
-                            <MenuItem value="docx">DOCX</MenuItem>
-                        </Select>
-                    </FormControl>
-
-                    <FormControl sx={{ minWidth: 140 }}>
-                        <InputLabel id="template-type-select-label">Template</InputLabel>
-                        <Select
-                            labelId="template-type-select-label"
-                            id="template-type-select"
-                            value={templateType}
-                            onChange={handleChangeTemplateType}
-                            label={t("candidate.template")}
-                        >
-                            {getTenantConfig().templates.map(t => (
-                                <MenuItem key={t.toLowerCase()} value={t}>{t}</MenuItem>
-                            ))}
-                        </Select>
-                    </FormControl>
-
-                    {templateType === "ISE" && (
-                        <FormControl sx={{ minWidth: 140 }}>
-                            <InputLabel id="ise-subtype-label">ISE Template</InputLabel>
+                    <div className="candidate-cv-buttons">
+                        <FormControl sx={{ minWidth: 130 }}>
+                            <InputLabel id="file-type-select-label">{t("candidate.fileFormat")}</InputLabel>
                             <Select
-                                labelId="ise-subtype-label"
-                                id="ise-subtype-select"
-                                value={iseSubType}
-                                onChange={handleChangeIseSubType}
-                                label="ISE"
+                                labelId="file-type-select-label"
+                                id="file-type-select"
+                                value={downloadFileType}
+                                onChange={(e) => setDownloadFileType(e.target.value)}
+                                label={t("candidate.fileFormat")}
                             >
-                                <MenuItem value="ISE1">{t("candidate.template")} 1</MenuItem>
-                                <MenuItem value="ISE2">{t("candidate.template")} 2</MenuItem>
-                                <MenuItem value="ISE3">{t("candidate.template")} 3</MenuItem>
+                                <MenuItem value="pdf">PDF</MenuItem>
+                                <MenuItem value="pptx">PPTX</MenuItem>
+                                <MenuItem value="docx">DOCX</MenuItem>
                             </Select>
                         </FormControl>
-                    )}
 
-                    <Button
-                        loading={loading}
-                        variant="contained"
-                        color="primary"
-                        disabled={disableGetFormatted}
-                        onClick={() => getFormattedCV()}
-                    >
-                        {t("candidate.getFormatedCV")}
-                    </Button>
+                        <FormControl sx={{ minWidth: 140 }}>
+                            <InputLabel id="template-type-select-label">Template</InputLabel>
+                            <Select
+                                labelId="template-type-select-label"
+                                id="template-type-select"
+                                value={templateType}
+                                onChange={handleChangeTemplateType}
+                                label={t("candidate.template")}
+                            >
+                                {getTenantConfig().templates.map(t => (
+                                    <MenuItem key={t.toLowerCase()} value={t}>{t}</MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
 
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={() => getOriginalCV()}
-                        sx={{ marginLeft: 1 }}
-                    >
-                        {t("candidate.getOriginalCV")}
-                    </Button>
-                </div>
+                        {templateType === "ISE" && (
+                            <FormControl sx={{ minWidth: 140 }}>
+                                <InputLabel id="ise-subtype-label">ISE Template</InputLabel>
+                                <Select
+                                    labelId="ise-subtype-label"
+                                    id="ise-subtype-select"
+                                    value={iseSubType}
+                                    onChange={handleChangeIseSubType}
+                                    label="ISE"
+                                >
+                                    <MenuItem value="ISE1">{t("candidate.template")} 1</MenuItem>
+                                    <MenuItem value="ISE2">{t("candidate.template")} 2</MenuItem>
+                                    <MenuItem value="ISE3">{t("candidate.template")} 3</MenuItem>
+                                </Select>
+                            </FormControl>
+                        )}
+
+                        <Button
+                            loading={loading}
+                            variant="contained"
+                            color="primary"
+                            disabled={disableGetFormatted}
+                            onClick={() => getFormattedCV()}
+                        >
+                            {t("candidate.getFormatedCV")}
+                        </Button>
+
+                        <Tooltip
+                            title={!candidate?.hasOriginalCv ? "This profile was created from raw text. No original file exists." : ""}
+                            placement="top"
+                        >
+                            <Box component="span" sx={{ display: 'inline-flex' }}>
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    onClick={() => getOriginalCV()}
+                                    disabled={!candidate?.hasOriginalCv}
+                                >
+                                    {t("candidate.getOriginalCV")}
+                                </Button>
+                            </Box>
+                        </Tooltip>
+                    </div>
                 </Box>
             </div>
         </Box>

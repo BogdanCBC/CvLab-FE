@@ -1,6 +1,7 @@
 {
   "topbar": {
     "upload": "Upload Candidate",
+    "pasteText": "Upload via text",
     "job_desc": "Job Description",
     "admin": "Admin Panel",
     "logout": "Logout",
@@ -30,6 +31,12 @@
     "closeBtn": "Close Window",
     "submit": "Submit",
     "file": "file"
+  },
+  "uploadTextModal" : {
+    "title": "Paste Candidate Profile",
+    "rawTextLabel": "Paste Raw Resume/LinkedIn Text Here",
+    "additionalInfo": "Additional HR Notes (Optional)",
+    "processing": "Processing..."
   },
   "uploadCandidate": {
     "addDescription": "Add description...",
@@ -105,6 +112,7 @@
     "loadingData": "Loading profile data..."
   },
   "generalInfo": {
+    "general": "General information",
     "firstName": "First Name",
     "lastName": "Last Name",
     "experience": "Experience",
