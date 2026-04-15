@@ -18,10 +18,10 @@ function CandidateDetails(props) {
             {props.editMode ? (<EditProfile
                             candidateId={props.selectedCandidate}
                             setEditMode={props.setEditMode}
-                        />) : 
+                        />) :
                         (<Candidate
                             candidate={props.selectedCandidate}
-                            setSelectedCandaidate={props.setSelectedCandidate}
+                            setSelectedCandidate={props.setSelectedCandidate}
                             candidateId={props.selectedCandidate}
                             setEditMode={props.setEditMode}
                             editMode={props.editMode}

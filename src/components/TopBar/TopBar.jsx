@@ -10,13 +10,15 @@ import UploadCandidateModal from './UploadCandidateModal/UploadCandidateModal';
 import {getTenantConfig} from "../../utils/tenantConfig";
 
 import { useTranslation } from 'react-i18next';
-import { fetchCandidates } from '../../utils/fetchCandidates';
+import UploadTextModal from "./UploadTextModal/UploadTextModal";
+
 
 function TopBar(props) {
     const {t, i18n } = useTranslation();
     const storedRole = localStorage.getItem('role');
 
     const [open, setOpen] = useState(false);
+    const [openTextModal, setOpenTextModal] = useState(false);
     const [success, setSuccess] = useState(false);
     const [warning, setWarning] = useState(false);
     const [error, setError] = useState(false);
@@ -107,23 +109,32 @@ function TopBar(props) {
                             onChange={handleLanguageChange}
                             displayEmpty
                             startAdornment={<LanguageIcon sx={{ mr: 1, fontSize: '1.2rem', color: 'gray' }} />}
-                            sx={{ height: '40px', borderRadius: '8px' }}
+                            sx={{ height: '40px', borderRadius: '8px'}}
                         >
                             <MenuItem value="en">UK</MenuItem>
                             <MenuItem value="fr">France</MenuItem>
                         </Select>
                     </FormControl>
 
-                    <Tooltip title={renderTooltipContent()} sx={{mr: 2}}>
+                    <Tooltip title={renderTooltipContent()} sx={{mr: 2, ml: 2}}>
                         <IconButton>
                             <InfoOutlineIcon/>
                         </IconButton>
                     </Tooltip>
+
                     <Button
                         onClick={() => setOpen(true)}
                         variant="contained"
+                        sx={{ mr: 1 }}
                     >
-                        {t('topbar.upload')}
+                        {t('topbar.upload', 'Upload PDF')}
+                    </Button>
+
+                    <Button
+                        onClick={() => setOpenTextModal(true)}
+                        variant="contained"
+                    >
+                        {t('topbar.pasteText', 'Paste Text')}
                     </Button>
                 </div>
             </div>
@@ -166,6 +177,16 @@ function TopBar(props) {
             <UploadCandidateModal
                 modalState={open}
                 setModalState={setOpen}
+                setSuccess={setSuccess}
+                setWarning={setWarning}
+                setError={setError}
+                candidates={props.candidates}
+                setCandidates={props.setCandidates}
+            />
+
+            <UploadTextModal
+                modalState={openTextModal}
+                setModalState={setOpenTextModal}
                 setSuccess={setSuccess}
                 setWarning={setWarning}
                 setError={setError}
