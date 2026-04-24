@@ -6,6 +6,7 @@ import JobDescription from './JobDescription/JobDescription';
 import MatchPage from './MatchPage/MatchPage';
 import CandidatesPage from "./CandidatesPage/CandidatesPage";
 import AdminPage from "./AdminPage/AdminPage";
+import MetricsPage from "./MetricsPage/MetricsPage";
 import '../i18n';
 
 function ProtectedRoute({ isLoggedIn }) {
@@ -118,10 +119,16 @@ function App() {
               />
 
             {(userRole === 'admin' || userRole === 'superadmin') && (
-                <Route
-                    path="/admin"
-                    element={<AdminPage setIsLoggedIn={setIsLoggedIn} />}
-                />
+                <>
+                    <Route
+                        path="/admin"
+                        element={<AdminPage setIsLoggedIn={setIsLoggedIn} />}
+                    />
+                    <Route
+                        path="/metrics"
+                        element={<MetricsPage setIsLoggedIn={setIsLoggedIn} />}
+                    />
+                </>
             )}
         </Route>
       </Routes>

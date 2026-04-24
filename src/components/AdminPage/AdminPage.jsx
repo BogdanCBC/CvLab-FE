@@ -12,6 +12,7 @@ import {useTranslation} from "react-i18next";
 
 const AdminPage = ({ setIsLoggedIn }) => {
     const {t} = useTranslation();
+    const navigate = useNavigate();
 
     const [users, setUsers] = useState([]);
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
@@ -63,9 +64,15 @@ const AdminPage = ({ setIsLoggedIn }) => {
                         {t("adminPage.userManagement")}
                     </Typography>
 
-                    <Button variant="contained" color="success" onClick={() => setIsCreateModalOpen(true)}>
-                        {t("adminPage.createNewUser")}
-                    </Button>
+                    <Box display="flex" gap={2}>
+                        <Button variant="outlined" color="primary" onClick={() => navigate('/metrics')}>
+                            {t("adminPage.viewMetrics", "View Metrics")}
+                        </Button>
+
+                        <Button variant="contained" color="success" onClick={() => setIsCreateModalOpen(true)}>
+                            {t("adminPage.createNewUser")}
+                        </Button>
+                    </Box>
                 </Box>
 
                 <UsersTable

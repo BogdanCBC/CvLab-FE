@@ -140,9 +140,9 @@ export default function Candidate(props) {
                 props.setSelectedCandidate(null);
 
                 // Refresh the list
-                fetchCandidates().then(sortedCandidates => {
-                    props.setCandidates(sortedCandidates);
-                });
+                // fetchCandidates().then(sortedCandidates => {
+                //     props.setCandidates(sortedCandidates);
+                // });
 
                 window.dispatchEvent(new Event('refreshCandidates'));
             }
