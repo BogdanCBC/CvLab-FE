@@ -178,6 +178,7 @@
   },
   "adminPage": {
     "userManagement": "Gestion des utilisateurs",
+    "viewMetrics": "Voir les indicateurs",
     "createNewUser": "Créer un nouvel utilisateur",
     "searchUser": "Rechercher utilisateur",
     "username": "Identifiant",
@@ -269,5 +270,19 @@
     "docxTip": "Ou téléchargez le DOCX.",
     "aiResults": "Résultats du Match IA",
     "job": "Poste:"
+  },
+  "metrics": {
+    "dashboardTitle": "Utilisation de l'API & Coûts",
+    "today": "Aujourd'hui",
+    "last7Days": "7 derniers jours",
+    "last30Days": "30 derniers jours",
+    "overallSummary": "Résumé général",
+    "costBreakdown": "DÉTAIL DES COÛTS",
+    "username": "Utilisateur",
+    "actionsCount": "Actions IA",
+    "inTokens": "Tokens en entrée",
+    "outTokens": "Tokens en sortie",
+    "totalSpent": "Total dépensé ($)",
+    "noData": "Aucune donnée disponible pour cette période."
   }
 }

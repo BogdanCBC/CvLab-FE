@@ -187,6 +187,7 @@
   },
   "adminPage": {
     "userManagement": "User Management",
+    "viewMetrics": "View Metrics",
     "createNewUser": "Create new user",
     "searchUser": "Search User",
     "username": "Username",
@@ -278,5 +279,19 @@
     "docxTip": "Or download the Docx.",
     "aiResults": "AI Match Results",
     "job": "Job:"
+  },
+  "metrics": {
+    "dashboardTitle": "API Usage & Costs",
+    "today": "Today",
+    "last7Days": "Last 7 Days",
+    "last30Days": "Last 30 Days",
+    "overallSummary": "Overall Summary",
+    "costBreakdown": "COST BREAKDOWN",
+    "username": "Username",
+    "actionsCount": "AI Actions",
+    "inTokens": "Input Tokens",
+    "outTokens": "Output Tokens",
+    "totalSpent": "Total Spent ($)",
+    "noData": "No metrics data found for this period."
   }
 }
