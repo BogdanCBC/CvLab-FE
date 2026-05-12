@@ -8,6 +8,7 @@ import CandidatesPage from "./CandidatesPage/CandidatesPage";
 import AdminPage from "./AdminPage/AdminPage";
 import MetricsPage from "./MetricsPage/MetricsPage";
 import '../i18n';
+import PromptPage from "./PromptPage/PromptPage";
 
 function ProtectedRoute({ isLoggedIn }) {
     const location = useLocation();
@@ -127,6 +128,10 @@ function App() {
                     <Route
                         path="/metrics"
                         element={<MetricsPage setIsLoggedIn={setIsLoggedIn} />}
+                    />
+                    <Route
+                        path="/admin/prompts"
+                        element={<PromptPage setIsLoggedIn={setIsLoggedIn} />}
                     />
                 </>
             )}
