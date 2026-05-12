@@ -55,7 +55,7 @@ pipeline {
                         sshpass -p \$SSH_PASS ssh -o StrictHostKeyChecking=no ${DEPLOY_USER}@${DEPLOY_HOST} << 'ENDSSH'
                             cd ${DEPLOY_PATH}
                             docker compose pull frontend
-                            docker compose up -d frontend
+                            docker compose up -d --force-recreate --no-deps frontend
                             docker image prune -f
 ENDSSH
                     """
