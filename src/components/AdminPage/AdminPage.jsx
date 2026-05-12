@@ -65,6 +65,11 @@ const AdminPage = ({ setIsLoggedIn }) => {
                     </Typography>
 
                     <Box display="flex" gap={2}>
+                        <Button variant="outlined" color="secondary" onClick={() => navigate('/admin/prompts')}
+                        >
+                            {t("adminPage.promptEngineering", "Prompt Engineering")}
+                        </Button>
+
                         <Button variant="outlined" color="primary" onClick={() => navigate('/metrics')}>
                             {t("adminPage.viewMetrics", "View Metrics")}
                         </Button>
