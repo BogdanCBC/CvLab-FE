@@ -7,7 +7,7 @@ pipeline {
         DEPLOY_HOST = '178.105.101.11'
         DEPLOY_USER = 'ubuntu2'
         DEPLOY_PATH = '/home/ubuntu2/Desktop/project-root'
-        REACT_APP_BASE_URL = 'https://cvdev.feel-it-services.com'
+        REACT_APP_BASE_URL = 'https://cvlab.feel-it-services.com'
     }
 
     stages {
