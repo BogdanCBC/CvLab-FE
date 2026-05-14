@@ -15,7 +15,15 @@ RUN npm run build
 
 # Stage 2: Serve
 FROM nginx:alpine
+
+ARG DOMAIN=cvdev.feel-it-services.com
+ENV SERVER_NAME=$DOMAIN
+
+RUN rm /etc/nginx/conf.d/default.conf
+COPY nginx.conf.template /tmp/nginx.conf.template
+RUN envsubst '${SERVER_NAME}' < /tmp/nginx.conf.template > /etc/nginx/conf.d/default.conf && \
+    rm /tmp/nginx.conf.template
+
 COPY --from=build /app/build /usr/share/nginx/html
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-EXPOSE 80
+EXPOSE 80 443
 CMD ["nginx", "-g", "daemon off;"]
