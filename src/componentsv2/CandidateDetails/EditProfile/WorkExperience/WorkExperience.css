@@ -1,0 +1,63 @@
+.work-experience {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    border: 2px solid black;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+}
+
+.work-experience-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    background-color: #f9f9f9;
+    padding: 0.5rem;
+}
+
+.add-work-experience-button {
+    align-self: center;
+}
+
+.work-experience-item {
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(243, 240, 237);
+    gap: 0.5rem;
+    margin: 20px;
+    padding: 10px;
+    border: 2px solid black;
+    border-radius: 10px;
+}
+
+.work-experience-item-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.responsibilities {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.responsibilities-header{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.responsibility-item{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.5rem;
+}

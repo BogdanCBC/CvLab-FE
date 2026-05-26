@@ -1,0 +1,41 @@
+.education {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    border: 2px solid black;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+}
+
+.education-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    background-color: #f9f9f9;
+    padding: 0.5rem;
+}
+
+.add-education-button {
+    align-self: center;
+}
+
+.education-item {
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(243, 240, 237);
+    gap: 0.5rem;
+    margin: 20px;
+    padding: 10px;
+    border: 2px solid black;
+    border-radius: 10px;
+}
+
+.education-item-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}

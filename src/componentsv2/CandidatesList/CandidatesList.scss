@@ -1,0 +1,38 @@
+.candidates-list {
+    flex: 1;
+}
+
+.candidates-list-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.candidates-search {
+    flex: 1;
+}
+
+.filters-button {
+    flex-shrink: 0;
+}
+
+
+.candidates-list{
+    .candidates-list-header{
+        .candidates-search{
+            height: 40px;
+        }
+        .filters-button{
+            height:40px;
+            font-size: 14px;
+            font-style: normal;
+            font-weight: 600;
+            color: #414651;
+        }
+        .refresh-button{
+            height: 40px;
+            width: 40px;
+        }
+    }
+}

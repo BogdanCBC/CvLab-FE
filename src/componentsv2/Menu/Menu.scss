@@ -1,0 +1,30 @@
+.menu{
+    display: flex;
+    width: 68px;
+    margin: 4px 0 4px 4px;
+    align-items: center;
+    align-self: stretch;
+    height: calc(100vh - 8px);
+    border-radius: 12px;
+    border: 1px solid #E9EAEB;
+    background: #FFF;
+    /* Shadows/shadow-xs */
+    box-shadow: 0 1px 2px 0 rgba(10, 13, 18, 0.05);
+    flex-direction: column;
+    justify-content: space-between;
+    flex: 1 0 0;
+    .top{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2px;
+        padding-top: 20px;
+    }
+    .bottom{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2px;
+        padding: 0 16px 20px 16px;
+    }
+}

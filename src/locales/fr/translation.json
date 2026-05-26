@@ -3,6 +3,7 @@
     "upload": "Importer un candidat",
     "pasteText": "Importer via texte",
     "job_desc": "Description du poste",
+    "candidate_cv": "CV des candidats",
     "admin": "Administration",
     "logout": "Déconnexion ",
     "tooltip_title": "Barre du haut:",
@@ -19,7 +20,8 @@
     "selectTooltip": "Sélectionnez un candidat dans le tableau, il sera affiché à droite",
     "successAlert": "Fichier(s) traité(s) avec succès !",
     "warningAlert": "Message d'avertissement ici !",
-    "errorAlert": "Une erreur s'est produite !"
+    "errorAlert": "Une erreur s'est produite !",
+    "dasboard": "Tableau de bord"
   },
   "uploadCandidateModal": {
     "chooseFile": "Choisir un PDF",
@@ -44,7 +46,8 @@
     "deleteDuplicates": "Supprimer les doublons"
   },
   "candidatesList": {
-    "advancedFiltersBtn": "Filtres avancés"
+    "advancedFiltersBtn": "Filtres avancés",
+    "Filters": "Filtres"
   },
   "advancedFilters": {
     "title": "Filtres avancés",
@@ -68,7 +71,8 @@
     "role": "Poste",
     "language": "Langue",
     "actions": "Actions",
-    "details": "Détails"
+    "details": "Détails",
+    "refreshTooltip": "Rafraîchir"
   },
   "noCandidate": {
     "noCandidateMessage": "Sélectionnez un candidat pour voir ses détails."
@@ -78,7 +82,7 @@
     "candidateName": "Nom du candidat",
     "noName": "Non spécifié",
     "deleteBtn": "Supprimer",
-    "editButton": "Modifier",
+    "editButton": "Modifier CV",
     "uploadedBy": "Candidat ajouté par:",
     "details": "Détails",
     "phoneNo": "Numéro de téléphone:",

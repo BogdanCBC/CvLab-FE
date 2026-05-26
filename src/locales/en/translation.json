@@ -3,6 +3,7 @@
     "upload": "Upload Candidate",
     "pasteText": "Upload via text",
     "job_desc": "Job Description",
+    "candidate_cv": "Candidate CVs",
     "admin": "Admin Panel",
     "logout": "Logout",
     "tooltip_title": "Top Bar:",
@@ -19,7 +20,8 @@
     "selectTooltip": "Select a candidate from the table and it will be displayed on the right side",
     "successAlert": "File(s) processed successfully!",
     "warningAlert": "Warning message here!",
-    "errorAlert": "Error occurred!"
+    "errorAlert": "Error occurred!",
+    "dasboard": "Dashboard"
   },
   "uploadCandidateModal": {
     "chooseFile": "Choose PDF File",
@@ -44,7 +46,8 @@
     "deleteDuplicates": "Delete Duplicates"
   },
   "candidatesList": {
-    "advancedFiltersBtn": "Open advanced filters"
+    "advancedFiltersBtn": "Open advanced filters",
+    "Filters": "Filters"
   },
   "advancedFilters": {
     "title": "Advanced Filters",
@@ -68,7 +71,8 @@
     "role": "Role",
     "language": "Language",
     "actions": "Actions",
-    "details": "Details"
+    "details": "Details",
+    "refreshTooltip": "Refresh"
   },
   "noCandidate": {
     "noCandidateMessage": "No candidate selected."
@@ -78,7 +82,7 @@
     "candidateName": "Candidate Name:",
     "noName": "Unspecified",
     "deleteBtn": "Delete",
-    "editButton": "Edit",
+    "editButton": "Edit CV",
     "uploadedBy": "Candidate uploaded by:",
     "details": "Details",
     "phoneNo": "Phone number:",

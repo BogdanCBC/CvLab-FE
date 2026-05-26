@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, Outlet, useLocation } from 'react-router-dom';
-import Login from './Login/Login';
+import Login from '../componentsv2/Login/Login';
 import { isTokenValid } from '../utils/auth'
 import JobDescription from './JobDescription/JobDescription';
 import MatchPage from './MatchPage/MatchPage';
@@ -9,6 +9,7 @@ import AdminPage from "./AdminPage/AdminPage";
 import MetricsPage from "./MetricsPage/MetricsPage";
 import '../i18n';
 import PromptPage from "./PromptPage/PromptPage";
+import HomePage from '../componentsv2/Home/HomePage';
 
 function ProtectedRoute({ isLoggedIn }) {
     const location = useLocation();
@@ -74,7 +75,7 @@ function App() {
         <Route element={<ProtectedRoute isLoggedIn={isLoggedIn} />}>
            <Route
               path="/job-description"
-              element={<JobDescription
+              element={<HomePage
                   setSelectedCandidate={setSelectedCandidate}
                   setIsLoggedIn={setIsLoggedIn}
               />}
@@ -89,7 +90,7 @@ function App() {
            <Route
                path="/candidates"
                element={
-                   <CandidatesPage
+                   <HomePage
                        candidates={candidates}
                        setCandidates={setCandidates}
                        selectedCandidate={selectedCandidate}
@@ -105,7 +106,7 @@ function App() {
             <Route
                 path="/candidates/:candidateId"
                 element={
-                    <CandidatesPage
+                    <HomePage
                         candidates={candidates}
                         setCandidates={setCandidates}
                         selectedCandidate={selectedCandidate}
@@ -123,7 +124,7 @@ function App() {
                 <>
                     <Route
                         path="/admin"
-                        element={<AdminPage setIsLoggedIn={setIsLoggedIn} />}
+                        element={<HomePage setIsLoggedIn={setIsLoggedIn} />}
                     />
                     <Route
                         path="/metrics"
