@@ -39,7 +39,7 @@ export default function Candidate(props) {
                 phone: response.data.phone || "N/A",
                 hasOriginalCv: !!response.data.s3_key,
             });
-            message.success(t("candidate.successFetchMessage"));
+            // message.success(t("candidate.successFetchMessage"));
         } catch (error) {
             console.error("Error fetching candidate data:", error);
         }

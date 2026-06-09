@@ -18,7 +18,6 @@ export default function HomePage({
                                        setIsLoggedIn,
                                    }) {
     const { activePage, setActivePage } = useActivePage();
-    console.log(activePage);
 
     return (
         <div className="home-container">
@@ -29,7 +28,8 @@ export default function HomePage({
             </div>
             <div className="main-content">
                 <div className="top-menu">
-                    <Header />
+                    <Header candidates={candidates}
+                            setCandidates={setCandidates}/>
                 </div>
                 <div className="content-area">
                     {activePage === "cv" && (

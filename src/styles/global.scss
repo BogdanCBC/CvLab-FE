@@ -48,6 +48,23 @@ a {
   border-radius: 8px;
   font-size: 15px;
   font-weight: 600;
+  &:disabled,
+  &.ant-btn-disabled {
+    background: var(--Gray-100, #F5F5F5);
+  }
+}
+
+//default-button
+.ant-btn.ant-btn-color-default.default-grey-button {
+  background:#FFF;
+  height: 44px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  &:disabled,
+  &.ant-btn-disabled {
+    background: var(--Gray-100, #F5F5F5);
+  }
 }
 
 .ant-btn.ant-btn-color-primary.ant-btn-variant-solid.default-button.small {

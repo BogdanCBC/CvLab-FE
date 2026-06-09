@@ -24,6 +24,13 @@
     "dasboard": "Tableau de bord"
   },
   "uploadCandidateModal": {
+    "uploadText": "Téléverser",
+    "cancel": "Annuler",
+    "title": "Déposez un nouveau CV",
+    "subtitle": "Téléversez et joignez des fichiers.",
+    "upload_click": "Cliquez pour télécharger",
+    "dragDrop": "ou glissez-déposez",
+    "pdfOnly": "Fichiers PDF uniquement",
     "chooseFile": "Choisir un PDF",
     "uploadBtn": "Importer des PDF",
     "uploadedFiles": "Fichiers téléchargés",
@@ -52,6 +59,8 @@
   "advancedFilters": {
     "title": "Filtres avancés",
     "position": "Poste",
+    "positionPlaceholder": "ex : Développeur front-end",
+    "experienceLevel": "Sélectionnez ou tapez un nombre",
     "experience": "Expérience",
     "skills": "Compétences",
     "skillPlaceholder": "Compétence",
@@ -106,7 +115,7 @@
     "lang": "Langues",
     "certifications": "Certifications",
     "personalProj": "Projets personnels",
-    "saveBtn": "Enregistrer",
+    "saveBtn": "Enregistrer les modifications",
     "goBackBtn": "Retour",
     "validationError": "Erreur de validation. Veuillez vérifier vos informations.",
     "requiredField": "Ce champ est obligatoire",

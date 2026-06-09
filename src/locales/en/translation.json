@@ -24,6 +24,13 @@
     "dasboard": "Dashboard"
   },
   "uploadCandidateModal": {
+    "uploadText": "Upload",
+    "cancel": "Cancel",
+    "title": "Upload a new CV",
+    "subtitle": "Upload and attach files.",
+    "upload_click": "Click to upload",
+    "dragDrop": "or drag and drop",
+    "pdfOnly": "PDF files only",
     "chooseFile": "Choose PDF File",
     "uploadBtn": "UPLOAD PDF FILES",
     "uploadedFiles": "Uploaded Files",
@@ -52,6 +59,8 @@
   "advancedFilters": {
     "title": "Advanced Filters",
     "position": "Position",
+    "positionPlaceholder": "ex: Front end developer",
+    "experienceLevel": "Select or type a number",
     "experience": "Experience",
     "skills": "Skills",
     "skillPlaceholder": "Skill",
@@ -106,7 +115,7 @@
     "lang": "Languages",
     "certifications": "Certifications",
     "personalProj": "Personal Projects",
-    "saveBtn": "Save",
+    "saveBtn": "Save changes",
     "goBackBtn": "GO BACK",
     "validationError": "Validation error. Please check your input.",
     "requiredField": "This field is required",

@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import './CandidatesList.scss';
 import CandidatesTable from './CandidatesTable/CandidatesTable';
 import AdvancedFilters from './AdvancedFilters/AdvancedFilters';
-import { Input, Button, Tooltip } from 'antd';
+import { Input, Button, Tooltip, Badge } from 'antd';
 import { SlidersOutlined, SearchOutlined, SyncOutlined } from '@ant-design/icons';
 import { useTranslation } from "react-i18next";
 import api from '../../api';
@@ -86,6 +86,14 @@ function CandidatesList(props) {
         setModalState(false);
     };
 
+    const filterCount = activeFilters
+        ? (activeFilters.position ? 1 : 0) +
+          (activeFilters.experience !== undefined ? 1 : 0) +
+          (activeFilters.skills?.length || 0) +
+          (activeFilters.languages?.length || 0) +
+          (activeFilters.certifications?.length || 0)
+        : 0;
+
     const handleRefresh = () => {
         setActiveFilters(null);
         setSearchTerm('');
@@ -109,13 +117,15 @@ function CandidatesList(props) {
                     }}
                     className="candidates-search"
                 />
-                <Button
-                    icon={<FilterIcon />}
-                    onClick={() => setModalState(true)}
-                    className="filters-button"
-                >
-                    {t('candidatesList.Filters', 'Filters')}
-                </Button>
+                <Badge count={filterCount} size="small">
+                    <Button
+                        icon={<FilterIcon />}
+                        onClick={() => setModalState(true)}
+                        className="filters-button"
+                    >
+                        {t('candidatesList.Filters', 'Filters')}
+                    </Button>
+                </Badge>
                 <Tooltip title={t('candidateTable.refreshTooltip')}>
                     <Button onClick={handleRefresh} className="icon-button refresh-button" icon={<SyncOutlined />}></Button>
                 </Tooltip>
@@ -137,6 +147,7 @@ function CandidatesList(props) {
                 modalState={modalState}
                 setModalState={setModalState}
                 onApplyFilters={handleApplyFilters}
+                activeFilters={activeFilters}
             />
         </div>
     );
