@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { Modal, Input, InputNumber, Button, Tag, Row, Col, Space } from "antd";
+import { Modal, Input, InputNumber, Button, Tag, Row, Col, Space, AutoComplete } from "antd";
 import { FilterOutlined, PlusOutlined } from "@ant-design/icons";
-import './AdvancedFilters.css';
+import './AdvancedFilters.scss';
 import { useTranslation } from 'react-i18next';
+import { FilterModalIcon } from '../../../constants/icons';
 
 export default function AdvancedFilters(props) {
     const { t } = useTranslation();
@@ -107,7 +108,8 @@ export default function AdvancedFilters(props) {
             onCancel={() => props.setModalState(false)}
             title={
                 <Space>
-                    <FilterOutlined />
+                    <span className="af-icon"><FilterModalIcon /> </span>
+                    
                     {t('advancedFilters.title')}
                 </Space>
             }
@@ -117,11 +119,13 @@ export default function AdvancedFilters(props) {
                         type="primary"
                         onClick={handleSubmit}
                         disabled={!isValid}
+                        className="default-button"
+                        style={{ minWidth : '218px', fontSize: '16px' }}
                     >
-                        {t('advancedFilters.submitBtn')}
+                        {t('candidateTable.applyFilters')}
                     </Button>
-                    <Button onClick={() => props.setModalState(false)}>
-                        Cancel
+                    <Button style={{height: '44px', minWidth : '218px', fontSize: '16px', color: '#414651', fontWeight: 600}} onClick={() => props.setModalState(false)}>
+                        {t('resetPassword.cancel')}
                     </Button>
                 </div>
             }
@@ -145,14 +149,21 @@ export default function AdvancedFilters(props) {
                 <Col span={12}>
                     <div className="af-field">
                         <label className="af-label">{t('advancedFilters.experience')}</label>
-                        <InputNumber
+                        <AutoComplete
                             style={{ width: '100%' }}
                             placeholder={t('advancedFilters.experienceLevel')}
-                            min={0}
-                            value={formData.experience === '' ? null : formData.experience}
-                            onChange={(value) =>
-                                setFormData(prev => ({ ...prev, experience: value === null ? '' : value }))
-                            }
+                            value={formData.experience === '' ? undefined : String(formData.experience)}
+                            options={[1,2,3,4,5,6,7,8,9,10,12,15,20].map(n => ({
+                                value: String(n),
+                                label: `${n} ${t('advancedFilters.years')}`
+                            }))}
+                            filterOption={(input, option) => option.value.startsWith(input)}
+                            onChange={(value) => {
+                                if (value === '' || value === undefined || /^\d+$/.test(value)) {
+                                    setFormData(prev => ({ ...prev, experience: value ?? '' }));
+                                }
+                            }}
+                            allowClear
                         />
                     </div>
                 </Col>
@@ -162,7 +173,7 @@ export default function AdvancedFilters(props) {
                     <div className="af-field">
                         <label className="af-label">{t('advancedFilters.language')}</label>
                         <Input
-                            placeholder={t('advancedFilters.language')}
+                            placeholder={t('advancedFilters.languagePlaceholder')}
                             value={languageInput}
                             onChange={(e) => setLanguageInput(e.target.value)}
                             onPressEnter={() => handleAddToList('languages', languageInput, setLanguageInput)}
@@ -188,7 +199,7 @@ export default function AdvancedFilters(props) {
                     <div className="af-field">
                         <label className="af-label">{t('advancedFilters.certification')}</label>
                         <Input
-                            placeholder={t('advancedFilters.certification')}
+                            placeholder={t('advancedFilters.certificationPlaceholder')}
                             value={certificationInput}
                             onChange={(e) => setCertificationInput(e.target.value)}
                             onPressEnter={() => handleAddToList('certifications', certificationInput, setCertificationInput)}

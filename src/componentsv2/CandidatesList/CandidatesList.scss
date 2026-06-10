@@ -29,6 +29,11 @@
             font-style: normal;
             font-weight: 600;
             color: #414651;
+            &.clear-button{
+                .ant-btn-icon{
+                    margin-top: 2px;
+                }
+            }
         }
         .refresh-button{
             height: 40px;

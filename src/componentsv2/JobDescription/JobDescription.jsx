@@ -5,16 +5,14 @@ import JDDetails from "./JDDetails/JDDetails";
 import "./JobDescription.css"
 
 import { fetchJobDescription } from "../../utils/fetchJobDescription";
-import GenericHeader from "../GenericHeader/GenericHeader";
 import { useTranslation } from "react-i18next";
 
 
-export default function JobDescription({setSelectedCandidate, setIsLoggedIn}) {
+export default function JobDescription({setSelectedCandidate, setIsLoggedIn, uploadNew, setUploadNew}) {
     const { i18n } = useTranslation();
     const [jobs, setJobs] = useState([]);
     const [selectedJob, setSelectedJob] = useState(null);
     const [failMessage, setFailMessage] = useState(null);
-    const [uploadNew, setUploadNew] = useState(false);
 
     useEffect(() => {
         // Pass language to fetch
@@ -32,15 +30,6 @@ export default function JobDescription({setSelectedCandidate, setIsLoggedIn}) {
 
     return (
         <div className="job-description-page">
-            {/* Row 1: Spans full width */}
-            <GenericHeader setIsLoggedIn={setIsLoggedIn} navigateLocation='/candidates'/>
-
-            {/* Row 2: Spans full width */}
-            <JDTopBar
-                setUploadNew={setUploadNew}
-            />
-
-            {/* Row 3, Column 1 */}
             <JDTable
                 jobs={jobs}
                 setSelectedJob={setSelectedJob}

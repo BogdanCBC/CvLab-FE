@@ -61,13 +61,16 @@
     "position": "Position",
     "positionPlaceholder": "ex: Front end developer",
     "experienceLevel": "Select or type a number",
+    "noCandidates" : "No candidates found for your search",
     "experience": "Experience",
     "skills": "Skills",
     "skillPlaceholder": "Skill",
     "yearsPlaceholder": "Years",
     "years": "yrs",
     "language": "Language",
+    "languagePlaceholder": "Type a language",
     "certification": "Certification",
+    "certificationPlaceholder": "Type a certification",
     "submitBtn": "Submit",
     "tip": "Use the advanced filters to refine your candidate search by position, years of experience, skills with minimum years, languages, and certifications. You can add multiple entries and remove them as needed before submitting.",
     "boldTip": "Use the \"+\" button to add the desired skill, language or certification."
@@ -81,7 +84,9 @@
     "language": "Language",
     "actions": "Actions",
     "details": "Details",
-    "refreshTooltip": "Refresh"
+    "refreshTooltip": "Refresh",
+    "clearFiltersTooltip": "Clear all",
+    "applyFilters": "Apply filters"
   },
   "noCandidate": {
     "noCandidateMessage": "No candidate selected."

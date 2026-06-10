@@ -1,9 +1,10 @@
-import React from "react";
+import React , { useState } from "react";
 import './HomePage.scss';
 import Menu from "../Menu/Menu";
 import Header from "../Header/Header";
-import { useActivePage } from '../../store/activePageStore';
+import { useLocation } from 'react-router-dom';
 import CandidatesPage from "../CandidatesPage/CandidatesPage";
+import JobDescription from "../JobDescription/JobDescription";
 
 
 export default function HomePage({
@@ -17,7 +18,8 @@ export default function HomePage({
                                        setAdvancedSearch,
                                        setIsLoggedIn,
                                    }) {
-    const { activePage, setActivePage } = useActivePage();
+    const { pathname } = useLocation();
+    const [uploadNew, setUploadNew] = useState(false);
 
     return (
         <div className="home-container">
@@ -29,10 +31,11 @@ export default function HomePage({
             <div className="main-content">
                 <div className="top-menu">
                     <Header candidates={candidates}
-                            setCandidates={setCandidates}/>
+                            setCandidates={setCandidates}
+                            setUploadNew={setUploadNew}/>
                 </div>
                 <div className="content-area">
-                    {activePage === "cv" && (
+                    {pathname === "/candidates" && (
                         <CandidatesPage
                             candidates={candidates}
                             setCandidates={setCandidates}
@@ -43,6 +46,14 @@ export default function HomePage({
                             advancedSearch={advancedSearch}
                             setAdvancedSearch={setAdvancedSearch}
                             setIsLoggedIn={setIsLoggedIn}
+                        />
+                    )}
+                    {pathname === "/job-description" && (
+                        <JobDescription
+                            setSelectedCandidate={setSelectedCandidate}
+                            setIsLoggedIn={setIsLoggedIn}
+                            uploadNew={uploadNew}
+                            setUploadNew={setUploadNew}
                         />
                     )}
                 </div>

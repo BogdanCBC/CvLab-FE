@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import './Menu.scss';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import {getTenantConfig} from "../../utils/tenantConfig";
 
 import { useTranslation } from 'react-i18next';
@@ -16,7 +16,7 @@ function Menu(props) {
     const {t, i18n } = useTranslation();
     const storedRole = localStorage.getItem('role');
     const { setActivePage } = useActivePage();
-    const { activePage } = useActivePage();
+    const { pathname } = useLocation();
 
     const [open, setOpen] = useState(false);
     const [openTextModal, setOpenTextModal] = useState(false);
@@ -45,14 +45,17 @@ function Menu(props) {
 
     const handleNavigateJob = () => {
         setActivePage(PAGES.JOB_DESCRIPTION);
+        navigate('/job-description');
     }
 
     const handleNavigateAdmin = () => {
         setActivePage(PAGES.ADMIN);
+        navigate('/admin');
     };
 
     const handleNavigateCv = () => {
         setActivePage(PAGES.CV);
+        navigate('/candidates');
     }
 
     const renderTooltipContent = () => (
@@ -85,13 +88,13 @@ function Menu(props) {
                     <img src={LogoIcon} alt='logo' style={{ maxHeight: '80px' }} />
                 </div>
                 <Tooltip title={t('topbar.candidate_cv')}>
-                    <Button className={`icon-button ${activePage === PAGES.CV ? "active" : ""}`} type="primary" icon={activePage === PAGES.CV ? <CvIconActive /> : <CvIcon />} onClick={handleNavigateCv}/>
+                    <Button className={`icon-button ${pathname === "/candidates" ? "active" : ""}`} type="primary" icon={pathname === "/candidates" ? <CvIconActive /> : <CvIcon />} onClick={handleNavigateCv}/>
                 </Tooltip>
                 <Tooltip title={t('topbar.job_desc')}>
-                    <Button className={`icon-button ${activePage === PAGES.JOB_DESCRIPTION ? "active" : ""}`} type="primary" icon={activePage === PAGES.JOB_DESCRIPTION ? <JobIconActive /> : <JobIcon />} onClick={handleNavigateJob}/>
+                    <Button className={`icon-button ${pathname === "/job-description" ? "active" : ""}`} type="primary" icon={pathname === "/job-description" ? <JobIconActive /> : <JobIcon />} onClick={handleNavigateJob}/>
                 </Tooltip>
                 <Tooltip title={t('topbar.admin')}>
-                    <Button className={`icon-button ${activePage === PAGES.ADMIN ? "active" : ""}`} type="primary" icon={activePage === PAGES.ADMIN ? <UserOutlined style={{color : '#717680'}}/> : <UserOutlined style={{color : '#A4A7AE'}}/>} onClick={handleNavigateAdmin}/>
+                    <Button className={`icon-button ${pathname === "/admin" ? "active" : ""}`} type="primary" icon={pathname === "/admin" ? <UserOutlined style={{color : '#717680'}}/> : <UserOutlined style={{color : '#A4A7AE'}}/>} onClick={handleNavigateAdmin}/>
                 </Tooltip>
             </div>
             <div className="bottom">

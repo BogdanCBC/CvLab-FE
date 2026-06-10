@@ -3,15 +3,15 @@ import './Header.scss';
 import { Breadcrumb, Button, Select, notification } from 'antd';
 import { GlobalOutlined } from '@ant-design/icons';
 import { HomeIcon, ShevronRightIcon, PlusIcon } from '../../constants/icons';
-import { useActivePage, PAGES } from '../../store/activePageStore';
+import { useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import UploadCandidateModal from '../Modals/UploadCandidateModal/UploadCandidateModal';
 import UploadTextModal from '../Modals/UploadTextModal/UploadTextModal';
 
-const PAGE_LABELS = {
-    [PAGES.CV]: "CV's",
-    [PAGES.JOB_DESCRIPTION]: 'Jobs',
-    [PAGES.ADMIN]: 'Admin',
+const PATH_LABELS = {
+    '/candidates': "CV's",
+    '/job-description': 'Jobs',
+    '/admin': 'Admin',
 };
 
 const LANGUAGE_OPTIONS = [
@@ -20,11 +20,11 @@ const LANGUAGE_OPTIONS = [
 ];
 
 const Header = (props) => {
-  const { activePage } = useActivePage();
+  const { pathname } = useLocation();
   const { t, i18n } = useTranslation();
-  const activePageTitle = PAGE_LABELS[activePage] === "CV's" ? t('topbar.candidate_cv', "Candidate CVs") 
-                        : PAGE_LABELS[activePage] === "Jobs" ? t('topbar.job_desc', "Job Descriptions") 
-                        : PAGE_LABELS[activePage] === "Admin" ? t('topbar.admin', "Admin") : PAGE_LABELS[activePage];
+  const activePageTitle = PATH_LABELS[pathname] === "CV's" ? t('topbar.candidate_cv', "Candidate CVs")
+                        : PATH_LABELS[pathname] === "Jobs" ? t('topbar.job_desc', "Job Descriptions")
+                        : PATH_LABELS[pathname] === "Admin" ? t('topbar.admin', "Admin") : PATH_LABELS[pathname];
   const [open, setOpen] = useState(false);
   const [openTextModal, setOpenTextModal] = useState(false);
   const [success, setSuccess] = useState(0);   // number of successfully uploaded CVs
@@ -72,7 +72,7 @@ const Header = (props) => {
   const breadcrumbItems = [
     { title: <HomeIcon /> },
     { title: t('topbar.dasboard', 'Dashboard') },
-    { title: PAGE_LABELS[activePage] },
+    { title: PATH_LABELS[pathname] },
   ];
 
   return (
@@ -89,7 +89,7 @@ const Header = (props) => {
                 <span className="header-title">{activePageTitle}</span>
             </div>
             <div className="right">
-            {activePage === PAGES.CV && (
+            {pathname === "/candidates" && (
                 <>
                     <Button
                         type="primary"
@@ -107,11 +107,12 @@ const Header = (props) => {
                     </Button>
                 </>
             )}
-            {activePage === PAGES.JOB_DESCRIPTION && (
+            {pathname === "/job-description" && (
                 <>
                 <Button
                     type="primary"
                     className="default-button small"
+                    onClick={() => props.setUploadNew(true)}
                     >
                     <PlusIcon /> {t("jdTopBar.uploadNew")}
                 </Button>

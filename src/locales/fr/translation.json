@@ -61,13 +61,16 @@
     "position": "Poste",
     "positionPlaceholder": "ex : Développeur front-end",
     "experienceLevel": "Sélectionnez ou tapez un nombre",
+    "noCandidates" : "Aucun candidat trouvé pour votre recherche",
     "experience": "Expérience",
     "skills": "Compétences",
     "skillPlaceholder": "Compétence",
     "yearsPlaceholder": "années",
     "years": "ans",
     "language": "Langue",
+    "languagePlaceholder": "Tapez une langue",
     "certification": "Attestation",
+    "certificationPlaceholder": "Tapez une attestation",
     "submitBtn": "Valider",
     "tip": "Utilisez les filtres avancés pour affiner la recherche par poste, années d’expérience, compétences, langues et certifications. Vous pouvez ajouter plusieurs critères et les supprimer avant validation.",
     "boldTip": "Utilisez le bouton \"+\" pour ajouter une compétence, langue ou certification."
@@ -81,7 +84,9 @@
     "language": "Langue",
     "actions": "Actions",
     "details": "Détails",
-    "refreshTooltip": "Rafraîchir"
+    "refreshTooltip": "Rafraîchir",
+    "clearFiltersTooltip": "Tout effacer",
+    "applyFilters": "Appliquer les filtres"
   },
   "noCandidate": {
     "noCandidateMessage": "Sélectionnez un candidat pour voir ses détails."

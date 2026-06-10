@@ -3,11 +3,11 @@ import { useParams } from 'react-router-dom';
 import './CandidatesList.scss';
 import CandidatesTable from './CandidatesTable/CandidatesTable';
 import AdvancedFilters from './AdvancedFilters/AdvancedFilters';
-import { Input, Button, Tooltip, Badge } from 'antd';
-import { SlidersOutlined, SearchOutlined, SyncOutlined } from '@ant-design/icons';
+import { Input, Button, Badge, message } from 'antd';
 import { useTranslation } from "react-i18next";
 import api from '../../api';
-import { SearchIcon , FilterIcon } from '../../constants/icons';
+import { SearchIcon , FilterIcon, CloseIcon } from '../../constants/icons';
+
 
 function CandidatesList(props) {
     const { t, i18n } = useTranslation();
@@ -54,7 +54,13 @@ function CandidatesList(props) {
             props.setCandidates(mappedData);
             setTotalCount(total !== -1 ? total : mappedData.length);
         } catch (error) {
-            console.error("Error fetching candidates:", error);
+            if (error?.response?.status === 404) {
+                props.setCandidates([]);
+                setTotalCount(0);
+                message.info(t('advancedFilters.noCandidates'));
+            } else {
+                console.error("Error fetching candidates:", error);
+            }
         }
     };
 
@@ -126,9 +132,15 @@ function CandidatesList(props) {
                         {t('candidatesList.Filters', 'Filters')}
                     </Button>
                 </Badge>
-                <Tooltip title={t('candidateTable.refreshTooltip')}>
-                    <Button onClick={handleRefresh} className="icon-button refresh-button" icon={<SyncOutlined />}></Button>
-                </Tooltip>
+                {filterCount > 0 && (
+                    <Button
+                        icon={<CloseIcon />}
+                        onClick={handleRefresh}
+                        className="filters-button"
+                    >
+                        {t('candidateTable.clearFiltersTooltip', 'Clear all')}
+                    </Button>
+                )}
             </div>
 
             <CandidatesTable
