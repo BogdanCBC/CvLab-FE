@@ -114,7 +114,7 @@ const Header = (props) => {
                     className="default-button small"
                     onClick={() => props.setUploadNew(true)}
                     >
-                    <PlusIcon /> {t("jdTopBar.uploadNew")}
+                    <PlusIcon /> {t("jdEditMode.createNew")}
                 </Button>
                 </>
             )}

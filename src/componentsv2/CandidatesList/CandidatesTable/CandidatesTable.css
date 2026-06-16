@@ -5,13 +5,13 @@
     overflow: hidden;
     &.ant-table-wrapper .ant-table-pagination.ant-pagination{
         display: flex;
-        justify-content: space-between;
+        justify-content: center;
         padding: 0 24px;
         .ant-pagination-prev{
-            margin-right: 15%;
+            margin-right: auto;
         }
         .ant-pagination-next{
-            margin-left: 15%;
+            margin-left: auto;
         }
         .ant-pagination-prev, .ant-pagination-next{
             height: 36px;

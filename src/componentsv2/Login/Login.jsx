@@ -43,7 +43,7 @@ function Login({ onLogin }) {
         localStorage.setItem('token', response.data.access_token);
         localStorage.setItem('refreshToken', response.data.refresh_token);
         localStorage.setItem('username', decoded.username || decoded.sub);
-        localStorage.setItem('clientName', decoded.client_name);
+        localStorage.setItem('clientName', decoded.company_name);
 
         onLogin();
         navigate('/');

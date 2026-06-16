@@ -1,19 +1,24 @@
 import React, { useState } from "react";
-import { Box, Button, Chip, FormControl, IconButton, Input, Stack, TextField, MenuItem } from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
+import { Button, Input, Select, Tag, Space, message } from "antd";
+import { PlusIconBlue } from "../../../../../constants/icons";
 import { fetchJobDescription } from "../../../../../utils/fetchJobDescription";
 import api from "../../../../../api";
-import {useTranslation} from "react-i18next";
+import { useTranslation } from "react-i18next";
+import "./EditMode.scss";
+import { SaveIcon } from "../../../../../constants/icons";
+import { ArrowLeftOutlined } from "@ant-design/icons";
 
-export default function EditMode({jobInfo, setEditMode, setJobs, setJobInfo, selectedJob, updateJobInfoFromJobs}) {
-    const { t, i18n} = useTranslation();
+const { TextArea } = Input;
+
+export default function EditMode({ jobInfo, setEditMode, setJobs, setJobInfo, selectedJob, updateJobInfoFromJobs }) {
+    const { t, i18n } = useTranslation();
 
     const languageLevels = [
         { label: t("jdEditMode.beginner"), value: "Beginner" },
         { label: t("jdEditMode.intermediate"), value: "Intermediate" },
         { label: t("jdEditMode.advanced"), value: "Advanced" },
         { label: t("jdEditMode.proficient"), value: "Proficient" },
-        { label: t("jdEditMode.native"), value: "Native" }
+        { label: t("jdEditMode.native"), value: "Native" },
     ];
 
     const [jobData, setJobData] = useState(jobInfo);
@@ -25,176 +30,172 @@ export default function EditMode({jobInfo, setEditMode, setJobs, setJobInfo, sel
     const [newLanguage, setNewLanguage] = useState("");
     const [languageLevel, setLanguageLevel] = useState("Beginner");
 
-    const handleChange = (e) => {
-        const {id, value} = e.target;
-        setJobData(prev => ({
-            ...prev,
-            [id]: value
-        }));
-    }
-
     const handleAddSkill = () => {
-        if (newSkill.trim() === "" || yearsInput.trim() === "") return;
-        setSkills(prev => [
+        if (!newSkill.trim() || !yearsInput.trim()) return;
+        setSkills((prev) => [
             ...prev,
-            { skill: newSkill.trim(), years: parseInt(yearsInput, 10) }
+            { skill: newSkill.trim(), years: parseInt(yearsInput, 10) },
         ]);
         setNewSkill("");
         setYearsInput("");
     };
 
     const handleAddLanguage = () => {
-        if (newLanguage.trim() === "" || languageLevel.trim() === "") return;
-        const upperCaseLanguage = String(newLanguage).charAt(0).toUpperCase() + String(newLanguage).slice(1).toLowerCase();
-        setLanguages(prev => [
+        if (!newLanguage.trim() || !languageLevel.trim()) return;
+        const upperCaseLanguage =
+            String(newLanguage).charAt(0).toUpperCase() +
+            String(newLanguage).slice(1).toLowerCase();
+        setLanguages((prev) => [
             ...prev,
-            { language: upperCaseLanguage.trim(), level: languageLevel.trim()}
+            { language: upperCaseLanguage.trim(), level: languageLevel.trim() },
         ]);
         setNewLanguage("");
         setLanguageLevel("Beginner");
-    }
+    };
 
     const handleDeleteSkill = (index) => {
-        setSkills(prev => prev.filter((_, i) => i !== index));
-    }
+        setSkills((prev) => prev.filter((_, i) => i !== index));
+    };
 
     const handleDeleteLanguage = (index) => {
-        setLanguages(prev => prev.filter((_, i) => i != index));
-    }
+        setLanguages((prev) => prev.filter((_, i) => i !== index));
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const dataToSubmit = {
-            ...jobData,
-            skills: skills,
-            languages: languages
-        };
-
+        const dataToSubmit = { ...jobData, skills, languages };
         try {
-            const result = await api.put('/job-description', dataToSubmit);
-            if(result.data.success) {
+            const result = await api.put("/job-description", dataToSubmit);
+            if (result.data.success) {
                 const response = await fetchJobDescription(i18n.language);
                 if (response.success) {
+                    message.success(t("jdEditMode.editSuccess"));
                     const jobsList = response.jobs || [];
                     setJobs(jobsList);
                     updateJobInfoFromJobs(jobsList, selectedJob);
                 }
-
-                const updateJobInfo = {
-                    ...jobData,
-                    skills: skills,
-                    languages: languages
-                };
-                setJobInfo(updateJobInfo);
+                setJobInfo({ ...jobData, skills, languages });
                 setEditMode(false);
             }
-        } catch(err) {
+        } catch (err) {
+            message.error(err?.response?.data?.message || "Error");
             console.log("Error updating");
         }
-    }
-    return(
-        <form onSubmit={handleSubmit}>
-            <Box
-                display="flex"
-                flexDirection="column" 
-                justifyContent="space-around"
-                gap={2}
-            >
-                <TextField
-                    label={t("jdEditMode.title")}
-                    id="title"
-                    maxRows={2}
-                    value={jobData.title}
-                    onChange={handleChange}
-                />
-                <TextField
-                    label={t("jdEditMode.jobDescription")}
-                    id="description"
-                    value={jobData.description}
-                    multiline
-                    rows={15}
-                    onChange={handleChange}
-                />
+    };
 
-                <Box sx={{display: 'flex', alignItems: 'center', gap: 1}}>
+    return (
+        <>
+        <div className="jd-card-header">
+            <div className="jd-edit-left">
+                <Button type="text" icon={<ArrowLeftOutlined />} className="back-btn" onClick={() => setEditMode(false)} />
+                <div className="jd-name-block">
+                    <span className="jd-label">Job name</span>
+                    <h2 className="jd-title">{jobInfo.title}</h2>
+                </div>
+            </div>
+            <div className="jd-header-actions">
+                <Button
+                    icon={<SaveIcon />}
+                    onClick={handleSubmit}
+                    className="edit-jd-btn filled-btn"
+                >
+                    {t("editProfile.saveBtn")}
+                </Button>
+            </div>
+        </div>
+        <form onSubmit={handleSubmit} className="jd-edit-mode">
+            <div className="title">{t("generalInfo.general")}</div>
+            <div className="edit-field">
+                <label className="edit-label">{t("jdEditMode.title")} <span className="jd-required">*</span></label>
+                <Input
+                    className="edit-input"
+                    value={jobData.title}
+                    onChange={(e) =>
+                        setJobData((prev) => ({ ...prev, title: e.target.value }))
+                    }
+                />
+            </div>
+
+            <div className="edit-field">
+                <label className="edit-label">{t("jdEditMode.jobDescription")} <span className="jd-required">*</span></label>
+                <TextArea
+                    value={jobData.description}
+                    rows={10}
+                    onChange={(e) =>
+                        setJobData((prev) => ({ ...prev, description: e.target.value }))
+                    }
+                />
+            </div>
+
+            <div className="edit-field">
+                <label className="edit-label">{t("editProfile.skills")} <span className="jd-required">*</span></label>
+                <Space.Compact className="add-row">
                     <Input
                         placeholder={t("jdEditMode.addSkill")}
                         value={newSkill}
-                        onChange={e => setNewSkill(e.target.value)}
+                        onChange={(e) => setNewSkill(e.target.value)}
                     />
                     <Input
                         placeholder={t("jdEditMode.years")}
                         type="number"
-                        inputProps={{min: 0}}
+                        min={0}
                         value={yearsInput}
                         onChange={(e) => setYearsInput(e.target.value)}
+                        style={{ width: 100 }}
                     />
-                    <IconButton onClick={handleAddSkill}>
-                        <AddIcon />
-                    </IconButton>
-                </Box>      
-                <Stack direction="row" spacing={1} mt={2}>
+                    <Button
+                        icon={<PlusIconBlue />}
+                        onClick={handleAddSkill}
+                        type="default"
+                    />
+                </Space.Compact>
+                <Space wrap style={{ marginTop: 8, marginBottom: 8 }}>
                     {skills.map((s, index) => (
-                        <Chip 
+                        <Tag
+                            className="tag"
                             key={index}
-                            label={`${s.skill} (${s.years} ${t("jdEditMode.yrs")})`}
-                            onClick={() => handleDeleteSkill(index)}
-                        />
+                            closable
+                            onClose={() => handleDeleteSkill(index)}
+                        >
+                            {`${s.skill} (${s.years} ${t("jdEditMode.yrs")})`}
+                        </Tag>
                     ))}
-                </Stack>
-      
-                <Box sx={{display: 'flex', alignItems: 'center', gap: 1}}>
+                </Space>
+            </div>
+            <div className="edit-field">
+                <label className="edit-label">{t("editProfile.lang")} <span className="jd-required">*</span></label>
+                <Space.Compact className="add-row">
                     <Input
                         placeholder={t("jdEditMode.addLanguage")}
                         value={newLanguage}
-                        onChange={e => setNewLanguage(e.target.value)}
+                        onChange={(e) => setNewLanguage(e.target.value)}
                     />
-
-                    <TextField
-                        select
-                        label={t("jdEditMode.level")}
+                    <Select
                         value={languageLevel}
-                        onChange={e => setLanguageLevel(e.target.value)}
-                        size="small"
-                        sx={{minWidth: 150}}
-                    >
-                        {languageLevels.map((option) => (
-                            <MenuItem key={option.value} value={option.value}>
-                                {option.label}
-                            </MenuItem>
-                        ))}
-                    </TextField>
-                    
-                    <IconButton onClick={handleAddLanguage}>
-                        <AddIcon />
-                    </IconButton>
-                </Box>
-                
-                <Stack direction="row" spacing={1} mt={2}>
-                    {languages.map((l, index) => (
-                        <Chip 
-                            key={index}
-                            label={`${l.language} (Level: ${l.level})`}
-                            onClick={() => handleDeleteLanguage(index)}
-                        />
-                    ))}
-                </Stack>
-
-                <Stack direction="row" spacing={2} justifyContent="center">
+                        onChange={(val) => setLanguageLevel(val)}
+                        options={languageLevels}
+                        style={{ minWidth: 140 }}
+                    />
                     <Button
-                        variant="contained"
-                        onClick={() => setEditMode(false)}
-                    >
-                        {t("jdEditMode.cancel")}
-                    </Button>
-                    <Button 
-                        variant="contained"
-                        type="submit"
-                    >
-                        {t("jdEditMode.confirm")}
-                    </Button>
-                </Stack>
-            </Box>
+                        icon={<PlusIconBlue />}
+                        onClick={handleAddLanguage}
+                        type="default"
+                    />
+                </Space.Compact>
+                <Space wrap style={{ marginTop: 8, marginBottom: 8 }}>
+                    {languages.map((l, index) => (
+                        <Tag
+                            className="tag"
+                            key={index}
+                            closable
+                            onClose={() => handleDeleteLanguage(index)}
+                        >
+                            {`${l.language} (Level: ${l.level})`}
+                        </Tag>
+                    ))}
+                </Space>
+            </div>
         </form>
+        </>
     );
 }

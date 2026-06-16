@@ -257,6 +257,7 @@
   "jdEditMode": {
     "title": "Titre",
     "jobDescription": "Description du poste",
+    "createNew": "Créer une nouvelle description de poste",
     "addSkill": "Ajouter competence(s)",
     "years": "Années",
     "yrs": "ans",
@@ -268,7 +269,9 @@
     "proficient": "Courant",
     "native": "Langue maternelle",
     "cancel": "Annuler",
-    "confirm": "Confirmer"
+    "confirm": "Confirmer",
+    "createdSuccess": "Description du poste créée avec succès",
+    "editSuccess": "Description du poste modifiée avec succès"
   },
   "rawMatch": {
     "title": "Candidats correspondants",

@@ -114,3 +114,22 @@ a {
       border-color: #0577BA;
     }
 }
+
+
+.tag{
+    border-radius: 16px;
+    border: 1px solid #2391D1;
+    background: #F0F9FF;
+    padding: 4px 6px 4px 12px;
+    color: var(--Blue-800, #0577BA);
+    text-align: center;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 20px; /* 142.857% */
+    display: flex;
+    align-items: center;
+    .ant-tag-close-icon{
+        color: #0577BA;
+    }
+}

@@ -266,6 +266,7 @@
   "jdEditMode": {
     "title": "Title",
     "jobDescription": "Job Description",
+    "createNew": "Create new job description",
     "addSkill": "Add Skill",
     "years": "Years",
     "yrs": "yrs",
@@ -277,7 +278,9 @@
     "proficient": "Proficient",
     "native": "Native",
     "cancel": "Cancel",
-    "confirm": "Confirm"
+    "confirm": "Confirm",
+    "createdSuccess": "Job description created successfully",
+    "editSuccess": "Job description updated successfully"
   },
   "rawMatch": {
     "title": "Matched Candidates",
