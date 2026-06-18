@@ -14,7 +14,7 @@ import { useActivePage, PAGES } from '../../store/activePageStore';
 
 function Menu(props) {
     const {t, i18n } = useTranslation();
-    const storedRole = localStorage.getItem('role');
+    const userRole = localStorage.getItem('role');
     const { setActivePage } = useActivePage();
     const { pathname } = useLocation();
 
@@ -93,9 +93,11 @@ function Menu(props) {
                 <Tooltip title={t('topbar.job_desc')}>
                     <Button className={`icon-button ${pathname === "/job-description" ? "active" : ""}`} type="primary" icon={pathname === "/job-description" ? <JobIconActive /> : <JobIcon />} onClick={handleNavigateJob}/>
                 </Tooltip>
+                {(userRole === 'admin' || userRole === 'superadmin') && (
                 <Tooltip title={t('topbar.admin')}>
                     <Button className={`icon-button ${pathname === "/admin" ? "active" : ""}`} type="primary" icon={pathname === "/admin" ? <UserOutlined style={{color : '#717680'}}/> : <UserOutlined style={{color : '#A4A7AE'}}/>} onClick={handleNavigateAdmin}/>
                 </Tooltip>
+                )}
             </div>
             <div className="bottom">
                 <Tooltip title={t('topbar.logoutTooltip')}>

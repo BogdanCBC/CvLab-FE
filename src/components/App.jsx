@@ -80,9 +80,16 @@ function App() {
                   setIsLoggedIn={setIsLoggedIn}
               />}
            />
-           <Route
+           {/* <Route
               path="/match/:jobId"
               element={<MatchPage
+                  setSelectedCandidate={setSelectedCandidate}
+                  setIsLoggedIn={setIsLoggedIn}
+              />}
+           /> */}
+           <Route
+              path="/match/:jobId"
+              element={<HomePage
                   setSelectedCandidate={setSelectedCandidate}
                   setIsLoggedIn={setIsLoggedIn}
               />}
@@ -128,11 +135,11 @@ function App() {
                     />
                     <Route
                         path="/metrics"
-                        element={<MetricsPage setIsLoggedIn={setIsLoggedIn} />}
+                        element={<HomePage setIsLoggedIn={setIsLoggedIn} />}
                     />
                     <Route
                         path="/admin/prompts"
-                        element={<PromptPage setIsLoggedIn={setIsLoggedIn} />}
+                        element={<HomePage setIsLoggedIn={setIsLoggedIn} />}
                     />
                 </>
             )}

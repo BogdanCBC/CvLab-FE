@@ -5,7 +5,10 @@ import Header from "../Header/Header";
 import { useLocation } from 'react-router-dom';
 import CandidatesPage from "../CandidatesPage/CandidatesPage";
 import JobDescription from "../JobDescription/JobDescription";
-
+import AdminPage from "../AdminPage/AdminPage";
+import MatchPage from "../MatchPage/MatchPage";
+import MetricsPage from "../MetricsPage/MetricsPage";
+import PromptPage from "../PromptPage/PromptPage";
 
 export default function HomePage({
                                        candidates,
@@ -55,6 +58,21 @@ export default function HomePage({
                             uploadNew={uploadNew}
                             setUploadNew={setUploadNew}
                         />
+                    )}
+                    {pathname === "/admin" && (
+                        <AdminPage setIsLoggedIn={setIsLoggedIn} />
+                    )}
+                    {pathname.startsWith("/match/") && (
+                        <MatchPage
+                            setSelectedCandidate={setSelectedCandidate}
+                            setIsLoggedIn={setIsLoggedIn}
+                        />
+                    )}
+                    {pathname === "/metrics" && (
+                        <MetricsPage setIsLoggedIn={setIsLoggedIn} />
+                    )}
+                    {pathname === "/admin/prompts" && (
+                        <PromptPage setIsLoggedIn={setIsLoggedIn} />
                     )}
                 </div>
              </div>

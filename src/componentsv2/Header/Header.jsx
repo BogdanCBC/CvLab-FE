@@ -3,7 +3,7 @@ import './Header.scss';
 import { Breadcrumb, Button, Select, notification } from 'antd';
 import { GlobalOutlined } from '@ant-design/icons';
 import { HomeIcon, ShevronRightIcon, PlusIcon } from '../../constants/icons';
-import { useLocation } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import UploadCandidateModal from '../Modals/UploadCandidateModal/UploadCandidateModal';
 import UploadTextModal from '../Modals/UploadTextModal/UploadTextModal';
@@ -12,6 +12,9 @@ const PATH_LABELS = {
     '/candidates': "CV's",
     '/job-description': 'Jobs',
     '/admin': 'Admin',
+    '/match': 'Ai Match',
+    '/metrics': 'Metrics',
+    '/admin/prompts': 'Prompts',
 };
 
 const LANGUAGE_OPTIONS = [
@@ -22,9 +25,17 @@ const LANGUAGE_OPTIONS = [
 const Header = (props) => {
   const { pathname } = useLocation();
   const { t, i18n } = useTranslation();
-  const activePageTitle = PATH_LABELS[pathname] === "CV's" ? t('topbar.candidate_cv', "Candidate CVs")
-                        : PATH_LABELS[pathname] === "Jobs" ? t('topbar.job_desc', "Job Descriptions")
-                        : PATH_LABELS[pathname] === "Admin" ? t('topbar.admin', "Admin") : PATH_LABELS[pathname];
+  const matchedPath = Object.keys(PATH_LABELS)
+      .filter(key => pathname === key || pathname.startsWith(key + '/'))
+      .sort((a, b) => b.length - a.length)[0];
+  const pathLabel = PATH_LABELS[matchedPath];
+  const activePageTitle = pathLabel === "CV's" ? t('topbar.candidate_cv', "Candidate CVs")
+                        : pathLabel === "Jobs" ? t('topbar.job_desc', "Job Descriptions")
+                        : pathLabel === "Admin" ? t('topbar.admin', "Admin")
+                        : pathLabel === "Ai Match" ? t('topbar.ai_match', "Ai Match")
+                        : pathLabel === "Metrics" ? t('topbar.metrics', "Metrics")
+                        : pathLabel === "Prompts" ? t('topbar.prompts', "Prompts")
+                        : pathLabel;
   const [open, setOpen] = useState(false);
   const [openTextModal, setOpenTextModal] = useState(false);
   const [success, setSuccess] = useState(0);   // number of successfully uploaded CVs
@@ -70,9 +81,12 @@ const Header = (props) => {
   };
 
   const breadcrumbItems = [
-    { title: <HomeIcon /> },
-    { title: t('topbar.dasboard', 'Dashboard') },
-    { title: PATH_LABELS[pathname] },
+    { title: <Link to="/candidates"><HomeIcon /></Link> },
+    { title: <Link to="/candidates">{t('topbar.dasboard', 'Dashboard')}</Link> },
+    ...(matchedPath === '/match' ? [{ title: <Link to="/job-description">{t('topbar.jobs', 'Jobs')}</Link> }] : []),
+    ...(matchedPath === '/metrics' ? [{ title: <Link to="/admin">{t('createusermodal.admin', 'Admin')}</Link> }] : []),
+    ...(matchedPath === '/admin/prompts' ? [{ title: <Link to="/admin">{t('createusermodal.admin', 'Admin')}</Link> }] : []),
+    { title: pathLabel },
   ];
 
   return (

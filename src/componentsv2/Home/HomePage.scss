@@ -8,11 +8,13 @@
         flex-direction: column;
         gap: 16px;
         padding-right: 32px;
+        margin-left: calc(72px + 32px);
         .top-menu{
             margin: 32px 0px 0 0;
         }
     }
     .left-menu{
         width: 72px;
+        position: fixed;
     }
 }

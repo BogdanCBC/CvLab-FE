@@ -1,0 +1,34 @@
+.raw-match-box {
+    background-color: #fff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 24px;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    overflow-x: hidden;
+    border-radius: 0;
+}
+
+.candidates-list-wrapper {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    width: 100%;
+    padding: 10px 5px 0 0;
+    box-sizing: border-box;
+}
+
+.candidate-paper {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+    padding: 16px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.candidate-paper:hover {
+    background-color: #fafafa;
+}

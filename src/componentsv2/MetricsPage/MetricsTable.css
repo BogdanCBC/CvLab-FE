@@ -1,4 +1,4 @@
-.candidates-table {
+.metrics-table {
     height: auto;
     border-radius: 12px;
     border: 1px solid var(--Gray-200, #E9EAEB);
@@ -38,7 +38,6 @@
         }
     }
     &.ant-table-wrapper .ant-table-thead >tr>th, :where(.css-dev-only-do-not-override-ypkju9).ant-table-wrapper .ant-table-thead >tr>td{
-        /* min-width: 104px; */
         color: #717680;
         font-size: 12px;
         line-height: 18px;
@@ -52,16 +51,10 @@
         padding: 18.5px 24px;
         line-height: 20px;
         color: #535862;
-        &:last-child{
-            text-align: center;
-        }
-        &:nth-child(1), &:nth-child(2){
+        &:nth-child(1){
             font-weight: 500;
             color: #181D27;
         }
-    }
-    &.ant-table-wrapper .ant-table-container table>thead>tr:first-child >*:last-child{
-        text-align: center;
     }
     .ant-pagination .ant-pagination-item{
         text-align: center;
@@ -81,41 +74,6 @@
             a{
                 color: #414651;
             }
-            
         }
     }
-}
-
-.candidates-table-row {
-    cursor: pointer;
-}
-
-.candidates-table-row.active td {
-    background-color: #FAFAFA;
-}
-
-.role-tag {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    border-radius: 12px;
-    border: 1px solid #e4e7ec;
-    background: #fff;
-    color: #344054;
-    font-size: 13px;
-    padding: 2px 10px;
-}
-
-.role-dot {
-    display: inline-block;
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    flex-shrink: 0;
-}
-
-.view-link {
-    color: #2391D1;
-    padding: 0 5px;
-    font-weight: 500;
 }
