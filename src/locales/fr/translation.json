@@ -1,5 +1,8 @@
 {
   "topbar": {
+    "settings": "Paramètres",
+    "viewProfile": "Voir le profil",
+    "info": "Info",
     "upload": "Importer un candidat",
     "pasteText": "Importer via texte",
     "job_desc": "Description du poste",
@@ -305,5 +308,38 @@
     "outTokens": "Tokens en sortie",
     "totalSpent": "Total dépensé ($)",
     "noData": "Aucune donnée disponible pour cette période."
+  },
+  "settingsPage": {
+    "title": "Paramètres",
+    "cancel": "Annuler",
+    "save": "Enregistrer",
+    "personalInfo": "Informations personnelles",
+    "personalInfoDesc": "Mettez à jour votre photo et vos informations personnelles ici.",
+    "name": "Nom",
+    "firstName": "Prénom",
+    "lastName": "Nom de famille",
+    "emailAddress": "Adresse e-mail",
+    "emailPlaceholder": "email@exemple.com",
+    "yourPhoto": "Votre photo",
+    "photoHint": "Elle sera affichée sur votre profil.",
+    "clickToUpload": "Cliquez pour télécharger",
+    "orDragDrop": "ou glissez-déposez",
+    "photoFormats": "SVG, PNG, JPG ou GIF (max. 800x400px)",
+    "role": "Rôle",
+    "password": "Mot de passe",
+    "passwordDesc": "Veuillez entrer votre mot de passe actuel pour changer votre mot de passe.",
+    "currentPassword": "Mot de passe actuel",
+    "newPassword": "Nouveau mot de passe",
+    "confirmPassword": "Confirmer le nouveau mot de passe",
+    "passwordMismatch": "Les mots de passe ne correspondent pas",
+    "passwordUpdated": "Mot de passe mis à jour avec succès",
+    "saved": "Paramètres enregistrés avec succès",
+    "saveError": "Échec de l'enregistrement des paramètres",
+    "imageOnly": "Vous ne pouvez télécharger que des fichiers image",
+    "fileTooLarge": "L'image doit être inférieure à 2 Mo"
+  },
+  "profilePage": {
+    "title": "Profil",
+    "edit": "Modifier"
   }
 }

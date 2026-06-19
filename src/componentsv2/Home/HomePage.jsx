@@ -9,6 +9,8 @@ import AdminPage from "../AdminPage/AdminPage";
 import MatchPage from "../MatchPage/MatchPage";
 import MetricsPage from "../MetricsPage/MetricsPage";
 import PromptPage from "../PromptPage/PromptPage";
+import ProfilePage from "../SettingsPage/ProfilePage";
+import SettingsPage from "../SettingsPage/SettingsPage";
 
 export default function HomePage({
                                        candidates,
@@ -32,11 +34,13 @@ export default function HomePage({
                 />
             </div>
             <div className="main-content">
-                <div className="top-menu">
-                    <Header candidates={candidates}
-                            setCandidates={setCandidates}
-                            setUploadNew={setUploadNew}/>
-                </div>
+                {pathname !== "/profile" && pathname !== "/settings" && (
+                    <div className="top-menu">
+                        <Header candidates={candidates}
+                                setCandidates={setCandidates}
+                                setUploadNew={setUploadNew}/>
+                    </div>
+                )}
                 <div className="content-area">
                     {pathname === "/candidates" && (
                         <CandidatesPage
@@ -73,6 +77,12 @@ export default function HomePage({
                     )}
                     {pathname === "/admin/prompts" && (
                         <PromptPage setIsLoggedIn={setIsLoggedIn} />
+                    )}
+                    {pathname === "/profile" && (
+                        <ProfilePage />
+                    )}
+                    {pathname === "/settings" && (
+                        <SettingsPage />
                     )}
                 </div>
              </div>

@@ -127,6 +127,15 @@ function App() {
                   }
               />
 
+            <Route
+                        path="/profile"
+                        element={<HomePage setIsLoggedIn={setIsLoggedIn} />}
+                    />
+                    <Route
+                        path="/settings"
+                        element={<HomePage setIsLoggedIn={setIsLoggedIn} />}
+                    />
+
             {(userRole === 'admin' || userRole === 'superadmin') && (
                 <>
                     <Route

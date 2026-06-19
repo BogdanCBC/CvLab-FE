@@ -15,6 +15,8 @@ const PATH_LABELS = {
     '/match': 'Ai Match',
     '/metrics': 'Metrics',
     '/admin/prompts': 'Prompts',
+    '/profile': 'Profile',
+    '/settings': 'Settings',
 };
 
 const LANGUAGE_OPTIONS = [
@@ -35,6 +37,8 @@ const Header = (props) => {
                         : pathLabel === "Ai Match" ? t('topbar.ai_match', "Ai Match")
                         : pathLabel === "Metrics" ? t('topbar.metrics', "Metrics")
                         : pathLabel === "Prompts" ? t('topbar.prompts', "Prompts")
+                        : pathLabel === "Profile" ? t('profilePage.title', "Profile")
+                        : pathLabel === "Settings" ? t('settingsPage.title', "Settings")
                         : pathLabel;
   const [open, setOpen] = useState(false);
   const [openTextModal, setOpenTextModal] = useState(false);

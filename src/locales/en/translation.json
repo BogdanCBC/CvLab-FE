@@ -1,5 +1,8 @@
 {
   "topbar": {
+    "settings": "Settings",
+    "viewProfile": "View Profile",
+    "info": "Info",
     "upload": "Upload Candidate",
     "pasteText": "Upload via text",
     "job_desc": "Job Description",
@@ -314,5 +317,38 @@
     "outTokens": "Output Tokens",
     "totalSpent": "Total Spent ($)",
     "noData": "No metrics data found for this period."
+  },
+  "settingsPage": {
+    "title": "Settings",
+    "cancel": "Cancel",
+    "save": "Save",
+    "personalInfo": "Personal info",
+    "personalInfoDesc": "Update your photo and personal details here.",
+    "name": "Name",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "emailAddress": "Email address",
+    "emailPlaceholder": "email@example.com",
+    "yourPhoto": "Your photo",
+    "photoHint": "This will be displayed on your profile.",
+    "clickToUpload": "Click to upload",
+    "orDragDrop": "or drag and drop",
+    "photoFormats": "SVG, PNG, JPG or GIF (max. 800x400px)",
+    "role": "Role",
+    "password": "Password",
+    "passwordDesc": "Please enter your current password to change your password.",
+    "currentPassword": "Current password",
+    "newPassword": "New password",
+    "confirmPassword": "Confirm new password",
+    "passwordMismatch": "Passwords do not match",
+    "passwordUpdated": "Password updated successfully",
+    "saved": "Settings saved successfully",
+    "saveError": "Failed to save settings",
+    "imageOnly": "You can only upload image files",
+    "fileTooLarge": "Image must be smaller than 2MB"
+  },
+  "profilePage": {
+    "title": "Profile",
+    "edit": "Edit"
   }
 }

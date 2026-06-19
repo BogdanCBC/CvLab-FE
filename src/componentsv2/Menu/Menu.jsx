@@ -4,11 +4,11 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import {getTenantConfig} from "../../utils/tenantConfig";
 
 import { useTranslation } from 'react-i18next';
-import { Form, Input, Button, Checkbox, Typography, Alert, Tooltip, Icon } from 'antd';
+import { Form, Input, Button, Checkbox, Typography, Alert, Tooltip, Popover, Icon } from 'antd';
 import LogoIcon from '../../images/Logomark-small.svg';
 
-import { UserOutlined, LogoutOutlined } from '@ant-design/icons';
-import { CvIcon, CvIconActive, JobIcon, JobIconActive } from "../../constants/icons";
+import { UserOutlined, LogoutOutlined, QuestionCircleOutlined } from '@ant-design/icons';
+import { CvIcon, CvIconActive, JobIcon, JobIconActive, SettingOutlined, Settings, SettingsActive, InfoIconMenu, LogoutIconMenu, ProfileIcon } from "../../constants/icons";
 import { useActivePage, PAGES } from '../../store/activePageStore';
 
 
@@ -20,6 +20,7 @@ function Menu(props) {
 
     const [open, setOpen] = useState(false);
     const [openTextModal, setOpenTextModal] = useState(false);
+    const [settingsOpen, setSettingsOpen] = useState(false);
     const [success, setSuccess] = useState(false);
     const [warning, setWarning] = useState(false);
     const [error, setError] = useState(false);
@@ -100,9 +101,35 @@ function Menu(props) {
                 )}
             </div>
             <div className="bottom">
-                <Tooltip title={t('topbar.logoutTooltip')}>
-                    <Button className='icon-button' type="primary" icon={<LogoutOutlined style={{color : '#A4A7AE'}} />} onClick={handleLogout} />
-                </Tooltip>
+                <Popover
+                    content={
+                        <div className="settings-popover">
+                            <div className="settings-popover-item" onClick={() => { setSettingsOpen(false); navigate('/profile'); }}>
+                                <ProfileIcon />
+                                <span>{t('topbar.viewProfile')}</span>
+                            </div>
+                            <div className="settings-popover-item" onClick={() => { setSettingsOpen(false); navigate('/settings'); }}>
+                                <SettingOutlined />
+                                <span>{t('topbar.settings')}</span>
+                            </div>
+                            <div className="settings-popover-item" onClick={() => { setSettingsOpen(false); }}>
+                                <InfoIconMenu />
+                                <span>{t('topbar.info')}</span>
+                            </div>
+                            <div className="settings-popover-item" onClick={() => { setSettingsOpen(false); handleLogout(); }}>
+                                <LogoutIconMenu />
+                                <span>{t('topbar.logout')}</span>
+                            </div>
+                        </div>
+                    }
+                    trigger="click"
+                    placement="right"
+                    open={settingsOpen}
+                    onOpenChange={setSettingsOpen}
+                    arrow={false}
+                >
+                    <Button className={`icon-button ${settingsOpen ? "active" : ""}`} type="primary" icon={settingsOpen ? <SettingsActive /> : <Settings />} />
+                </Popover>
             </div>
         </div>
 
