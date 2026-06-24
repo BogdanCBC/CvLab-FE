@@ -11,6 +11,7 @@ import MetricsPage from "../MetricsPage/MetricsPage";
 import PromptPage from "../PromptPage/PromptPage";
 import ProfilePage from "../SettingsPage/ProfilePage";
 import SettingsPage from "../SettingsPage/SettingsPage";
+import CompaniesPage from "../CompaniesPage/CompaniesPage";
 
 export default function HomePage({
                                        candidates,
@@ -57,6 +58,14 @@ export default function HomePage({
                     )}
                     {pathname === "/job-description" && (
                         <JobDescription
+                            setSelectedCandidate={setSelectedCandidate}
+                            setIsLoggedIn={setIsLoggedIn}
+                            uploadNew={uploadNew}
+                            setUploadNew={setUploadNew}
+                        />
+                    )}
+                    {pathname === "/companies" && (
+                        <CompaniesPage
                             setSelectedCandidate={setSelectedCandidate}
                             setIsLoggedIn={setIsLoggedIn}
                             uploadNew={uploadNew}

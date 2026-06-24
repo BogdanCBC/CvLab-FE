@@ -13,8 +13,7 @@ const SettingsPage = () => {
     const { t } = useTranslation();
     const navigate = useNavigate();
 
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
+    const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [role, setRole] = useState('');
     const [avatarUrl, setAvatarUrl] = useState(null);
@@ -26,9 +25,7 @@ const SettingsPage = () => {
     useEffect(() => {
         const storedUsername = localStorage.getItem('username') || '';
         const storedRole = localStorage.getItem('role') || '';
-        const nameParts = storedUsername.split(' ');
-        setFirstName(nameParts[0] || '');
-        setLastName(nameParts.slice(1).join(' ') || '');
+        setUsername(storedUsername);
         setEmail(storedUsername);
         setRole(storedRole);
     }, []);
@@ -107,18 +104,13 @@ const SettingsPage = () => {
 
             <div className="settings-page__row">
                 <label className="settings-page__label">
-                    {t('settingsPage.name', 'Name')}
+                    {t('settingsPage.username', 'Username')}
                 </label>
-                <div className="settings-page__field settings-page__field--double">
+                <div className="settings-page__field">
                     <Input
-                        value={firstName}
-                        onChange={(e) => setFirstName(e.target.value)}
-                        placeholder={t('settingsPage.firstName', 'First name')}
-                    />
-                    <Input
-                        value={lastName}
-                        onChange={(e) => setLastName(e.target.value)}
-                        placeholder={t('settingsPage.lastName', 'Last name')}
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        placeholder={t('settingsPage.usernamePlaceholder', 'Username')}
                     />
                 </div>
             </div>

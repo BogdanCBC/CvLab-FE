@@ -8,7 +8,7 @@ import { Form, Input, Button, Checkbox, Typography, Alert, Tooltip, Popover, Ico
 import LogoIcon from '../../images/Logomark-small.svg';
 
 import { UserOutlined, LogoutOutlined, QuestionCircleOutlined } from '@ant-design/icons';
-import { CvIcon, CvIconActive, JobIcon, JobIconActive, SettingOutlined, Settings, SettingsActive, InfoIconMenu, LogoutIconMenu, ProfileIcon } from "../../constants/icons";
+import { CvIcon, CvIconActive, JobIcon, JobIconActive, CompaniesIcon, CompaniesIconActive, SettingOutlined, Settings, SettingsActive, InfoIconMenu, LogoutIconMenu, ProfileIcon } from "../../constants/icons";
 import { useActivePage, PAGES } from '../../store/activePageStore';
 
 
@@ -54,6 +54,11 @@ function Menu(props) {
         navigate('/admin');
     };
 
+    const handleNavigateCompanies = () => {
+        setActivePage(PAGES.COMPANIES);
+        navigate('/companies');
+    };
+
     const handleNavigateCv = () => {
         setActivePage(PAGES.CV);
         navigate('/candidates');
@@ -93,6 +98,9 @@ function Menu(props) {
                 </Tooltip>
                 <Tooltip title={t('topbar.job_desc')}>
                     <Button className={`icon-button ${pathname === "/job-description" ? "active" : ""}`} type="primary" icon={pathname === "/job-description" ? <JobIconActive /> : <JobIcon />} onClick={handleNavigateJob}/>
+                </Tooltip>
+                <Tooltip title={t('topbar.companies', 'Companies')}>
+                    <Button className={`icon-button ${pathname === "/companies" ? "active" : ""}`} type="primary" icon={pathname === "/companies" ? <CompaniesIconActive /> : <CompaniesIcon />} onClick={handleNavigateCompanies}/>
                 </Tooltip>
                 {(userRole === 'admin' || userRole === 'superadmin') && (
                 <Tooltip title={t('topbar.admin')}>

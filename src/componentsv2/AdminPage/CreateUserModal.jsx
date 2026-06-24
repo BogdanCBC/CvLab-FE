@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 const CreateUserModal = ({ open, onClose, onUserCreated }) => {
     const { t } = useTranslation();
 
-    const [formData, setFormData] = useState({ username: '', password: '', role: 'demo' });
+    const [formData, setFormData] = useState({ username: '', email: '', password: '', role: 'demo' });
     const [confirmPassword, setConfirmPassword] = useState('');
     const [success, setSuccess] = useState(false);
     const [errorMsg, setErrorMsg] = useState('');
@@ -20,7 +20,7 @@ const CreateUserModal = ({ open, onClose, onUserCreated }) => {
             setTimeout(() => {
                 setSuccess(false);
                 onClose();
-                setFormData({ username: '', password: '', role: 'hr' });
+                setFormData({ username: '', email: '', password: '', role: 'hr' });
                 setConfirmPassword('');
             }, 2500);
         } catch (error) {
@@ -32,7 +32,8 @@ const CreateUserModal = ({ open, onClose, onUserCreated }) => {
     const passwordsMatch = formData.password === confirmPassword && formData.password !== '';
     const isLengthValid = formData.password.length >= 8;
     const isUsernameValid = formData.username.trim() !== '';
-    const isButtonDisabled = !passwordsMatch || !isLengthValid || !isUsernameValid || success;
+    const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email);
+    const isButtonDisabled = !passwordsMatch || !isLengthValid || !isUsernameValid || !isEmailValid || success;
 
     return (
         <Modal
@@ -64,6 +65,15 @@ const CreateUserModal = ({ open, onClose, onUserCreated }) => {
                     <Input
                         value={formData.username}
                         onChange={(e) => setFormData({ ...formData, username: e.target.value })}
+                    />
+                </div>
+
+                <div>
+                    <label style={{ display: 'block', marginBottom: 4 }}>{t("createUserModal.email")}</label>
+                    <Input
+                        type="email"
+                        value={formData.email}
+                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                     />
                 </div>
 

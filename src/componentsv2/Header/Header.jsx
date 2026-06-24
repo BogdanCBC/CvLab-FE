@@ -11,6 +11,7 @@ import UploadTextModal from '../Modals/UploadTextModal/UploadTextModal';
 const PATH_LABELS = {
     '/candidates': "CV's",
     '/job-description': 'Jobs',
+    '/companies': 'Companies',
     '/admin': 'Admin',
     '/match': 'Ai Match',
     '/metrics': 'Metrics',
@@ -39,6 +40,7 @@ const Header = (props) => {
                         : pathLabel === "Prompts" ? t('topbar.prompts', "Prompts")
                         : pathLabel === "Profile" ? t('profilePage.title', "Profile")
                         : pathLabel === "Settings" ? t('settingsPage.title', "Settings")
+                        : pathLabel === "Companies" ? t('topbar.companies', "Companies")
                         : pathLabel;
   const [open, setOpen] = useState(false);
   const [openTextModal, setOpenTextModal] = useState(false);
@@ -135,6 +137,15 @@ const Header = (props) => {
                     <PlusIcon /> {t("jdEditMode.createNew")}
                 </Button>
                 </>
+            )}
+            {pathname === "/companies" && (
+                <Button
+                    type="primary"
+                    className="default-button small"
+                    onClick={() => props.setUploadNew(true)}
+                >
+                    <PlusIcon /> {t("companiesPage.createNew", "Create new companie")}
+                </Button>
             )}
             <Select
                 value={i18n.language?.startsWith('fr') ? 'fr' : 'en'}

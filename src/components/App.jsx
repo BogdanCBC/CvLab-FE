@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, Outlet, useLocation } from 'react-router-dom';
 import Login from '../componentsv2/Login/Login';
+import ForgotPassword from '../componentsv2/ForgotPassword/ForgotPassword';
 import { isTokenValid } from '../utils/auth'
 import JobDescription from './JobDescription/JobDescription';
 import MatchPage from './MatchPage/MatchPage';
@@ -70,6 +71,7 @@ function App() {
           path="/login"
           element={<LoginGate isLoggedIn={isLoggedIn} onLogin={handleLogin} />}
         />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
 
         {/* Main App Route */}
         <Route element={<ProtectedRoute isLoggedIn={isLoggedIn} />}>
@@ -87,6 +89,13 @@ function App() {
                   setIsLoggedIn={setIsLoggedIn}
               />}
            /> */}
+           <Route
+              path="/companies"
+              element={<HomePage
+                  setSelectedCandidate={setSelectedCandidate}
+                  setIsLoggedIn={setIsLoggedIn}
+              />}
+           />
            <Route
               path="/match/:jobId"
               element={<HomePage

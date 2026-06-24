@@ -112,7 +112,7 @@ function Login({ onLogin }) {
             <Checkbox>
               <span style={{ fontSize: 14, color: '#414651', fontWeight: 500 }}>Remember me</span>
             </Checkbox>
-            <Link className="login-forgot">Forgot password</Link>
+            <Link className="login-forgot" onClick={() => navigate('/forgot-password')}>Forgot password</Link>
           </div>
 
           <Form.Item style={{ marginBottom: 0 }}>

@@ -105,14 +105,14 @@ export default function JobInfoForm({ open, setJobs, setUploadNew }) {
             }}>
                 <JobIconBlue />
             </div>
-            <span style={{ fontWeight: 600, fontSize: 16, color: "#101828" }}>Add new job description</span>
+            <span style={{ fontWeight: 600, fontSize: 16, color: "#101828" }}>{t("jdEditMode.createNew")}</span>
         </div>
     );
 
     const modalFooter = (
         <div style={{ display: "flex", gap: 12, paddingTop: 8 }}>
             <Button onClick={handleClose} disabled={uploading} style={{ flex: 1, height: 40 }}>
-                Cancel
+                {t("jdEditMode.cancel")}
             </Button>
             <Button
                 className="default-button"
@@ -122,7 +122,7 @@ export default function JobInfoForm({ open, setJobs, setUploadNew }) {
                 disabled={isSubmitDisabled}
                 style={{ flex: 1, height: 40 }}
             >
-                Add job description
+                {t("jdEditMode.addJobDescription", "Add job description")}
             </Button>
         </div>
     );
@@ -141,7 +141,7 @@ export default function JobInfoForm({ open, setJobs, setUploadNew }) {
             <div style={{ display: "flex", flexDirection: "column", gap: 16, padding: "16px 0 8px" }}>
                 <div>
                     <label style={{ fontWeight: 500, fontSize: 13, display: "block", marginBottom: 6, color: "#344054" }}>
-                        Title <span style={{ color: "#2391D1" }}>*</span>
+                        {t("jdEditMode.title")} <span style={{ color: "#2391D1" }}>*</span>
                     </label>
                     <Input
                         style={{ height: 44 }}
@@ -154,7 +154,7 @@ export default function JobInfoForm({ open, setJobs, setUploadNew }) {
 
                 <div>
                     <label style={{ fontWeight: 500, fontSize: 13, display: "block", marginBottom: 6, color: "#344054" }}>
-                        Job Description <span style={{ color: "#2391D1" }}>*</span>
+                        {t("jdEditMode.jobDescription")} <span style={{ color: "#2391D1" }}>*</span>
                     </label>
                     <TextArea
                         placeholder="Enter a description..."

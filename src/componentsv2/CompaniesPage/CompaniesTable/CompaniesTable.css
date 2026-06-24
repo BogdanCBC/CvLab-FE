@@ -1,0 +1,134 @@
+.companies-table {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    flex: 1 1;
+}
+
+.companies-table-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.companies-search {
+    flex: 1;
+    height: 40px;
+}
+
+.companies-list-table {
+    height: auto;
+    border-radius: 12px;
+    border: 1px solid var(--Gray-200, #E9EAEB);
+    overflow: hidden;
+}
+
+.companies-list-table.ant-table-wrapper .ant-table-pagination.ant-pagination {
+    display: flex;
+    justify-content: center;
+    padding: 0 24px;
+}
+
+.companies-list-table.ant-table-wrapper .ant-table-pagination.ant-pagination:after {
+    content: none;
+}
+
+.companies-list-table.ant-table-wrapper .ant-table-pagination.ant-pagination .ant-pagination-prev {
+    margin-right: auto;
+}
+
+.companies-list-table.ant-table-wrapper .ant-table-pagination.ant-pagination .ant-pagination-next {
+    margin-left: auto;
+}
+
+.companies-list-table.ant-table-wrapper .ant-table-pagination.ant-pagination .ant-pagination-prev,
+.companies-list-table.ant-table-wrapper .ant-table-pagination.ant-pagination .ant-pagination-next {
+    height: 36px;
+    border-radius: 8px;
+    border: 1px solid #E9EAEB;
+    background: #FFF;
+    padding: 1px 12px;
+    font-weight: 600;
+    color: #414651;
+}
+
+.companies-list-table.ant-table-wrapper .ant-table-pagination.ant-pagination .ant-pagination-prev:hover,
+.companies-list-table.ant-table-wrapper .ant-table-pagination.ant-pagination .ant-pagination-next:hover {
+    background-color: #FAFAFA;
+}
+
+.companies-list-table.ant-table-wrapper .ant-table-pagination.ant-pagination .ant-pagination-disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.companies-list-table.ant-table-wrapper .ant-table-pagination.ant-pagination .ant-pagination-prev > span,
+.companies-list-table.ant-table-wrapper .ant-table-pagination.ant-pagination .ant-pagination-next > span {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 6px;
+}
+
+.companies-list-table.ant-table-wrapper .ant-table-thead > tr > th {
+    color: #717680;
+    font-size: 12px;
+    line-height: 18px;
+    font-weight: 600;
+}
+
+.companies-list-table.ant-table-wrapper .ant-table-thead > tr > th::before {
+    content: none !important;
+}
+
+.companies-list-table.ant-table-wrapper .ant-table-tbody > tr > td {
+    min-width: 115px;
+    padding: 18.5px 24px;
+    line-height: 20px;
+    color: #535862;
+}
+
+.companies-list-table.ant-table-wrapper .ant-table-tbody > tr > td:last-child {
+    text-align: center;
+}
+
+.companies-list-table.ant-table-wrapper .ant-table-tbody > tr > td:nth-child(1) {
+    font-weight: 500;
+    color: #181D27;
+}
+
+.companies-list-table.ant-table-wrapper .ant-table-container table > thead > tr:first-child > *:last-child {
+    text-align: center;
+}
+
+.companies-list-table .ant-pagination .ant-pagination-item {
+    text-align: center;
+    font-style: normal;
+    width: 40px;
+    height: 40px;
+}
+
+.companies-list-table .ant-pagination .ant-pagination-item a {
+    font-weight: 500;
+    color: #717680;
+    font-size: 14px;
+    line-height: 37px;
+    height: 100%;
+}
+
+.companies-list-table .ant-pagination .ant-pagination-item.ant-pagination-item-active {
+    background: #FAFAFA;
+    border-color: #FAFAFA;
+}
+
+.companies-list-table .ant-pagination .ant-pagination-item.ant-pagination-item-active a {
+    color: #414651;
+}
+
+.companies-table-row {
+    cursor: pointer;
+}
+
+.companies-table-row.active td {
+    background-color: #FAFAFA;
+}

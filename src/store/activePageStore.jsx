@@ -3,6 +3,7 @@ import React, { createContext, useContext, useState } from 'react';
 export const PAGES = {
     CV: 'cv',
     JOB_DESCRIPTION: 'job_description',
+    COMPANIES: 'companies',
     ADMIN: 'admin',
 };
 

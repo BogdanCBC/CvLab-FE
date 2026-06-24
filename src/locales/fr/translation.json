@@ -24,7 +24,8 @@
     "successAlert": "Fichier(s) traité(s) avec succès !",
     "warningAlert": "Message d'avertissement ici !",
     "errorAlert": "Une erreur s'est produite !",
-    "dasboard": "Tableau de bord"
+    "dasboard": "Tableau de bord",
+    "companies": "Entreprises"
   },
   "uploadCandidateModal": {
     "uploadText": "Téléverser",
@@ -212,6 +213,7 @@
     "createdMsg": "Utilisateur créé avec succès!",
     "createUser": "Créer l'utilisateur",
     "username": "Nom d'utilisateur",
+    "email": "Courriel",
     "password": "Mot de passe",
     "confirmPass": "Confirmer le mot de passe",
     "role": "Role",
@@ -232,6 +234,35 @@
   "genericTopBar": {
     "backBtn": "Retour",
     "logOut": "Déconnexion"
+  },
+  "companiesPage": {
+    "createNew": "Créer une nouvelle entreprise",
+    "addNewCompany": "Ajouter une nouvelle entreprise",
+    "addCompany": "Ajouter l'entreprise",
+    "companyName": "Nom de l'entreprise",
+    "companyNamePlaceholder": "ex : NovaByte",
+    "companyDescription": "Description de l'entreprise",
+    "companyDescPlaceholder": "Entrez une description...",
+    "createdSuccess": "Entreprise créée avec succès",
+    "editSuccess": "Entreprise mise à jour avec succès",
+    "editCompany": "Modifier l'entreprise",
+    "companyLabel": "Entreprise",
+    "descriptionLabel": "Description",
+    "seeAllJobs": "Voir tous les postes",
+    "fetchError": "Échec du chargement des entreprises",
+    "fetchDetailEmpty": "Aucune donnée trouvée pour cette entreprise",
+    "fetchDetailError": "Échec du chargement des détails de l'entreprise",
+    "deleteSuccess": "Entreprise supprimée avec succès",
+    "deleteError": "Échec de la suppression de l'entreprise"
+  },
+  "companiesTable": {
+    "name": "Entreprise",
+    "description": "Description",
+    "actions": "Actions"
+  },
+  "companiesNothingSelected": {
+    "message": "Aucune entreprise sélectionnée",
+    "createNew": "En créer une ?"
   },
   "jdTopBar": {
     "pageTitle": "Page de description du poste",
@@ -273,6 +304,7 @@
     "native": "Langue maternelle",
     "cancel": "Annuler",
     "confirm": "Confirmer",
+    "addJobDescription": "Ajouter une description de poste",
     "createdSuccess": "Description du poste créée avec succès",
     "editSuccess": "Description du poste modifiée avec succès"
   },
@@ -315,9 +347,8 @@
     "save": "Enregistrer",
     "personalInfo": "Informations personnelles",
     "personalInfoDesc": "Mettez à jour votre photo et vos informations personnelles ici.",
-    "name": "Nom",
-    "firstName": "Prénom",
-    "lastName": "Nom de famille",
+    "username": "Nom d'utilisateur",
+    "usernamePlaceholder": "Nom d'utilisateur",
     "emailAddress": "Adresse e-mail",
     "emailPlaceholder": "email@exemple.com",
     "yourPhoto": "Votre photo",
@@ -341,5 +372,42 @@
   "profilePage": {
     "title": "Profil",
     "edit": "Modifier"
+  },
+  "forgotPassword": {
+    "title": "Mot de passe oublié ?",
+    "subtitle": "Entrez l'adresse e-mail associée à votre compte et nous vous enverrons un code pour réinitialiser votre mot de passe.",
+    "emailLabel": "E-mail",
+    "emailPlaceholder": "Entrez votre e-mail",
+    "emailRequired": "Veuillez entrer votre e-mail",
+    "emailInvalid": "Veuillez entrer un e-mail valide",
+    "sendBtn": "Envoyer",
+    "noAccount": "Aucun compte trouvé avec cette adresse e-mail.",
+    "tooManyRequests": "Trop de requêtes. Veuillez patienter un moment et réessayer.",
+    "unexpectedError": "Une erreur inattendue s'est produite. Veuillez réessayer.",
+    "requestFailed": "La requête a échoué",
+    "verifyTitle": "Vérifiez votre e-mail",
+    "verifySubtitle": "Entrez le code de vérification que nous avons envoyé à votre adresse e-mail pour continuer.",
+    "secureCode": "Code sécurisé",
+    "codeIncomplete": "Veuillez entrer le code complet à 6 chiffres.",
+    "codeInvalid": "Code invalide ou expiré. Veuillez réessayer.",
+    "tooManyAttempts": "Trop de tentatives. Veuillez patienter un moment et réessayer.",
+    "verificationFailed": "La vérification a échoué",
+    "verifyBtn": "Vérifier",
+    "resetTitle": "Créer un nouveau mot de passe",
+    "resetSubtitle": "Entrez un nouveau mot de passe pour votre compte. Assurez-vous qu'il est fort et sécurisé.",
+    "newPassword": "Nouveau mot de passe",
+    "newPasswordPlaceholder": "Entrez votre nouveau mot de passe",
+    "newPasswordRequired": "Veuillez entrer un nouveau mot de passe",
+    "passwordMinLength": "Le mot de passe doit contenir au moins 8 caractères",
+    "confirmPassword": "Confirmer le mot de passe",
+    "confirmPasswordPlaceholder": "Confirmez votre nouveau mot de passe",
+    "confirmPasswordRequired": "Veuillez confirmer votre mot de passe",
+    "passwordMismatch": "Les mots de passe ne correspondent pas.",
+    "resetRequestInvalid": "Demande de réinitialisation invalide ou expirée. Veuillez recommencer.",
+    "resetFailed": "La réinitialisation du mot de passe a échoué",
+    "resetBtn": "Réinitialiser",
+    "successTitle": "Mot de passe réinitialisé",
+    "successSubtitle": "Votre mot de passe a été réinitialisé avec succès. Cliquez ci-dessous pour vous connecter.",
+    "backToLogin": "Retour à la connexion"
   }
 }

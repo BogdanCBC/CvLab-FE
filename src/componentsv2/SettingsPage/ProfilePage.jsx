@@ -3,6 +3,7 @@ import { Typography, Input, Button, Avatar } from 'antd';
 import { MailOutlined, UserOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import api from '../../api';
 import './SettingsPage.scss';
 
 const { Title } = Typography;
@@ -11,20 +12,29 @@ const ProfilePage = () => {
     const { t } = useTranslation();
     const navigate = useNavigate();
 
+    const [username, setUsername] = useState('');
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
     const [role, setRole] = useState('');
-    const [avatarUrl] = useState(null);
+    const [avatarUrl, setAvatarUrl] = useState(null);
 
     useEffect(() => {
-        const storedUsername = localStorage.getItem('username') || '';
-        const storedRole = localStorage.getItem('role') || '';
-        const nameParts = storedUsername.split(' ');
-        setFirstName(nameParts[0] || '');
-        setLastName(nameParts.slice(1).join(' ') || '');
-        setEmail(storedUsername);
-        setRole(storedRole);
+        const fetchProfile = async () => {
+            try {
+                const response = await api.get('/user/me');
+                const data = response.data;
+                setUsername(data.username || '');
+                setFirstName(data.first_name || '');
+                setLastName(data.last_name || '');
+                setEmail(data.email || '');
+                setRole(data.role || '');
+                setAvatarUrl(data.profile_image_url || null);
+            } catch (error) {
+                console.error('Failed to fetch profile:', error);
+            }
+        };
+        fetchProfile();
     }, []);
 
     return (
@@ -48,10 +58,27 @@ const ProfilePage = () => {
 
             <div className="settings-page__row">
                 <label className="settings-page__label">
-                    {t('settingsPage.name', 'Name')}
+                    {t('settingsPage.username', 'Username')}
                 </label>
-                <div className="settings-page__field settings-page__field--double">
+                <div className="settings-page__field">
+                    <Input value={username} disabled />
+                </div>
+            </div>
+
+            <div className="settings-page__row">
+                <label className="settings-page__label">
+                    {t('settingsPage.firstName', 'First name')}
+                </label>
+                <div className="settings-page__field">
                     <Input value={firstName} disabled />
+                </div>
+            </div>
+
+            <div className="settings-page__row">
+                <label className="settings-page__label">
+                    {t('settingsPage.lastName', 'Last name')}
+                </label>
+                <div className="settings-page__field">
                     <Input value={lastName} disabled />
                 </div>
             </div>

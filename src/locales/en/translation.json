@@ -24,7 +24,8 @@
     "successAlert": "File(s) processed successfully!",
     "warningAlert": "Warning message here!",
     "errorAlert": "Error occurred!",
-    "dasboard": "Dashboard"
+    "dasboard": "Dashboard",
+    "companies": "Companies"
   },
   "uploadCandidateModal": {
     "uploadText": "Upload",
@@ -221,6 +222,7 @@
     "createdMsg": "User created successfully",
     "createUser": "Create User",
     "username": "Username",
+    "email": "Email",
     "password": "Password",
     "confirmPass": "Confirm Password",
     "role": "Role",
@@ -241,6 +243,35 @@
   "genericTopBar": {
     "backBtn": "Back",
     "logOut": "Logout"
+  },
+  "companiesPage": {
+    "createNew": "Create new companie",
+    "addNewCompany": "Add new companie",
+    "addCompany": "Add companie",
+    "companyName": "Company Name",
+    "companyNamePlaceholder": "ex: NovaByte",
+    "companyDescription": "Company Description",
+    "companyDescPlaceholder": "Enter a description...",
+    "createdSuccess": "Company created successfully",
+    "editSuccess": "Company updated successfully",
+    "editCompany": "Edit Company",
+    "companyLabel": "Companie",
+    "descriptionLabel": "Description",
+    "seeAllJobs": "See all jobs",
+    "fetchError": "Failed to load companies",
+    "fetchDetailEmpty": "No data found for this company",
+    "fetchDetailError": "Failed to load company details",
+    "deleteSuccess": "Company deleted successfully",
+    "deleteError": "Failed to delete company"
+  },
+  "companiesTable": {
+    "name": "Companie",
+    "description": "Description",
+    "actions": "Actions"
+  },
+  "companiesNothingSelected": {
+    "message": "No company was selected",
+    "createNew": "Create a new one?"
   },
   "jdTopBar": {
     "pageTitle": "Job Description Page",
@@ -282,6 +313,7 @@
     "native": "Native",
     "cancel": "Cancel",
     "confirm": "Confirm",
+    "addJobDescription": "Add job description",
     "createdSuccess": "Job description created successfully",
     "editSuccess": "Job description updated successfully"
   },
@@ -324,9 +356,8 @@
     "save": "Save",
     "personalInfo": "Personal info",
     "personalInfoDesc": "Update your photo and personal details here.",
-    "name": "Name",
-    "firstName": "First name",
-    "lastName": "Last name",
+    "username": "Username",
+    "usernamePlaceholder": "Username",
     "emailAddress": "Email address",
     "emailPlaceholder": "email@example.com",
     "yourPhoto": "Your photo",
@@ -350,5 +381,42 @@
   "profilePage": {
     "title": "Profile",
     "edit": "Edit"
+  },
+  "forgotPassword": {
+    "title": "Forgot your password?",
+    "subtitle": "Enter the email address associated with your account, and we'll send you a code to reset your password.",
+    "emailLabel": "Email",
+    "emailPlaceholder": "Enter your email",
+    "emailRequired": "Please enter your email",
+    "emailInvalid": "Please enter a valid email",
+    "sendBtn": "Send",
+    "noAccount": "No account found with this email address.",
+    "tooManyRequests": "Too many requests. Please wait a moment and try again.",
+    "unexpectedError": "An unexpected error occurred. Please try again.",
+    "requestFailed": "Request failed",
+    "verifyTitle": "Verify Your Email",
+    "verifySubtitle": "Enter the verification code we sent to your email address to continue.",
+    "secureCode": "Secure code",
+    "codeIncomplete": "Please enter the full 6-digit code.",
+    "codeInvalid": "Invalid or expired code. Please try again.",
+    "tooManyAttempts": "Too many attempts. Please wait a moment and try again.",
+    "verificationFailed": "Verification failed",
+    "verifyBtn": "Verify",
+    "resetTitle": "Create a New Password",
+    "resetSubtitle": "Enter a new password for your account. Make sure it's strong and secure.",
+    "newPassword": "New password",
+    "newPasswordPlaceholder": "Enter your new password",
+    "newPasswordRequired": "Please enter a new password",
+    "passwordMinLength": "Password must be at least 8 characters",
+    "confirmPassword": "Confirm password",
+    "confirmPasswordPlaceholder": "Confirm your new password",
+    "confirmPasswordRequired": "Please confirm your password",
+    "passwordMismatch": "Passwords do not match.",
+    "resetRequestInvalid": "Invalid or expired reset request. Please start over.",
+    "resetFailed": "Password reset failed",
+    "resetBtn": "Reset",
+    "successTitle": "Password reset",
+    "successSubtitle": "Your password has been successfully reset. Click below to log in magically.",
+    "backToLogin": "Back to Log in"
   }
 }
