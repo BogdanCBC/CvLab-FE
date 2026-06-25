@@ -4,18 +4,20 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import {getTenantConfig} from "../../utils/tenantConfig";
 
 import { useTranslation } from 'react-i18next';
-import { Form, Input, Button, Checkbox, Typography, Alert, Tooltip, Popover, Icon } from 'antd';
+import { Form, Input, Button, Checkbox, Typography, Alert, Tooltip, Popover, Icon, Avatar, Badge } from 'antd';
 import LogoIcon from '../../images/Logomark-small.svg';
 
 import { UserOutlined, LogoutOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import { CvIcon, CvIconActive, JobIcon, JobIconActive, CompaniesIcon, CompaniesIconActive, SettingOutlined, Settings, SettingsActive, InfoIconMenu, LogoutIconMenu, ProfileIcon } from "../../constants/icons";
 import { useActivePage, PAGES } from '../../store/activePageStore';
+import { useUser } from '../../store/userStore';
 
 
 function Menu(props) {
     const {t, i18n } = useTranslation();
     const userRole = localStorage.getItem('role');
     const { setActivePage } = useActivePage();
+    const { user, fetchUser } = useUser();
     const { pathname } = useLocation();
 
     const [open, setOpen] = useState(false);
@@ -31,7 +33,8 @@ function Menu(props) {
     useEffect(() => {
         const config = getTenantConfig();
         setLogo(config.logo);
-    }, []);
+        fetchUser();
+    }, [fetchUser]);
 
     const handleLanguageChange = (event) => {
         const newLang = event.target.value;
@@ -109,6 +112,9 @@ function Menu(props) {
                 )}
             </div>
             <div className="bottom">
+                <Tooltip title={t('topbar.settings')}>
+                    <Button className={`icon-button ${pathname === "/settings" ? "active" : ""}`} type="primary" icon={pathname === "/settings" ? <SettingsActive /> : <Settings />} onClick={() => navigate('/settings')} />
+                </Tooltip>
                 <Popover
                     content={
                         <div className="settings-popover">
@@ -136,7 +142,9 @@ function Menu(props) {
                     onOpenChange={setSettingsOpen}
                     arrow={false}
                 >
-                    <Button className={`icon-button ${settingsOpen ? "active" : ""}`} type="primary" icon={settingsOpen ? <SettingsActive /> : <Settings />} />
+                    <Badge dot color="#17B26A" offset={[-4, 34]} style={{ width: 10, height: 10 }}>
+                        <Avatar size={40} src={user.avatarUrl} icon={!user.avatarUrl && <UserOutlined />} className="menu-avatar" style={{ cursor: 'pointer' }} />
+                    </Badge>
                 </Popover>
             </div>
         </div>

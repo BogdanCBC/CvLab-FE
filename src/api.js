@@ -43,6 +43,9 @@ api.interceptors.response.use(
           localStorage.setItem('role', decoded.role);
 
           localStorage.setItem('token', newAccessToken);
+          if (response.data.refresh_token) {
+            localStorage.setItem('refreshToken', response.data.refresh_token);
+          }
           originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
 
           return api(originalRequest);

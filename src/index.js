@@ -4,12 +4,15 @@ import './styles/global.scss';
 import App from './components/App';
 import reportWebVitals from './reportWebVitals';
 import { ActivePageProvider } from './store/activePageStore';
+import { UserProvider } from './store/userStore';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <ActivePageProvider>
-      <App />
+      <UserProvider>
+        <App />
+      </UserProvider>
     </ActivePageProvider>
   </React.StrictMode>
 );

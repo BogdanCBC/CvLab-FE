@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import { Typography, Input, Button, Upload, Avatar, message } from 'antd';
 import { MailOutlined, UploadOutlined, UserOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
@@ -6,29 +6,24 @@ import { useTranslation } from 'react-i18next';
 import api from '../../api';
 import './SettingsPage.scss';
 import { UploadPhotoIcon } from "../../constants/icons";
+import { useUser } from '../../store/userStore';
 
 const { Title, Text } = Typography;
 
 const SettingsPage = () => {
     const { t } = useTranslation();
     const navigate = useNavigate();
+    const { user, setUser } = useUser();
 
-    const [username, setUsername] = useState('');
-    const [email, setEmail] = useState('');
-    const [role, setRole] = useState('');
-    const [avatarUrl, setAvatarUrl] = useState(null);
+    const [username, setUsername] = useState(user.username);
+    const [email, setEmail] = useState(user.email);
+    const [role] = useState(user.role);
+    const [avatarUrl, setAvatarUrl] = useState(user.avatarUrl);
     const [currentPassword, setCurrentPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [loading, setLoading] = useState(false);
-
-    useEffect(() => {
-        const storedUsername = localStorage.getItem('username') || '';
-        const storedRole = localStorage.getItem('role') || '';
-        setUsername(storedUsername);
-        setEmail(storedUsername);
-        setRole(storedRole);
-    }, []);
+    const initialUsername = useRef(user.username);
 
     const handleSave = async () => {
         if (newPassword && newPassword !== confirmPassword) {
@@ -36,15 +31,43 @@ const SettingsPage = () => {
             return;
         }
 
+        const usernameChanged = username !== initialUsername.current;
+        const passwordChanged = currentPassword && newPassword;
+
+        if (!usernameChanged && !passwordChanged) {
+            navigate('/profile');
+            return;
+        }
+
         setLoading(true);
         try {
-            if (currentPassword && newPassword) {
-                await api.patch('/user/password', {
+            if (usernameChanged) {
+                const res = await api.patch('/user/me', {
+                    username,
+                    first_name: "",
+                    last_name: "",
+                });
+                if (res.data.access_token) {
+                    localStorage.setItem('token', res.data.access_token);
+                }
+                if (res.data.refresh_token) {
+                    localStorage.setItem('refreshToken', res.data.refresh_token);
+                }
+                if (res.data.username) {
+                    localStorage.setItem('username', res.data.username);
+                }
+            }
+
+            if (passwordChanged) {
+                await api.patch('/user/me/password', {
                     current_password: currentPassword,
                     new_password: newPassword,
+                    confirm_password: confirmPassword,
                 });
                 message.success(t('settingsPage.passwordUpdated', 'Password updated successfully'));
             }
+
+            setUser({ ...user, username, email });
             message.success(t('settingsPage.saved', 'Settings saved successfully'));
             navigate('/profile');
         } catch (error) {
@@ -55,22 +78,33 @@ const SettingsPage = () => {
     };
 
     const handleCancel = () => {
-        navigate('/profile');
+        navigate(-1);
     };
 
     const uploadProps = {
-        beforeUpload: (file) => {
+        beforeUpload: async (file) => {
             const isImage = file.type.startsWith('image/');
             if (!isImage) {
                 message.error(t('settingsPage.imageOnly', 'You can only upload image files'));
+                return false;
             }
             const isLt2M = file.size / 1024 / 1024 < 2;
             if (!isLt2M) {
                 message.error(t('settingsPage.fileTooLarge', 'Image must be smaller than 2MB'));
+                return false;
             }
-            if (isImage && isLt2M) {
-                const url = URL.createObjectURL(file);
-                setAvatarUrl(url);
+            try {
+                const formData = new FormData();
+                formData.append('file', file);
+                const res = await api.put('/user/me/image', formData, {
+                    headers: { 'Content-Type': 'multipart/form-data' },
+                });
+                const newUrl = res.data.profile_image_url || URL.createObjectURL(file);
+                setAvatarUrl(newUrl);
+                setUser({ ...user, avatarUrl: newUrl });
+                message.success(t('settingsPage.photoUpdated', 'Photo updated successfully'));
+            } catch (error) {
+                message.error(t('settingsPage.photoError', 'Failed to upload photo'));
             }
             return false;
         },
@@ -114,6 +148,32 @@ const SettingsPage = () => {
                     />
                 </div>
             </div>
+
+            {/* <div className="settings-page__row">
+                <label className="settings-page__label">
+                    {t('settingsPage.firstName', 'First name')}
+                </label>
+                <div className="settings-page__field">
+                    <Input
+                        value={firstName}
+                        onChange={(e) => setFirstName(e.target.value)}
+                        placeholder={t('settingsPage.firstNamePlaceholder', 'First name')}
+                    />
+                </div>
+            </div> */}
+
+            {/* <div className="settings-page__row">
+                <label className="settings-page__label">
+                    {t('settingsPage.lastName', 'Last name')}
+                </label>
+                <div className="settings-page__field">
+                    <Input
+                        value={lastName}
+                        onChange={(e) => setLastName(e.target.value)}
+                        placeholder={t('settingsPage.lastNamePlaceholder', 'Last name')}
+                    />
+                </div>
+            </div> */}
 
             <div className="settings-page__row">
                 <label className="settings-page__label">
