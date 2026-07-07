@@ -14,7 +14,7 @@ const JobIconBlue = () => (
     </svg>
 );
 
-export default function JobInfoForm({ open, setJobs, setUploadNew }) {
+export default function JobInfoForm({ open, setJobs, setUploadNew, clientId }) {
     const { t, i18n } = useTranslation();
     const [uploading, setUploading] = useState(false);
 
@@ -69,7 +69,7 @@ export default function JobInfoForm({ open, setJobs, setUploadNew }) {
                 setFormData({ title: "", description: "" });
                 setSkills([]);
                 setLanguages([]);
-                fetchJobDescription(i18n.language).then((res) => {
+                fetchJobDescription(i18n.language, clientId).then((res) => {
                     if (res.success) setJobs(res.jobs || []);
                 });
             }
@@ -135,8 +135,8 @@ export default function JobInfoForm({ open, setJobs, setUploadNew }) {
             footer={modalFooter}
             width={764}
             closable={!uploading}
-            maskClosable={!uploading}
-            destroyOnClose
+            mask={{ closable: !uploading }}
+            destroyOnHidden
         >
             <div style={{ display: "flex", flexDirection: "column", gap: 16, padding: "16px 0 8px" }}>
                 <div>

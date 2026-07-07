@@ -127,8 +127,8 @@ export default function UploadTextModal(props) {
       footer={modalFooter}
       width={700}
       closable={!isUploading}
-      maskClosable={!isUploading}
-      destroyOnClose
+      mask={{ closable: !isUploading }}
+      destroyOnHidden
     >
       <div className="utm-body">
         <TextArea

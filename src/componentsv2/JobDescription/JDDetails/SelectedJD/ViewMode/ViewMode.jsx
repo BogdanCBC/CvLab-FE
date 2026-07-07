@@ -7,10 +7,10 @@ import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import "./ViewMode.scss";
 
-export default function ViewMode({ jobInfo, setJobInfo, setEditMode, setJobs, setSelectedJob }) {
+export default function ViewMode({ jobInfo, setJobInfo, setEditMode, setJobs, setSelectedJob, clientId }) {
     const { t, i18n } = useTranslation();
-    const [noMatchAlert, setNoMatchAlert] = useState(false);
-    const [noMatchMessage, setNoMatchMessage] = useState("");
+    const [noMatchAlert] = useState(false);
+    const [noMatchMessage] = useState("");
     const navigate = useNavigate();
 
     const handleDelete = async () => {
@@ -20,7 +20,7 @@ export default function ViewMode({ jobInfo, setJobInfo, setEditMode, setJobs, se
             });
             if (deleteRes.data.success) {
                 try {
-                    const jobsRes = await fetchJobDescription(i18n.language);
+                    const jobsRes = await fetchJobDescription(i18n.language, clientId);
                     if (jobsRes.success && Array.isArray(jobsRes.jobs)) {
                         setJobInfo(null);
                         setSelectedJob(null);
@@ -43,44 +43,44 @@ export default function ViewMode({ jobInfo, setJobInfo, setEditMode, setJobs, se
         }
     };
 
-    const handleNavigate = async () => {
-        let matchResp;
-        try {
-            if (localStorage.getItem("clientName") === "rgis") {
-                matchResp = await api.get("/job-description/match/rgis", {
-                    params: { job_id: jobInfo.job_id },
-                });
-            } else {
-                matchResp = await api.get("/job-description/match", {
-                    params: { job_id: jobInfo.job_id },
-                });
-            }
-            if (matchResp.data.data.length === 0) {
-                setNoMatchMessage("No candidate matched for this job");
-                setNoMatchAlert(true);
-                setTimeout(() => {
-                    setNoMatchAlert(false);
-                    setNoMatchMessage("");
-                }, 3000);
-            } else {
-                if (matchResp.data.success) {
-                    navigate(`/match/${jobInfo.job_id}`, {
-                        state: {
-                            matchedData: matchResp.data.data,
-                            isRgis: localStorage.getItem("clientName") === "rgis",
-                        },
-                    });
-                }
-            }
-        } catch (err) {
-            setNoMatchMessage(err.response.data.message);
-            setNoMatchAlert(true);
-            setTimeout(() => {
-                setNoMatchAlert(false);
-                setNoMatchMessage("");
-            }, 3000);
-        }
-    };
+    // const handleNavigate = async () => {
+    //     let matchResp;
+    //     try {
+    //         if (localStorage.getItem("clientName") === "rgis") {
+    //             matchResp = await api.get("/job-description/match/rgis", {
+    //                 params: { job_id: jobInfo.job_id },
+    //             });
+    //         } else {
+    //             matchResp = await api.get("/job-description/match", {
+    //                 params: { job_id: jobInfo.job_id },
+    //             });
+    //         }
+    //         if (matchResp.data.data.length === 0) {
+    //             setNoMatchMessage("No candidate matched for this job");
+    //             setNoMatchAlert(true);
+    //             setTimeout(() => {
+    //                 setNoMatchAlert(false);
+    //                 setNoMatchMessage("");
+    //             }, 3000);
+    //         } else {
+    //             if (matchResp.data.success) {
+    //                 navigate(`/match/${jobInfo.job_id}`, {
+    //                     state: {
+    //                         matchedData: matchResp.data.data,
+    //                         isRgis: localStorage.getItem("clientName") === "rgis",
+    //                     },
+    //                 });
+    //             }
+    //         }
+    //     } catch (err) {
+    //         setNoMatchMessage(err.response.data.message);
+    //         setNoMatchAlert(true);
+    //         setTimeout(() => {
+    //             setNoMatchAlert(false);
+    //             setNoMatchMessage("");
+    //         }, 3000);
+    //     }
+    // };
 
     return (
         <div className="jd-wrapper">
@@ -92,8 +92,14 @@ export default function ViewMode({ jobInfo, setJobInfo, setEditMode, setJobs, se
                         <h2 className="jd-title">{jobInfo.title}</h2>
                     </div>
                     <div className="jd-header-actions">
-                        <Button onClick={handleNavigate} className="filled-btn">
+                        {/* <Button onClick={handleNavigate} className="filled-btn">
                         {t("jdViewMode.match")}
+                        </Button> */}
+                        <Button
+                            onClick={() => navigate(`/tracking/${jobInfo.job_id}`)}
+                            className="filled-btn"
+                        >
+                            {t("jdViewMode.tracking", "Tracking")}
                         </Button>
                         <Button
                             icon={<TrashIcon />}

@@ -12,6 +12,8 @@ import PromptPage from "../PromptPage/PromptPage";
 import ProfilePage from "../SettingsPage/ProfilePage";
 import SettingsPage from "../SettingsPage/SettingsPage";
 import CompaniesPage from "../CompaniesPage/CompaniesPage";
+import TrackingPage from "../TrackingPage/TrackingPage";
+import ArchivePage from "../TrackingPage/ArchivePage";
 
 export default function HomePage({
                                        candidates,
@@ -23,9 +25,12 @@ export default function HomePage({
                                        advancedSearch,
                                        setAdvancedSearch,
                                        setIsLoggedIn,
+                                       archivedCandidates,
+                                       setArchivedCandidates,
                                    }) {
     const { pathname } = useLocation();
     const [uploadNew, setUploadNew] = useState(false);
+    const [addCandidateOpen, setAddCandidateOpen] = useState(false);
 
     return (
         <div className="home-container">
@@ -39,7 +44,8 @@ export default function HomePage({
                     <div className="top-menu">
                         <Header candidates={candidates}
                                 setCandidates={setCandidates}
-                                setUploadNew={setUploadNew}/>
+                                setUploadNew={setUploadNew}
+                                setAddCandidateOpen={setAddCandidateOpen}/>
                     </div>
                 )}
                 <div className="content-area">
@@ -92,6 +98,21 @@ export default function HomePage({
                     )}
                     {pathname === "/settings" && (
                         <SettingsPage />
+                    )}
+                    {pathname.startsWith("/tracking/") && !pathname.endsWith("/archive") && (
+                        <TrackingPage
+                            addCandidateOpen={addCandidateOpen}
+                            setAddCandidateOpen={setAddCandidateOpen}
+                            archivedCandidates={archivedCandidates}
+                            setArchivedCandidates={setArchivedCandidates}
+                            setSelectedCandidate={setSelectedCandidate}
+                        />
+                    )}
+                    {/^\/tracking\/[^/]+\/archive$/.test(pathname) && (
+                        <ArchivePage
+                            archivedCandidates={archivedCandidates || []}
+                            setArchivedCandidates={setArchivedCandidates}
+                        />
                     )}
                 </div>
              </div>

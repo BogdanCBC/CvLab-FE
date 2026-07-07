@@ -1,21 +1,26 @@
 import api from "../api";
 
-export async function fetchJobDescription(language) {
+export async function fetchJobDescription(language, clientId) {
     const token = localStorage.getItem('token');
     if (!token) return [];
 
+    const langMap = {
+        'en': 'English',
+        'fr': 'French'
+    };
+
     let url = "/job-description";
-    if (language) {
-        const langMap = {
-            'en': 'English',
-            'fr': 'French'
-        };
-        const mappedLang = langMap[language] || 'English';
-        url += `?language=${mappedLang}`;
+    let params;
+
+    if (clientId) {
+        url = "/clients/jobs";
+        params = { client_id: clientId, language: langMap[language] || 'English' };
+    } else if (language) {
+        params = { language: langMap[language] || 'English' };
     }
 
     try{
-        const response = await api.get(url);
+        const response = await api.get(url, { params });
         if (response.data.success) {
             const jobs = response.data.data.map(job => ({
                 job_id: job.job_id,

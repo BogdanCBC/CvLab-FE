@@ -5,7 +5,7 @@ import JobInfoForm from "./JobInfoForm/JobInfoForm";
 import SelectedJD from "./SelectedJD/SelectedJD";
 import NothingSelected from "./NothingSelected/NothingSelected";
 
-export default function JDDetails({ selectedJob, setSelectedJob, setJobs, uploadNew, setUploadNew, setSelectedCandidate }) {
+export default function JDDetails({ selectedJob, setSelectedJob, setJobs, uploadNew, setUploadNew, setSelectedCandidate, clientId }) {
 
     const [jobInfo, setJobInfo] = useState(null);
 
@@ -46,10 +46,11 @@ export default function JDDetails({ selectedJob, setSelectedJob, setJobs, upload
                     setSelectedJob={setSelectedJob}
                     updateJobInfoFromJobs={updateJobInfoFromJobs}
                     setSelectedCandidate={setSelectedCandidate}
+                    clientId={clientId}
                 />
             )}
 
-            <JobInfoForm open={uploadNew} setJobs={setJobs} setUploadNew={setUploadNew} />
+            <JobInfoForm open={uploadNew} setJobs={setJobs} setUploadNew={setUploadNew} clientId={clientId} />
         </div>
     );
 }

@@ -5,16 +5,19 @@ import "./JobDescription.scss";
 
 import { fetchJobDescription } from "../../utils/fetchJobDescription";
 import { useTranslation } from "react-i18next";
+import { useLocation } from "react-router-dom";
 
 
 export default function JobDescription({ setSelectedCandidate, setIsLoggedIn, uploadNew, setUploadNew }) {
     const { i18n } = useTranslation();
+    const { state } = useLocation();
+    const clientId = state?.clientId;
     const [jobs, setJobs] = useState([]);
     const [selectedJob, setSelectedJob] = useState(null);
     const [failMessage, setFailMessage] = useState(null);
 
     useEffect(() => {
-        fetchJobDescription(i18n.language).then((response) => {
+        fetchJobDescription(i18n.language, clientId).then((response) => {
             if (response && response.success) {
                 setJobs(response.jobs || []);
             } else {
@@ -22,7 +25,7 @@ export default function JobDescription({ setSelectedCandidate, setIsLoggedIn, up
                 setFailMessage(response?.message || "Failed to load");
             }
         });
-    }, [i18n.language]);
+    }, [i18n.language, clientId]);
 
     return (
         <div className="job-description-page">
@@ -34,6 +37,7 @@ export default function JobDescription({ setSelectedCandidate, setIsLoggedIn, up
                 uploadNew={uploadNew}
                 setUploadNew={setUploadNew}
                 setSelectedCandidate={setSelectedCandidate}
+                clientId={clientId}
             />
         </div>
     );

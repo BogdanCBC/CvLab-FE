@@ -1,0 +1,152 @@
+@use '../../../styles/variables' as *;
+
+.contact-section {
+  width: 100%;
+  background: #f8fafc;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 120px 24px;
+  text-align: center;
+
+  &__eyebrow {
+    color: $color-primary;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  &__title {
+    color: $color-title;
+    font-size: 44px;
+    font-weight: 800;
+    line-height: 1.2;
+    margin: 0 0 16px;
+  }
+
+  &__subtitle {
+    color: $color-subtitle;
+    font-size: 16px;
+    line-height: 1.6;
+    max-width: 480px;
+    margin: 0 0 48px;
+  }
+
+  &__card {
+    width: 100%;
+    max-width: 560px;
+    background: #fff;
+    border: 1px solid #eaecf0;
+    border-radius: 20px;
+    box-shadow: 0 4px 24px rgba(16, 24, 40, 0.06);
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    text-align: left;
+  }
+
+  &__row {
+    display: flex;
+    gap: 16px;
+
+    .contact-section__field {
+      flex: 1;
+      min-width: 0;
+    }
+  }
+
+  &__field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+
+    label {
+      font-size: 14px;
+      font-weight: 600;
+      color: $color-label;
+
+      span {
+        color: $color-primary;
+      }
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      border: 1px solid #d0d5dd;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-size: 14px;
+      font-family: inherit;
+      color: $color-title;
+      background: #fff;
+      resize: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+      &::placeholder {
+        color: $color-placeholder;
+      }
+
+      &:focus {
+        outline: none;
+        border-color: $color-primary;
+        box-shadow: 0 0 0 4px rgba(35, 145, 209, 0.12);
+      }
+
+      &:disabled {
+        background: #f9fafb;
+        cursor: not-allowed;
+      }
+    }
+  }
+
+  &__submit {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    background: $color-primary;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 14px 20px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+
+    &:hover:not(:disabled) {
+      background: #1d7bb3;
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+
+  @media (max-width: 900px) {
+    padding: 80px 20px;
+
+    &__title {
+      font-size: 30px;
+    }
+
+    &__subtitle {
+      margin-bottom: 32px;
+    }
+
+    &__card {
+      padding: 24px;
+    }
+
+    &__row {
+      flex-direction: column;
+      gap: 20px;
+    }
+  }
+}

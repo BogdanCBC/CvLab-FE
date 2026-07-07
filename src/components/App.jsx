@@ -11,6 +11,9 @@ import MetricsPage from "./MetricsPage/MetricsPage";
 import '../i18n';
 import PromptPage from "./PromptPage/PromptPage";
 import HomePage from '../componentsv2/Home/HomePage';
+import LandingPage from '../componentsv2/LandingPage/LandingPage';
+import BlogListPage from '../componentsv2/BlogPage/BlogListPage';
+import ArticlePage from '../componentsv2/BlogPage/ArticlePage';
 
 function ProtectedRoute({ isLoggedIn }) {
     const location = useLocation();
@@ -43,6 +46,7 @@ function App() {
   const [editMode, setEditMode] = useState(false);
   const [advancedSearch, setAdvancedSearch] = useState(false);
   const [candidates, setCandidates] = useState([]);
+  const [archivedCandidates, setArchivedCandidates] = useState([]);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -63,8 +67,10 @@ function App() {
       <Routes>
           <Route
             path="/"
-            element={<Navigate to={isLoggedIn ? "/candidates" : "/login"} replace />}
+            element={<LandingPage isLoggedIn={isLoggedIn} />}
           />
+          <Route path="/blog" element={<BlogListPage isLoggedIn={isLoggedIn} />} />
+          <Route path="/blog/:slug" element={<ArticlePage isLoggedIn={isLoggedIn} />} />
 
         {/* Login Route */}
         <Route
@@ -101,6 +107,24 @@ function App() {
               element={<HomePage
                   setSelectedCandidate={setSelectedCandidate}
                   setIsLoggedIn={setIsLoggedIn}
+              />}
+           />
+           <Route
+              path="/tracking/:jobId"
+              element={<HomePage
+                  setSelectedCandidate={setSelectedCandidate}
+                  setIsLoggedIn={setIsLoggedIn}
+                  archivedCandidates={archivedCandidates}
+                  setArchivedCandidates={setArchivedCandidates}
+              />}
+           />
+           <Route
+              path="/tracking/:jobId/archive"
+              element={<HomePage
+                  setSelectedCandidate={setSelectedCandidate}
+                  setIsLoggedIn={setIsLoggedIn}
+                  archivedCandidates={archivedCandidates}
+                  setArchivedCandidates={setArchivedCandidates}
               />}
            />
            <Route

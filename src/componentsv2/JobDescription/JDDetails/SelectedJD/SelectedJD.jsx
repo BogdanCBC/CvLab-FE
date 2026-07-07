@@ -10,6 +10,7 @@ export default function SelectedJD({
     setSelectedJob,
     updateJobInfoFromJobs,
     setSelectedCandidate,
+    clientId,
 }) {
     const [editMode, setEditMode] = useState(false);
 
@@ -27,6 +28,7 @@ export default function SelectedJD({
                     setJobs={setJobs}
                     setSelectedJob={setSelectedJob}
                     setSelectedCandidate={setSelectedCandidate}
+                    clientId={clientId}
                 />
             )}
 

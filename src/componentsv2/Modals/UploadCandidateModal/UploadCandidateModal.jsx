@@ -280,8 +280,8 @@ function UploadCandidateModal(props) {
       footer={modalFooter}
       width={900}
       closable={!isUploading && !hasUnresolvedDuplicates}
-      maskClosable={!isUploading && !hasUnresolvedDuplicates}
-      destroyOnClose
+      mask={{ closable: !isUploading && !hasUnresolvedDuplicates }}
+      destroyOnHidden
     >
       <div className="ucm-body">
         {/* Drop zone */}

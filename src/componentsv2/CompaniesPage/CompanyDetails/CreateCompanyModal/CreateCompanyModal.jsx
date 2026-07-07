@@ -90,8 +90,8 @@ export default function CreateCompanyModal({ open, setClients, setUploadNew }) {
             footer={modalFooter}
             width={764}
             closable={!uploading}
-            maskClosable={!uploading}
-            destroyOnClose
+            mask={{ closable: !uploading }}
+            destroyOnHidden
         >
             <div style={{ display: "flex", flexDirection: "column", gap: 16, padding: "16px 0 8px" }}>
                 <div>

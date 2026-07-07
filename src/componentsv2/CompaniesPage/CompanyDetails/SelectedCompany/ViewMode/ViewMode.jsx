@@ -42,7 +42,9 @@ export default function ViewMode({ clientInfo, setClientInfo, setEditMode, setCl
     };
 
     const handleSeeAllJobs = () => {
-        navigate("/job-description");
+        navigate("/job-description", {
+            state: { clientId: clientInfo.client_id, clientName: clientInfo.client_name },
+        });
     };
 
     return (
