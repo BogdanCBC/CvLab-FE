@@ -3,13 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate, Outlet, useLocation } from 'rea
 import Login from '../componentsv2/Login/Login';
 import ForgotPassword from '../componentsv2/ForgotPassword/ForgotPassword';
 import { isTokenValid } from '../utils/auth'
-import JobDescription from './JobDescription/JobDescription';
-import MatchPage from './MatchPage/MatchPage';
-import CandidatesPage from "./CandidatesPage/CandidatesPage";
-import AdminPage from "./AdminPage/AdminPage";
-import MetricsPage from "./MetricsPage/MetricsPage";
 import '../i18n';
-import PromptPage from "./PromptPage/PromptPage";
 import HomePage from '../componentsv2/Home/HomePage';
 import LandingPage from '../componentsv2/LandingPage/LandingPage';
 import BlogListPage from '../componentsv2/BlogPage/BlogListPage';
