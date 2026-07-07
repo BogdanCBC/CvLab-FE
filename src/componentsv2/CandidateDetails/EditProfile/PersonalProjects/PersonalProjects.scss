@@ -1,0 +1,22 @@
+.add-personal-project-button, .delete-personal-project-button, .add-achievement-button, .delete-achievement-button {
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 20px; /* 142.857% */
+}
+
+.delete-personal-project-button, .delete-achievement-button {
+    color: #D92D20;
+    &:hover{
+        color: #D92D20 !important;
+    }
+}
+
+.ep-inline-item.personal-projects{
+    .ant-input{
+        padding: 8px 12px;
+        border-radius: 8px;
+        border: 1px solid #E9EAEB;
+        background: #FFF;
+    }
+}

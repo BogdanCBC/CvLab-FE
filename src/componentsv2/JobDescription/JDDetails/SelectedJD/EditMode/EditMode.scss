@@ -1,0 +1,68 @@
+.jd-edit-mode {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 24px;
+    margin: 24px;
+    background: var(--Base-White, #FFF);
+    border: 1px solid var(--Gray-200, #E9EAEB);
+    border-radius: 12px;
+    max-height: calc(100vh - 283px);
+    overflow: auto;
+    .title{
+        color: #181D27;
+        font-size: 20px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 30px; /* 150% */
+    }
+    .jd-required{
+        color: #2391D1;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 20px; /* 142.857% */
+    }
+
+    .edit-field {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+
+        .edit-label {
+            color: #414651;
+            font-size: 14px;
+            font-style: normal;
+            font-weight: 500;
+            line-height: 20px; /* 142.857% */
+        }
+    }
+    .edit-input{
+        border-radius: 8px;
+        height: 44px;
+    }
+
+    .add-row {
+        height: 44px;
+        width: 100%;
+        >button{
+            width: 44px;
+            height: 44px;
+        }
+    }
+    .tag{
+        border-radius: 16px;
+        border: 1px solid #2391D1;
+        background: #F0F9FF;
+        padding: 4px 6px 4px 12px;
+        color: var(--Blue-800, #0577BA);
+        text-align: center;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 20px; /* 142.857% */
+        .ant-tag-close-icon{
+            color: #0577BA;
+        }
+    }
+}

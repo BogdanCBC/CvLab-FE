@@ -1,0 +1,25 @@
+.ep-section.education{
+    background-color: transparent;
+    border: none;
+    padding: 3px;
+    .ep-section-header{
+        .add-education-button{
+            font-size: 14px;
+            font-style: normal;
+            font-weight: 600;
+            line-height: 20px; /* 142.857% */
+        }
+    }
+    .ep-item-card{
+        background: #FFF;
+        .ep-item-header{
+            .delete-education-button{
+                font-size: 14px;
+                font-style: normal;
+                font-weight: 600;
+                line-height: 20px; /* 142.857% */
+                color: #D92D20;
+            }
+        }
+    }
+}

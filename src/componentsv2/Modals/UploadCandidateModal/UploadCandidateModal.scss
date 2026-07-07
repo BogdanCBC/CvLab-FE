@@ -1,0 +1,77 @@
+/* Modal title block */
+.ucm-title-block {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-bottom: 2px;
+}
+
+.ucm-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1a1a1a;
+  line-height: 1.4;
+}
+
+.ucm-subtitle {
+  font-size: 13px;
+  font-weight: 400;
+  color: #8c8c8c;
+}
+
+/* Modal body */
+.ucm-body {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* Selectors row (template / file type) */
+.ucm-selectors {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+/* Scrollable file list */
+.ucm-file-list {
+  max-height: 320px;
+  overflow-y: auto;
+  padding-right: 2px;
+}
+
+/* Custom footer */
+.ucm-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  >button{
+    flex: 1;
+  }
+}
+
+.ant-upload-wrapper{
+  .ant-upload-drag{
+    background: #FFF;
+  }
+  .ant-upload-drag-container{
+    p.ant-upload-drag-icon{
+      width: 40px;
+      height: 40px;
+      margin: 0 auto;
+      padding: 10px;
+      border: 1px solid var(--Gray-200, #E9EAEB);
+      border-radius: 30px;
+      background: #F5F5F5;
+      margin-bottom: 12px;
+    }
+    .ant-upload-text{
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 20px; /* 142.857% */
+      > span{
+        font-weight: 600;
+      }
+    }
+  }
+}

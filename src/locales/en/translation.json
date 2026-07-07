@@ -1,8 +1,12 @@
 {
   "topbar": {
+    "settings": "Settings",
+    "viewProfile": "View Profile",
+    "info": "Info",
     "upload": "Upload Candidate",
     "pasteText": "Upload via text",
     "job_desc": "Job Description",
+    "candidate_cv": "Candidate CVs",
     "admin": "Admin Panel",
     "logout": "Logout",
     "tooltip_title": "Top Bar:",
@@ -19,9 +23,18 @@
     "selectTooltip": "Select a candidate from the table and it will be displayed on the right side",
     "successAlert": "File(s) processed successfully!",
     "warningAlert": "Warning message here!",
-    "errorAlert": "Error occurred!"
+    "errorAlert": "Error occurred!",
+    "dasboard": "Dashboard",
+    "companies": "Companies"
   },
   "uploadCandidateModal": {
+    "uploadText": "Upload",
+    "cancel": "Cancel",
+    "title": "Upload a new CV",
+    "subtitle": "Upload and attach files.",
+    "upload_click": "Click to upload",
+    "dragDrop": "or drag and drop",
+    "pdfOnly": "PDF files only",
     "chooseFile": "Choose PDF File",
     "uploadBtn": "UPLOAD PDF FILES",
     "uploadedFiles": "Uploaded Files",
@@ -44,18 +57,24 @@
     "deleteDuplicates": "Delete Duplicates"
   },
   "candidatesList": {
-    "advancedFiltersBtn": "Open advanced filters"
+    "advancedFiltersBtn": "Open advanced filters",
+    "Filters": "Filters"
   },
   "advancedFilters": {
     "title": "Advanced Filters",
     "position": "Position",
+    "positionPlaceholder": "ex: Front end developer",
+    "experienceLevel": "Select or type a number",
+    "noCandidates" : "No candidates found for your search",
     "experience": "Experience",
     "skills": "Skills",
     "skillPlaceholder": "Skill",
     "yearsPlaceholder": "Years",
     "years": "yrs",
     "language": "Language",
+    "languagePlaceholder": "Type a language",
     "certification": "Certification",
+    "certificationPlaceholder": "Type a certification",
     "submitBtn": "Submit",
     "tip": "Use the advanced filters to refine your candidate search by position, years of experience, skills with minimum years, languages, and certifications. You can add multiple entries and remove them as needed before submitting.",
     "boldTip": "Use the \"+\" button to add the desired skill, language or certification."
@@ -68,7 +87,10 @@
     "role": "Role",
     "language": "Language",
     "actions": "Actions",
-    "details": "Details"
+    "details": "Details",
+    "refreshTooltip": "Refresh",
+    "clearFiltersTooltip": "Clear all",
+    "applyFilters": "Apply filters"
   },
   "noCandidate": {
     "noCandidateMessage": "No candidate selected."
@@ -78,7 +100,7 @@
     "candidateName": "Candidate Name:",
     "noName": "Unspecified",
     "deleteBtn": "Delete",
-    "editButton": "Edit",
+    "editButton": "Edit CV",
     "uploadedBy": "Candidate uploaded by:",
     "details": "Details",
     "phoneNo": "Phone number:",
@@ -102,7 +124,7 @@
     "lang": "Languages",
     "certifications": "Certifications",
     "personalProj": "Personal Projects",
-    "saveBtn": "Save",
+    "saveBtn": "Save changes",
     "goBackBtn": "GO BACK",
     "validationError": "Validation error. Please check your input.",
     "requiredField": "This field is required",
@@ -200,6 +222,7 @@
     "createdMsg": "User created successfully",
     "createUser": "Create User",
     "username": "Username",
+    "email": "Email",
     "password": "Password",
     "confirmPass": "Confirm Password",
     "role": "Role",
@@ -221,6 +244,35 @@
     "backBtn": "Back",
     "logOut": "Logout"
   },
+  "companiesPage": {
+    "createNew": "Create new companie",
+    "addNewCompany": "Add new companie",
+    "addCompany": "Add companie",
+    "companyName": "Company Name",
+    "companyNamePlaceholder": "ex: NovaByte",
+    "companyDescription": "Company Description",
+    "companyDescPlaceholder": "Enter a description...",
+    "createdSuccess": "Company created successfully",
+    "editSuccess": "Company updated successfully",
+    "editCompany": "Edit Company",
+    "companyLabel": "Companie",
+    "descriptionLabel": "Description",
+    "seeAllJobs": "See all jobs",
+    "fetchError": "Failed to load companies",
+    "fetchDetailEmpty": "No data found for this company",
+    "fetchDetailError": "Failed to load company details",
+    "deleteSuccess": "Company deleted successfully",
+    "deleteError": "Failed to delete company"
+  },
+  "companiesTable": {
+    "name": "Companie",
+    "description": "Description",
+    "actions": "Actions"
+  },
+  "companiesNothingSelected": {
+    "message": "No company was selected",
+    "createNew": "Create a new one?"
+  },
   "jdTopBar": {
     "pageTitle": "Job Description Page",
     "uploadNew": "Upload new",
@@ -240,14 +292,94 @@
   },
   "jdViewMode": {
     "match": "Match",
+    "tracking": "Tracking",
     "edit": "Edit",
     "delete": "Delete",
     "skills": "SKILLS:",
     "language": "LANGUAGES:"
   },
+  "trackingPage": {
+    "title": "Tracking candidates",
+    "archive": "Archive",
+    "addCandidate": "Add a candidate",
+    "opportunityOwner": "Opportunity Owner Name",
+    "cvProfile": "CV profile",
+    "edit": "Edit",
+    "archiveReason": "Archive reason",
+    "addNote": "Add note",
+    "accepted": "Accepted",
+    "declined": "Declined",
+    "screening": "SCREENING",
+    "hrInterview": "HR INTERVIEW",
+    "technicalInterview": "TECHNICAL INTERVIEW",
+    "clientInterview": "CLIENT INTERVIEW",
+    "offer": "OFFER",
+    "acceptedDeclined": "ACCEPTED/ DECLINED",
+    "fetchError": "Failed to load candidates. Please try again.",
+    "phaseUpdateError": "Failed to move candidate. Please try again.",
+    "acceptDeclineModal": {
+      "title": "Select candidate outcome",
+      "subtitle": "Choose whether this candidate was accepted or declined."
+    },
+    "modal": {
+      "title": "Add candidate(s)",
+      "candidatesLabel": "Candidates",
+      "selectPlaceholder": "Search and select candidates...",
+      "noResults": "No candidates found",
+      "cancel": "Cancel",
+      "save": "Add",
+      "addSuccess": "Candidate(s) added to tracking",
+      "loadError": "Failed to load candidates list",
+      "saveError": "Failed to add candidates. Please try again."
+    },
+    "notesModal": {
+      "noteBy": "Note created by:",
+      "placeholder": "Enter a note...",
+      "cancel": "Cancel",
+      "save": "Save",
+      "saveSuccess": "Note saved successfully",
+      "loadError": "Failed to load notes",
+      "saveError": "Failed to save note. Please try again."
+    },
+    "archiveModal": {
+      "title": "Archive reason",
+      "reason": "Reason",
+      "selectPlaceholder": "Select a reason",
+      "cancel": "Cancel",
+      "archive": "Archive",
+      "archiveSuccess": "Candidate archived successfully",
+      "archiveError": "Failed to archive candidate. Please try again.",
+      "reasons": {
+        "noAlignment": "No alignment to Feel IT Culture",
+        "hired": "Hired",
+        "underqualified": "Underqualified",
+        "declinedOffer": "Declined Offer",
+        "projectExpectations": "Project Expectations",
+        "withdrew": "Withdrew",
+        "positionClosed": "Position closed",
+        "compensationExpectations": "Compensation/Benefits Expectations"
+      }
+    },
+    "archivePage": {
+      "title": "Archive",
+      "searchPlaceholder": "Search",
+      "name": "Name",
+      "role": "Role",
+      "email": "Email address",
+      "reason": "Reason",
+      "delete": "Delete",
+      "editReason": "Edit reason",
+      "deleteSuccess": "Candidate removed from archive",
+      "editSuccess": "Archive reason updated",
+      "empty": "No archived candidates",
+      "previous": "Previous",
+      "next": "Next"
+    }
+  },
   "jdEditMode": {
     "title": "Title",
     "jobDescription": "Job Description",
+    "createNew": "Create new job description",
     "addSkill": "Add Skill",
     "years": "Years",
     "yrs": "yrs",
@@ -259,7 +391,10 @@
     "proficient": "Proficient",
     "native": "Native",
     "cancel": "Cancel",
-    "confirm": "Confirm"
+    "confirm": "Confirm",
+    "addJobDescription": "Add job description",
+    "createdSuccess": "Job description created successfully",
+    "editSuccess": "Job description updated successfully"
   },
   "rawMatch": {
     "title": "Matched Candidates",
@@ -293,5 +428,305 @@
     "outTokens": "Output Tokens",
     "totalSpent": "Total Spent ($)",
     "noData": "No metrics data found for this period."
+  },
+  "settingsPage": {
+    "title": "Settings",
+    "cancel": "Cancel",
+    "save": "Save",
+    "personalInfo": "Personal info",
+    "personalInfoDesc": "Update your photo and personal details here.",
+    "username": "Username",
+    "usernamePlaceholder": "Username",
+    "emailAddress": "Email address",
+    "emailPlaceholder": "email@example.com",
+    "yourPhoto": "Your photo",
+    "photoHint": "This will be displayed on your profile.",
+    "clickToUpload": "Click to upload",
+    "orDragDrop": "or drag and drop",
+    "photoFormats": "SVG, PNG, JPG or GIF (max. 800x400px)",
+    "role": "Role",
+    "password": "Password",
+    "passwordDesc": "Please enter your current password to change your password.",
+    "currentPassword": "Current password",
+    "newPassword": "New password",
+    "confirmPassword": "Confirm new password",
+    "passwordMismatch": "Passwords do not match",
+    "passwordUpdated": "Password updated successfully",
+    "saved": "Settings saved successfully",
+    "saveError": "Failed to save settings",
+    "imageOnly": "You can only upload image files",
+    "fileTooLarge": "Image must be smaller than 2MB"
+  },
+  "profilePage": {
+    "title": "Profile",
+    "edit": "Edit"
+  },
+  "forgotPassword": {
+    "title": "Forgot your password?",
+    "subtitle": "Enter the email address associated with your account, and we'll send you a code to reset your password.",
+    "emailLabel": "Email",
+    "emailPlaceholder": "Enter your email",
+    "emailRequired": "Please enter your email",
+    "emailInvalid": "Please enter a valid email",
+    "sendBtn": "Send",
+    "noAccount": "No account found with this email address.",
+    "tooManyRequests": "Too many requests. Please wait a moment and try again.",
+    "unexpectedError": "An unexpected error occurred. Please try again.",
+    "requestFailed": "Request failed",
+    "verifyTitle": "Verify Your Email",
+    "verifySubtitle": "Enter the verification code we sent to your email address to continue.",
+    "secureCode": "Secure code",
+    "codeIncomplete": "Please enter the full 6-digit code.",
+    "codeInvalid": "Invalid or expired code. Please try again.",
+    "tooManyAttempts": "Too many attempts. Please wait a moment and try again.",
+    "verificationFailed": "Verification failed",
+    "verifyBtn": "Verify",
+    "resetTitle": "Create a New Password",
+    "resetSubtitle": "Enter a new password for your account. Make sure it's strong and secure.",
+    "newPassword": "New password",
+    "newPasswordPlaceholder": "Enter your new password",
+    "newPasswordRequired": "Please enter a new password",
+    "passwordMinLength": "Password must be at least 8 characters",
+    "confirmPassword": "Confirm password",
+    "confirmPasswordPlaceholder": "Confirm your new password",
+    "confirmPasswordRequired": "Please confirm your password",
+    "passwordMismatch": "Passwords do not match.",
+    "resetRequestInvalid": "Invalid or expired reset request. Please start over.",
+    "resetFailed": "Password reset failed",
+    "resetBtn": "Reset",
+    "successTitle": "Password reset",
+    "successSubtitle": "Your password has been successfully reset. Click below to log in magically.",
+    "backToLogin": "Back to Log in"
+  },
+  "landing": {
+    "nav": {
+      "product": "Product",
+      "blog": "Blog",
+      "solutions": "Solutions",
+      "templates": "Templates",
+      "pricing": "Pricing"
+    },
+    "header": {
+      "login": "Login",
+      "contact": "Contact",
+      "menu": "Menu"
+    },
+    "hero": {
+      "title": "Transform CVs into hiring decisions with AI",
+      "subtitle": "Centralize candidate data, automate CV formatting, match talent to job requirements, and streamline hiring decisions.",
+      "candidate1": "Candidate 1",
+      "candidate1Tags": "Technical skills, loyal, charismatic",
+      "candidate2": "Candidate 2",
+      "candidate3": "Candidate 3",
+      "suitable": "Suitable",
+      "technical": "Technical",
+      "emotional": "Emotional",
+      "trustedBy": "Trusted by 120 firms"
+    },
+    "sections": {
+      "challenges": "Challenges",
+      "solutions": "Solutions",
+      "demo": "Demo",
+      "testimonials": "Testimonials",
+      "interface": "Interface",
+      "benefits": "Benefits",
+      "pricing": "Pricing",
+      "faq": "FAQ",
+      "blog": "Blog",
+      "contact": "Contact"
+    },
+    "challenges": {
+      "eyebrow": "Challenges",
+      "title": "Why is managing recruitment so hard today?",
+      "hoursTitle": "Managing candidates takes hours every day",
+      "hoursDescription": "Interviews, manual feedback, status updates — every step drains precious time from HR teams and hiring managers.",
+      "reformatTitle": "CVs must be reformatted by hand",
+      "reformatDescription": "Every new CV has to be manually adjusted to fit the company template. 30–60 minutes wasted, per candidate, every time.",
+      "archiveTitle": "Great candidates from the archive get forgotten",
+      "archiveDescription": "Valuable past candidates vanish into old spreadsheets. Nobody knows the perfect match already exists in the database."
+    },
+    "solutions": {
+      "eyebrow": "Solutions",
+      "title": "adorCV solves all of this",
+      "subtitle": "One tool that centralizes, formats, and matches automatically.",
+      "matchTitle": "AI Match between open roles and your archive",
+      "matchDescription": "Compares every new job description against the full candidate archive and automatically surfaces the best fits — including people who applied 2 years ago.",
+      "formatTitle": "Any CV formatted in seconds",
+      "formatDescription": "Regardless of the original format (Word, PDF, scanned image), adorCV automatically converts it into your company's branded template.",
+      "archiveTitle": "Centralized, searchable archive",
+      "archiveDescription": "All candidates, feedback, and interview history in one place — instantly accessible and filterable for the entire team."
+    },
+    "demo": {
+      "eyebrow": "Demo",
+      "title": "How adorCV works",
+      "subtitle": "Watch how adorCV transforms the recruitment process end-to-end in under 2 minutes.",
+      "caption": "adorCV demo — 2 min",
+      "videoTitle": "adorCV demo",
+      "play": "Play video",
+      "pause": "Pause video"
+    },
+    "testimonials": {
+      "eyebrow": "Testimonials",
+      "title": "What our clients say",
+      "prev": "Previous testimonial",
+      "next": "Next testimonial",
+      "goTo": "Go to testimonial {{number}}",
+      "bogdan": {
+        "quote": "We now know exactly who is in our archive and with a few clicks we can see who fits any new open role. It feels like having a dedicated AI recruiter.",
+        "role": "CEO"
+      },
+      "elena": {
+        "quote": "AI Match helped us reconnect with candidates who didn't fit before but are perfect for new roles. Last month we hired 3 people straight from the old archive.",
+        "role": "Talent Acquisition Lead"
+      },
+      "andreea": {
+        "quote": "adorCV saved us over 15 hours a week. Automatic formatting and the centralized archive completely transformed our recruitment workflow.",
+        "role": "HR Director"
+      }
+    },
+    "controlBanner": {
+      "badge": "Suitable",
+      "title": "Full control over every CV",
+      "subtitle": "Consolidate candidate information, automate resume formatting, align talent with job criteria, and simplify hiring choices."
+    },
+    "interface": {
+      "eyebrow": "Interface",
+      "title": "adorCV platform in action",
+      "match": {
+        "title": "Intelligent AI Match",
+        "subtitle": "Automatic matching: candidates ↔ roles",
+        "openPosition": "Open position",
+        "positionTitle": "Product Manager — Tech SRL",
+        "topMatches": "Top matches",
+        "candidates": {
+          "radu": { "name": "Radu Popescu", "role": "Senior PM" },
+          "mihai": { "name": "Mihai Ionescu", "role": "Product Owner" },
+          "ana": { "name": "Ana Marinescu", "role": "Mid-level PM" },
+          "elena": { "name": "Elena Constantin", "role": "Head of Product" }
+        }
+      },
+      "board": {
+        "title": "Candidate Board",
+        "subtitle": "Real-time pipeline management",
+        "statuses": {
+          "applied": "Applied",
+          "reviewed": "Reviewed",
+          "interview": "Interview",
+          "hired": "Hired"
+        }
+      },
+      "format": {
+        "title": "Automatic CV Formatting",
+        "subtitle": "Branded in seconds",
+        "before": "Before"
+      }
+    },
+    "benefits": {
+      "eyebrow": "Benefits",
+      "title": "Why HR teams choose adorCV",
+      "subtitle": "Built specifically for HR teams and hiring managers who want to recruit faster, more precisely, and without repetitive manual work.",
+      "differentiator": {
+        "label": "The AI differentiator",
+        "text": "adorCV is the only HR tool that uses AI to automatically match candidates to new roles — even if they applied two years ago."
+      },
+      "items": {
+        "hours": "Save 15+ hours/week with automatic CV formatting",
+        "archive": "Great candidates never get lost in old archives or spreadsheets again",
+        "feedback": "Structured feedback visible to the entire hiring team at a glance",
+        "export": "Instant export to PDF, editable DOCX, or PPT for presentations",
+        "languages": "Native support for documents in English and French",
+        "security": "High security: EU-hosted data, full GDPR compliance",
+        "onboarding": "Fast onboarding — the platform is live in less than one day"
+      }
+    },
+    "pricing": {
+      "eyebrow": "Pricing",
+      "title": "Pricing tailored to every team",
+      "subtitle": "We don't believe in rigid plans. We build a custom offer based on your team size and the specific needs of your organization.",
+      "cta": "Request a quote",
+      "ctaNote": "We respond in less than 24 hours",
+      "stats": {
+        "companies": { "value": "120+", "label": "partner companies" },
+        "implementation": { "value": "< 1 day", "label": "fast implementation" },
+        "trial": { "value": "30 days", "label": "free trial" }
+      }
+    },
+    "faq": {
+      "eyebrow": "FAQ",
+      "title": "Frequently asked questions",
+      "items": {
+        "onboarding": {
+          "question": "How do we get started with adorCV?",
+          "answer": "Onboarding takes a single day. Our team helps you import existing candidates, configure your company templates, and train the HR team. The first 30 days are completely free."
+        },
+        "dataSafety": {
+          "question": "Is candidate data safe?",
+          "answer": "Personal data never goes directly to OpenAI. A small local model detects PII, stores it locally, replaces it with placeholders, and only then sends sanitized text for extraction."
+        },
+        "integration": {
+          "question": "Can adorCV integrate with our existing ATS?",
+          "answer": "Yes, adorCV integrates with the major ATS platforms (Workday, Greenhouse, Lever, SmartRecruiters). Our RESTful API supports integration with any internal or custom system."
+        },
+        "exportFormats": {
+          "question": "What export formats are available for formatted CVs?",
+          "answer": "PDF, editable DOCX, and PPT. Templates are fully customizable with your company branding: logo, fonts, colors, and section structure."
+        },
+        "formattingSpeed": {
+          "question": "How long does CV formatting take?",
+          "answer": "Between 15 and 45 seconds, regardless of the original format — Word, scanned PDF, or image. The AI automatically detects key information and maps it to the chosen template."
+        }
+      }
+    },
+    "blog": {
+      "eyebrow": "Blog",
+      "title": "Resources & Articles",
+      "seeMore": "See more",
+      "seeMoreArticles": "See more articles"
+    },
+    "contact": {
+      "eyebrow": "Contact",
+      "title": "Let's talk",
+      "subtitle": "Tell us about your team and recruitment challenges — we will get back to you in less than 24 hours.",
+      "fullName": "Full name",
+      "fullNamePlaceholder": "Jane Smith",
+      "workEmail": "Work email",
+      "workEmailPlaceholder": "jane@company.com",
+      "company": "Company",
+      "companyPlaceholder": "Acme Corp",
+      "message": "Message",
+      "messagePlaceholder": "Tell us how we can help...",
+      "submit": "Send message",
+      "success": "Thanks! We'll get back to you within 24 hours.",
+      "error": "Something went wrong. Please try again."
+    },
+    "footer": {
+      "tagline": "The AI-powered HR platform that transforms recruitment.",
+      "copyright": "adorCV. All rights reserved.",
+      "product": "Product",
+      "resources": "Resources",
+      "legal": "Legal",
+      "links": {
+        "features": "Features",
+        "solutions": "Solutions",
+        "templates": "Templates",
+        "pricing": "Pricing",
+        "blog": "Blog",
+        "guides": "Guides",
+        "faq": "FAQ",
+        "apiDocs": "API Docs",
+        "gdpr": "GDPR",
+        "terms": "Terms & Conditions",
+        "privacy": "Privacy Policy",
+        "contact": "Contact"
+      }
+    }
+  },
+  "blog": {
+    "read": "Read",
+    "backToMain": "Go back to Main Page",
+    "backToBlog": "Go back to Blog",
+    "pageTitle": "Blog",
+    "publishedOn": "Published on {{date}}",
+    "notFound": "Article not found"
   }
 }

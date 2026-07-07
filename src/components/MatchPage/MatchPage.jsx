@@ -4,7 +4,6 @@ import api from "../../api";
 import RawMatch from "./RawMatch/RawMatch";
 import './MatchPage.css';
 import AiMatch from "./AiMatch/AiMatch";
-import GenericHeader from "../GenericHeader/GenericHeader"; //
 
 export default function MatchPage({ setSelectedCandidate, setIsLoggedIn }) {
     const { jobId } = useParams();
@@ -39,8 +38,6 @@ export default function MatchPage({ setSelectedCandidate, setIsLoggedIn }) {
 
     return (
         <div className="match-page">
-            {/* Unified Top Bar */}
-            <GenericHeader setIsLoggedIn={setIsLoggedIn} navigateLocation='/job-description' />
 
             <RawMatch
                 jobId={jobId}

@@ -1,0 +1,49 @@
+@use '../../styles/variables' as *;
+
+.blog-list-page {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 140px 24px 120px;
+
+  &__back {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: $color-primary;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    margin-bottom: 24px;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  &__title {
+    color: $color-title;
+    font-size: 44px;
+    font-weight: 800;
+    margin: 0 0 48px;
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px 32px;
+  }
+
+  @media (max-width: 900px) {
+    padding: 100px 20px 80px;
+
+    &__title {
+      font-size: 30px;
+      margin-bottom: 32px;
+    }
+
+    &__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+}

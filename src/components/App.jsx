@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, Outlet, useLocation } from 'react-router-dom';
-import Login from './Login/Login';
+import Login from '../componentsv2/Login/Login';
+import ForgotPassword from '../componentsv2/ForgotPassword/ForgotPassword';
 import { isTokenValid } from '../utils/auth'
-import JobDescription from './JobDescription/JobDescription';
-import MatchPage from './MatchPage/MatchPage';
-import CandidatesPage from "./CandidatesPage/CandidatesPage";
-import AdminPage from "./AdminPage/AdminPage";
-import MetricsPage from "./MetricsPage/MetricsPage";
 import '../i18n';
-import PromptPage from "./PromptPage/PromptPage";
+import HomePage from '../componentsv2/Home/HomePage';
+import LandingPage from '../componentsv2/LandingPage/LandingPage';
+import BlogListPage from '../componentsv2/BlogPage/BlogListPage';
+import ArticlePage from '../componentsv2/BlogPage/ArticlePage';
 
 function ProtectedRoute({ isLoggedIn }) {
     const location = useLocation();
@@ -41,6 +40,7 @@ function App() {
   const [editMode, setEditMode] = useState(false);
   const [advancedSearch, setAdvancedSearch] = useState(false);
   const [candidates, setCandidates] = useState([]);
+  const [archivedCandidates, setArchivedCandidates] = useState([]);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -61,35 +61,70 @@ function App() {
       <Routes>
           <Route
             path="/"
-            element={<Navigate to={isLoggedIn ? "/candidates" : "/login"} replace />}
+            element={<LandingPage isLoggedIn={isLoggedIn} />}
           />
+          <Route path="/blog" element={<BlogListPage isLoggedIn={isLoggedIn} />} />
+          <Route path="/blog/:slug" element={<ArticlePage isLoggedIn={isLoggedIn} />} />
 
         {/* Login Route */}
         <Route
           path="/login"
           element={<LoginGate isLoggedIn={isLoggedIn} onLogin={handleLogin} />}
         />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
 
         {/* Main App Route */}
         <Route element={<ProtectedRoute isLoggedIn={isLoggedIn} />}>
            <Route
               path="/job-description"
-              element={<JobDescription
+              element={<HomePage
+                  setSelectedCandidate={setSelectedCandidate}
+                  setIsLoggedIn={setIsLoggedIn}
+              />}
+           />
+           {/* <Route
+              path="/match/:jobId"
+              element={<MatchPage
+                  setSelectedCandidate={setSelectedCandidate}
+                  setIsLoggedIn={setIsLoggedIn}
+              />}
+           /> */}
+           <Route
+              path="/companies"
+              element={<HomePage
                   setSelectedCandidate={setSelectedCandidate}
                   setIsLoggedIn={setIsLoggedIn}
               />}
            />
            <Route
               path="/match/:jobId"
-              element={<MatchPage
+              element={<HomePage
                   setSelectedCandidate={setSelectedCandidate}
                   setIsLoggedIn={setIsLoggedIn}
               />}
            />
            <Route
+              path="/tracking/:jobId"
+              element={<HomePage
+                  setSelectedCandidate={setSelectedCandidate}
+                  setIsLoggedIn={setIsLoggedIn}
+                  archivedCandidates={archivedCandidates}
+                  setArchivedCandidates={setArchivedCandidates}
+              />}
+           />
+           <Route
+              path="/tracking/:jobId/archive"
+              element={<HomePage
+                  setSelectedCandidate={setSelectedCandidate}
+                  setIsLoggedIn={setIsLoggedIn}
+                  archivedCandidates={archivedCandidates}
+                  setArchivedCandidates={setArchivedCandidates}
+              />}
+           />
+           <Route
                path="/candidates"
                element={
-                   <CandidatesPage
+                   <HomePage
                        candidates={candidates}
                        setCandidates={setCandidates}
                        selectedCandidate={selectedCandidate}
@@ -105,7 +140,7 @@ function App() {
             <Route
                 path="/candidates/:candidateId"
                 element={
-                    <CandidatesPage
+                    <HomePage
                         candidates={candidates}
                         setCandidates={setCandidates}
                         selectedCandidate={selectedCandidate}
@@ -119,19 +154,28 @@ function App() {
                   }
               />
 
+            <Route
+                        path="/profile"
+                        element={<HomePage setIsLoggedIn={setIsLoggedIn} />}
+                    />
+                    <Route
+                        path="/settings"
+                        element={<HomePage setIsLoggedIn={setIsLoggedIn} />}
+                    />
+
             {(userRole === 'admin' || userRole === 'superadmin') && (
                 <>
                     <Route
                         path="/admin"
-                        element={<AdminPage setIsLoggedIn={setIsLoggedIn} />}
+                        element={<HomePage setIsLoggedIn={setIsLoggedIn} />}
                     />
                     <Route
                         path="/metrics"
-                        element={<MetricsPage setIsLoggedIn={setIsLoggedIn} />}
+                        element={<HomePage setIsLoggedIn={setIsLoggedIn} />}
                     />
                     <Route
                         path="/admin/prompts"
-                        element={<PromptPage setIsLoggedIn={setIsLoggedIn} />}
+                        element={<HomePage setIsLoggedIn={setIsLoggedIn} />}
                     />
                 </>
             )}

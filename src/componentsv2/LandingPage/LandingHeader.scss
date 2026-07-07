@@ -1,0 +1,226 @@
+.landing-header {
+  position: fixed;
+  top: 32px;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  padding: 20px 40px;
+  transition: background-color 0.25s ease, box-shadow 0.25s ease;
+  border-top-left-radius: 43px;
+  border-top-right-radius: 43px;
+  font-size: 18px;
+  max-width: 1600px;
+  margin: 0 auto;
+
+  &__inner {
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  &__logo {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    img {
+      height: 28px;
+      width: auto;
+    }
+  }
+
+  &__nav {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 6px;
+    border-radius: 12px;
+    border: 1px solid #FFF;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.20) 0%, rgba(255, 255, 255, 0.05) 100%);
+    backdrop-filter: blur(6px);
+  }
+
+  &__nav-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    border-radius: 999px;
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 18px;
+    font-weight: 500;
+    cursor: pointer;
+    white-space: nowrap;
+
+    &.active {
+      border-radius: 8px;
+      border: 1px solid #FFF;
+      background: rgba(255, 255, 255, 0.80);
+      color: #14192F;
+      font-weight: 700;
+      .landing-header__nav-dot{
+        background: #14192F;
+      }
+    }
+  }
+
+  &__nav-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #fff;
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  &__login {
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-size: 18px;
+    font-weight: 500;
+    cursor: pointer;
+    padding: 10px 12px;
+  }
+
+  &__contact {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #14192F;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 18px;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+
+    &:hover {
+      background: #1d2939;
+    }
+  }
+
+  &--scrolled {
+    background-color: rgba(16, 24, 40, 0.85);
+    box-shadow: 0 2px 12px rgba(16, 24, 40, 0.15);
+    backdrop-filter: blur(8px);
+    top:0;
+    border-radius: 0;
+  }
+
+  &--light {
+    top: 0;
+    border-radius: 0;
+    background: #fff;
+
+    .landing-header__nav {
+      // background: #f5f7fa;
+      border-color: #e5e7eb;
+    }
+
+    .landing-header__nav-item {
+      color: #414651;
+
+      &.active {
+        background: #fff;
+        border: 1px solid #e5e7eb;
+        color: #14192f;
+
+        .landing-header__nav-dot {
+          background: #14192f;
+        }
+      }
+    }
+
+    .landing-header__login {
+      color: #14192f;
+    }
+  }
+
+  &__burger {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border: none;
+    background: transparent;
+    color: #14192f;
+    cursor: pointer;
+    padding: 0;
+  }
+
+  &__mobile-menu {
+    background: #fff;
+    box-shadow: 0 12px 24px rgba(16, 24, 40, 0.12);
+    padding: 16px 20px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  &__mobile-nav {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__mobile-nav-item {
+    padding: 12px 4px;
+    color: #414651;
+    font-size: 16px;
+    font-weight: 500;
+    border-bottom: 1px solid #f2f4f7;
+    cursor: pointer;
+
+    &.active {
+      color: #14192f;
+      font-weight: 700;
+    }
+  }
+
+  &__mobile-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    .landing-header__login {
+      color: #14192f;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+    }
+
+    .landing-header__contact {
+      justify-content: center;
+    }
+  }
+
+  &--mobile {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    margin: 0;
+    max-width: none;
+    padding: 0;
+    border-radius: 0;
+    background: #fff;
+    box-shadow: 0 1px 0 #f2f4f7;
+    margin: 0 !important;
+
+    .landing-header__inner {
+      padding: 14px 20px;
+    }
+
+    &.landing-header--scrolled {
+      background: #fff;
+      box-shadow: 0 2px 12px rgba(16, 24, 40, 0.1);
+      backdrop-filter: none;
+    }
+  }
+}

@@ -1,0 +1,11 @@
+.candidate-details {
+    background-color: #FAFAFA;
+    flex: 1;
+    overflow: auto;
+    padding: 0;
+    height: auto;
+    max-height: calc(100vh - 135px);
+    min-width: 592px;
+    border-radius: 16px;
+    border: 1px solid #E9EAEB;
+}
