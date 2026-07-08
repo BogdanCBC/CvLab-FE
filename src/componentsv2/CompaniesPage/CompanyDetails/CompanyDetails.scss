@@ -8,3 +8,9 @@
     border-radius: 16px;
     border: 1px solid #E9EAEB;
 }
+
+@media (max-width: 768px) {
+    .company-details {
+        min-width: 0;
+    }
+}

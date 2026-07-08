@@ -8,7 +8,9 @@ import {
     useSensors,
     useDroppable,
     useDndContext,
-    closestCorners,
+    pointerWithin,
+    rectIntersection,
+    MeasuringStrategy,
 } from "@dnd-kit/core";
 import {
     SortableContext,
@@ -169,6 +171,12 @@ function KanbanColumn({ column, candidates, t, onArchive, onAddNote, onCvProfile
         </div>
     );
 }
+
+const kanbanCollisionDetection = (args) => {
+    const pointerCollisions = pointerWithin(args);
+    if (pointerCollisions.length > 0) return pointerCollisions;
+    return rectIntersection(args);
+};
 
 function AcceptDeclineModal({ open, onAccepted, onDeclined, onCancel, t }) {
     return (
@@ -391,7 +399,8 @@ export default function TrackingPage({ addCandidateOpen, setAddCandidateOpen, ar
             <Spin spinning={loading} size="large" classNames={{ root: "tracking-board-spin" }}>
             <DndContext
                 sensors={sensors}
-                collisionDetection={closestCorners}
+                collisionDetection={kanbanCollisionDetection}
+                measuring={{ droppable: { strategy: MeasuringStrategy.WhileDragging } }}
                 onDragStart={handleDragStart}
                 onDragEnd={handleDragEnd}
             >

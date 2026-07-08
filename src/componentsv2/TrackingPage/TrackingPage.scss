@@ -1,9 +1,9 @@
 .tracking-page {
-    padding: 0 24px 24px;
-    height: 100%;
+    padding: 0 0px 24px;
     display: flex;
     flex-direction: column;
     overflow: hidden;
+    height: calc(100vh - 111px);
 }
 
 .tracking-page-header {
@@ -308,5 +308,78 @@
             color: #D92D20 !important;
             border-color: #D92D20 !important;
         }
+    }
+}
+
+/* ── Responsive: fixed-width columns + horizontal scroll (Jira-style) ── */
+
+/* Large desktop: columns start squishing around here — fix their width */
+@media (max-width: 1440px) {
+    .tracking-column {
+        flex: 0 0 260px;
+    }
+    .tracking-column-title{
+        font-size: 13px;
+    }
+}
+
+/* Tablet / small laptop */
+@media (max-width: 1024px) {
+    .tracking-page {
+        padding: 0 0 16px;
+    }
+
+    .tracking-board {
+        gap: 12px;
+    }
+
+    .tracking-column {
+        flex: 0 0 208px;
+    }
+
+    .tracking-column-header {
+        padding: 10px 14px;
+    }
+
+    .tracking-column-body {
+        padding: 0px;
+        gap: 5px;
+    }
+
+    .tracking-card {
+        padding: 10px 12px;
+    }
+
+    .tracking-card-name {
+        font-size: 14px;
+    }
+
+    .tracking-card-location {
+        font-size: 13px;
+    }
+
+    .tracking-card-label,
+    .tracking-card-owner {
+        font-size: 13px;
+    }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .tracking-page {
+        padding: 0;
+        height: calc(100vh - 173px);
+    }
+
+    .tracking-board {
+        gap: 8px;
+    }
+
+    .tracking-column {
+        flex: 0 0 180px;
+        min-width: 150px;
+    }
+    .tracking-column-title{
+        font-size: 12px;
     }
 }

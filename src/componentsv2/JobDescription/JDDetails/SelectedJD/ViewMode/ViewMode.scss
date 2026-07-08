@@ -93,3 +93,15 @@
         height: 40px;
     }
 }
+
+
+@media (max-width: 768px) {
+    .jd-card-header{
+        flex-direction: column;
+        .jd-name-block{
+            flex-direction: row;
+            gap: 12px;
+            align-items: center;
+        }
+    }
+}

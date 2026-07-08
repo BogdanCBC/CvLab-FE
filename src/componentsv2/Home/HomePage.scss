@@ -18,3 +18,9 @@
         position: fixed;
     }
 }
+
+@media (max-width: 1440px) {
+    .home-container .main-content {
+        padding-right: 10px;
+    }
+}

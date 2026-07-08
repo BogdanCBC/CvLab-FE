@@ -147,3 +147,9 @@
     padding: 0 5px;
     font-weight: 500;
 }
+
+@media (max-width: 768px) {
+    .jd-jobs-table.ant-table-wrapper .ant-table-tbody > tr > td{
+        padding: 9px;
+    }
+}
