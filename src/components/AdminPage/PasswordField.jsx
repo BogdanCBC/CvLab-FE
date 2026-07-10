@@ -1,40 +1,19 @@
-import React, { useState } from 'react';
-import { TextField, InputAdornment, IconButton } from '@mui/material';
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import React from 'react';
+import { Input } from 'antd';
 
-const PasswordField = ({ label, value, onChange, error, helperText, margin = "normal" }) => {
-    const [showPassword, setShowPassword] = useState(false);
-
-    const handleMouseDown = () => setShowPassword(true);
-    const handleMouseUp = () => setShowPassword(false);
-
+const PasswordField = ({ label, value, onChange, error, helperText }) => {
     return (
-        <TextField
-            fullWidth
-            label={label}
-            type={showPassword ? 'text' : 'password'}
-            margin={margin}
-            value={value}
-            onChange={onChange}
-            error={error}
-            helperText={helperText}
-            slotProps={{
-                input: {
-                    endAdornment: (
-                        <InputAdornment position="end">
-                            <IconButton
-                                onMouseDown={handleMouseDown}
-                                onMouseUp={handleMouseUp}
-                                onMouseLeave={handleMouseUp}
-                            >
-                                {showPassword ? <Visibility /> : <VisibilityOff />}
-                            </IconButton>
-                        </InputAdornment>
-                    ),
-                }
-            }}
-        />
+        <div style={{ marginBottom: 16 }}>
+            {label && <label style={{ display: 'block', marginBottom: 4 }}>{label}</label>}
+            <Input.Password
+                value={value}
+                onChange={onChange}
+                status={error ? 'error' : ''}
+            />
+            {helperText && (
+                <span style={{ color: '#ff4d4f', fontSize: 12 }}>{helperText}</span>
+            )}
+        </div>
     );
 };
 

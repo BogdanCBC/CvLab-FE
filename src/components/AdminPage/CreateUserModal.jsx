@@ -1,31 +1,15 @@
 import React, { useState } from 'react';
-import {
-    Modal, Box, Typography, TextField, Button, MenuItem,
-    Select, FormControl, InputLabel, Alert, Fade,
-    InputAdornment, IconButton
-} from '@mui/material';
-import CheckIcon from '@mui/icons-material/Check';
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import { Modal, Input, Button, Select, Alert, Space } from 'antd';
 import api from '../../api';
-import {useTranslation} from "react-i18next";
-
-const modalStyle = {
-    position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
-    width: 400, bgcolor: 'background.paper', boxShadow: 24, p: 4, borderRadius: 2,
-};
+import { useTranslation } from "react-i18next";
 
 const CreateUserModal = ({ open, onClose, onUserCreated }) => {
-    const {t} = useTranslation();
+    const { t } = useTranslation();
 
-    const [formData, setFormData] = useState({ username: '', password: '', role: 'demo' });
+    const [formData, setFormData] = useState({ username: '', email: '', password: '', role: 'demo' });
     const [confirmPassword, setConfirmPassword] = useState('');
-    const [showPassword, setShowPassword] = useState(false);
     const [success, setSuccess] = useState(false);
     const [errorMsg, setErrorMsg] = useState('');
-
-    const handleMouseDownPassword = () => setShowPassword(true);
-    const handleMouseUpPassword = () => setShowPassword(false);
 
     const handleSubmit = async () => {
         setErrorMsg('');
@@ -33,11 +17,10 @@ const CreateUserModal = ({ open, onClose, onUserCreated }) => {
             await api.post('/user', formData);
             setSuccess(true);
             onUserCreated();
-
             setTimeout(() => {
                 setSuccess(false);
                 onClose();
-                setFormData({ username: '', password: '', role: 'hr' });
+                setFormData({ username: '', email: '', password: '', role: 'hr' });
                 setConfirmPassword('');
             }, 2500);
         } catch (error) {
@@ -46,92 +29,98 @@ const CreateUserModal = ({ open, onClose, onUserCreated }) => {
         }
     };
 
-    // Validation Logic
     const passwordsMatch = formData.password === confirmPassword && formData.password !== '';
     const isLengthValid = formData.password.length >= 8;
     const isUsernameValid = formData.username.trim() !== '';
-    const isButtonDisabled = !passwordsMatch || !isLengthValid || !isUsernameValid || success;
+    const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email);
+    const isButtonDisabled = !passwordsMatch || !isLengthValid || !isUsernameValid || !isEmailValid || success;
 
     return (
-        <Modal open={open} onClose={onClose}>
-            <Box sx={modalStyle}>
-                {success && (
-                    <Fade in={success}>
-                        <Alert icon={<CheckIcon fontSize="inherit" />} severity="success" sx={{ mb: 2 }}>
-                            {t("createUserModal.createdMsg")}
-                        </Alert>
-                    </Fade>
-                )}
-
-                {errorMsg && <Alert severity="error" sx={{ mb: 2 }}>{errorMsg}</Alert>}
-
-                <Typography variant="h6" mb={2}>{t("createUserModal.createNewAcc")}</Typography>
-
-                <TextField
-                    fullWidth
-                    label={t("createUserModal.username")}
-                    margin="normal"
-                    value={formData.username}
-                    onChange={(e) => setFormData({...formData, username: e.target.value})}
+        <Modal
+            open={open}
+            onCancel={onClose}
+            footer={null}
+            title={t("createUserModal.createNewAcc")}
+        >
+            {success && (
+                <Alert
+                    message={t("createUserModal.createdMsg")}
+                    type="success"
+                    showIcon
+                    style={{ marginBottom: 16 }}
                 />
-
-                <TextField
-                    fullWidth
-                    label={t("createUserModal.password")}
-                    type={showPassword ? 'text' : 'password'}
-                    margin="normal"
-                    value={formData.password}
-                    onChange={(e) => setFormData({...formData, password: e.target.value})}
-                    slotProps={{
-                        input: {
-                            endAdornment: (
-                                <InputAdornment position="end">
-                                    <IconButton
-                                        onMouseDown={handleMouseDownPassword}
-                                        onMouseUp={handleMouseUpPassword}
-                                        onMouseLeave={handleMouseUpPassword}
-                                    >
-                                        {showPassword ? <Visibility /> : <VisibilityOff />}
-                                    </IconButton>
-                                </InputAdornment>
-                            ),
-                        }
-                    }}
+            )}
+            {errorMsg && (
+                <Alert
+                    message={errorMsg}
+                    type="error"
+                    showIcon
+                    style={{ marginBottom: 16 }}
                 />
+            )}
 
-                <TextField
-                    fullWidth
-                    label={t("createUserModal.confirmPass")}
-                    type="password"
-                    margin="normal"
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                    error={confirmPassword !== '' && !passwordsMatch}
-                    helperText={confirmPassword !== '' && !passwordsMatch ? "Passwords do not match" : ""}
-                />
+            <Space direction="vertical" style={{ width: '100%' }} size="middle">
+                <div>
+                    <label style={{ display: 'block', marginBottom: 4 }}>{t("createUserModal.username")}</label>
+                    <Input
+                        value={formData.username}
+                        onChange={(e) => setFormData({ ...formData, username: e.target.value })}
+                    />
+                </div>
 
-                <FormControl fullWidth margin="normal">
-                    <InputLabel>{t("createUserModal.role")}</InputLabel>
+                <div>
+                    <label style={{ display: 'block', marginBottom: 4 }}>{t("createUserModal.email")}</label>
+                    <Input
+                        type="email"
+                        value={formData.email}
+                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    />
+                </div>
+
+                <div>
+                    <label style={{ display: 'block', marginBottom: 4 }}>{t("createUserModal.password")}</label>
+                    <Input.Password
+                        value={formData.password}
+                        onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                    />
+                </div>
+
+                <div>
+                    <label style={{ display: 'block', marginBottom: 4 }}>{t("createUserModal.confirmPass")}</label>
+                    <Input.Password
+                        value={confirmPassword}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
+                        status={confirmPassword !== '' && !passwordsMatch ? 'error' : ''}
+                    />
+                    {confirmPassword !== '' && !passwordsMatch && (
+                        <span style={{ color: '#ff4d4f', fontSize: 12 }}>Passwords do not match</span>
+                    )}
+                </div>
+
+                <div>
+                    <label style={{ display: 'block', marginBottom: 4 }}>{t("createUserModal.role")}</label>
                     <Select
-                        value={formData.role} label={t("createUserModal.role")}
-                        onChange={(e) => setFormData({...formData, role: e.target.value})}
-                    >
-                        <MenuItem value="admin">{t("createUserModal.admin")}</MenuItem>
-                        <MenuItem value="hr">{t("createUserModal.hr")}</MenuItem>
-                        <MenuItem value="demo">{t("createUserModal.demo")}</MenuItem>
-                    </Select>
-                </FormControl>
+                        value={formData.role}
+                        onChange={(value) => setFormData({ ...formData, role: value })}
+                        style={{ width: '100%' }}
+                        options={[
+                            { value: 'admin', label: t("createUserModal.admin") },
+                            { value: 'hr', label: t("createUserModal.hr") },
+                            { value: 'demo', label: t("createUserModal.demo") },
+                        ]}
+                    />
+                </div>
 
                 <Button
-                    fullWidth
-                    variant="contained"
-                    sx={{ mt: 3 }}
+                    type="primary"
+                    className="default-button small"
+                    block
                     onClick={handleSubmit}
                     disabled={isButtonDisabled}
                 >
                     {t("createUserModal.createUser")}
                 </Button>
-            </Box>
+            </Space>
         </Modal>
     );
 };

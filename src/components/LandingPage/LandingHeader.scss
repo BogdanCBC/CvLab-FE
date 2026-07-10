@@ -34,7 +34,7 @@
     display: flex;
     align-items: center;
     gap: 4px;
-    padding: 6px;
+    padding: 4px;
     border-radius: 12px;
     border: 1px solid #FFF;
     background: linear-gradient(180deg, rgba(255, 255, 255, 0.20) 0%, rgba(255, 255, 255, 0.05) 100%);
@@ -45,16 +45,17 @@
     display: flex;
     align-items: center;
     gap: 6px;
-    padding: 8px 16px;
-    border-radius: 999px;
+    padding: 9px 16px;
+    border-radius: 8px;
     color: rgba(255, 255, 255, 0.85);
     font-size: 18px;
     font-weight: 500;
     cursor: pointer;
     white-space: nowrap;
+    border: 1px solid transparent;
+    transition: background 0.2s ease, color 0.2s ease, border 0.2s ease;
 
     &.active {
-      border-radius: 8px;
       border: 1px solid #FFF;
       background: rgba(255, 255, 255, 0.80);
       color: #14192F;
@@ -62,6 +63,9 @@
       .landing-header__nav-dot{
         background: #14192F;
       }
+    }
+    &:hover{
+      background: rgba(0, 0, 0, 0.05);
     }
   }
 
@@ -86,6 +90,10 @@
     font-weight: 500;
     cursor: pointer;
     padding: 10px 12px;
+    border-radius: 8px;
+    &:hover{
+      background: rgba(0, 0, 0, 0.05);
+    }
   }
 
   &__contact {
@@ -107,17 +115,41 @@
   }
 
   &--scrolled {
-    background-color: rgba(16, 24, 40, 0.85);
-    box-shadow: 0 2px 12px rgba(16, 24, 40, 0.15);
-    backdrop-filter: blur(8px);
-    top:0;
+    top: 0;
     border-radius: 0;
+    border-bottom: 1px solid #E5E7EB;
+    background: #FFF;
+    max-width: 100%;
+    .landing-header__inner{
+      max-width: 1520px;
+    }
+    .landing-header__nav {
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.20) 0%, rgba(255, 255, 255, 0.05) 100%);
+      border: 1px solid #E5E7EB;
+      .landing-header__nav-item{
+          color: #14192F;
+          &.active{
+            border: 1px solid #E5E7EB;
+            background: rgba(255, 255, 255, 0.80);
+          }
+      }
+    }
+    .landing-header__actions{
+      .landing-header__login{
+        color: #14192F;
+      }
+    }
   }
 
   &--light {
     top: 0;
     border-radius: 0;
     background: #fff;
+    border-bottom: 1px solid #E5E7EB;
+    max-width: 100%;
+    .landing-header__inner{
+      max-width: 1520px;
+    }
 
     .landing-header__nav {
       // background: #f5f7fa;

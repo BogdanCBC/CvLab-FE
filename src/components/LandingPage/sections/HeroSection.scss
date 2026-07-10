@@ -411,5 +411,13 @@
   .landing-header{
     margin-left: 32px;
     margin-right: 32px;
+    &.landing-header--scrolled, &.landing-header--light{
+      margin-left: 0;
+      margin-right: 0;
+      padding: 20px 72px;
+      &.landing-header--mobile{
+        padding: 0;
+      }
+    }
   }
 }

@@ -1,52 +1,35 @@
 import React, { useState, useEffect } from "react";
 import JDTable from "./JDTable/JDTable";
-import JDTopBar from "./JDTopBar/JDTopBar"
 import JDDetails from "./JDDetails/JDDetails";
-import "./JobDescription.css"
+import "./JobDescription.scss";
 
 import { fetchJobDescription } from "../../utils/fetchJobDescription";
-import GenericHeader from "../GenericHeader/GenericHeader";
 import { useTranslation } from "react-i18next";
+import { useLocation } from "react-router-dom";
 
 
-export default function JobDescription({setSelectedCandidate, setIsLoggedIn}) {
+export default function JobDescription({ setSelectedCandidate, setIsLoggedIn, uploadNew, setUploadNew }) {
     const { i18n } = useTranslation();
+    const { state } = useLocation();
+    const clientId = state?.clientId;
     const [jobs, setJobs] = useState([]);
     const [selectedJob, setSelectedJob] = useState(null);
     const [failMessage, setFailMessage] = useState(null);
-    const [uploadNew, setUploadNew] = useState(false);
 
     useEffect(() => {
-        // Pass language to fetch
-        fetchJobDescription(i18n.language).then(response => {
-            // Check if response exists and has data
+        fetchJobDescription(i18n.language, clientId).then((response) => {
             if (response && response.success) {
-                // FALLBACK: If response.data is undefined, default to empty array []
                 setJobs(response.jobs || []);
             } else {
-                setJobs([]); // Ensure it's always an array on failure
+                setJobs([]);
                 setFailMessage(response?.message || "Failed to load");
             }
         });
-    }, [i18n.language]);
+    }, [i18n.language, clientId]);
 
     return (
         <div className="job-description-page">
-            {/* Row 1: Spans full width */}
-            <GenericHeader setIsLoggedIn={setIsLoggedIn} navigateLocation='/candidates'/>
-
-            {/* Row 2: Spans full width */}
-            <JDTopBar
-                setUploadNew={setUploadNew}
-            />
-
-            {/* Row 3, Column 1 */}
-            <JDTable
-                jobs={jobs}
-                setSelectedJob={setSelectedJob}
-            />
-
-            {/* Row 3, Column 2 */}
+            <JDTable jobs={jobs} setSelectedJob={setSelectedJob} selectedJob={selectedJob} />
             <JDDetails
                 selectedJob={selectedJob}
                 setSelectedJob={setSelectedJob}
@@ -54,6 +37,7 @@ export default function JobDescription({setSelectedCandidate, setIsLoggedIn}) {
                 uploadNew={uploadNew}
                 setUploadNew={setUploadNew}
                 setSelectedCandidate={setSelectedCandidate}
+                clientId={clientId}
             />
         </div>
     );

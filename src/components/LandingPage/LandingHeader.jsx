@@ -6,9 +6,34 @@ import useIsMobile from '../../hooks/useIsMobile';
 import logo from '../../images/adorCvLogo.svg';
 import logoDark from '../../images/adorCvLogoDark.svg';
 
-const NAV_ITEMS = ['product','solutions','blog','pricing'];
-const NAV_ROUTES = { product: '/', blog: '/blog' };
-const SECTION_IDS = { solutions: 'solutions', pricing: 'pricing' };
+const NAV_ITEMS = ['solutions', 'demo', 'product', 'pricing', 'blog'];
+const NAV_ROUTES = {};
+const SECTION_IDS = { solutions: 'solutions', demo: 'demo', product: 'interface', pricing: 'pricing', blog: 'blog' };
+const HEADER_OFFSET = 70;
+const SCROLL_DURATION = 700;
+
+const easeInOutCubic = (t) => (t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2);
+
+const smoothScrollTo = (targetY, duration = SCROLL_DURATION) => {
+  const startY = window.scrollY;
+  const distance = targetY - startY;
+  const startTime = performance.now();
+
+  const step = (now) => {
+    const progress = Math.min((now - startTime) / duration, 1);
+    window.scrollTo(0, startY + distance * easeInOutCubic(progress));
+    if (progress < 1) requestAnimationFrame(step);
+  };
+
+  requestAnimationFrame(step);
+};
+
+const scrollToSection = (id) => {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const targetY = Math.max(el.getBoundingClientRect().top + window.scrollY - HEADER_OFFSET, 0);
+  smoothScrollTo(targetY);
+};
 
 const LandingHeader = ({ isLoggedIn }) => {
   const navigate = useNavigate();
@@ -60,10 +85,8 @@ const LandingHeader = ({ isLoggedIn }) => {
   }, [isOnLandingPage]);
 
   const isNavItemActive = (key) => {
-    if (key === 'blog') return location.pathname.startsWith('/blog');
-    if (SECTION_IDS[key]) return isOnLandingPage && activeSection === key;
-    if (key === 'product') return isOnLandingPage && !activeSection;
-    return false;
+    if (key === 'blog' && location.pathname.startsWith('/blog')) return true;
+    return isOnLandingPage && activeSection === SECTION_IDS[key];
   };
 
   const goToNavItem = (key) => {
@@ -78,12 +101,10 @@ const LandingHeader = ({ isLoggedIn }) => {
     if (!sectionId) return;
 
     if (isOnLandingPage) {
-      document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' });
+      scrollToSection(sectionId);
     } else {
       navigate('/');
-      setTimeout(() => {
-        document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' });
-      }, 100);
+      setTimeout(() => scrollToSection(sectionId), 100);
     }
   };
 
@@ -95,12 +116,10 @@ const LandingHeader = ({ isLoggedIn }) => {
   const goToContact = () => {
     setMenuOpen(false);
     if (isOnLandingPage) {
-      document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+      scrollToSection('contact');
     } else {
       navigate('/');
-      setTimeout(() => {
-        document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
-      }, 100);
+      setTimeout(() => scrollToSection('contact'), 100);
     }
   };
 
@@ -110,7 +129,7 @@ const LandingHeader = ({ isLoggedIn }) => {
     >
       <div className="landing-header__inner">
         <div className="landing-header__logo" onClick={() => { setMenuOpen(false); navigate('/'); }}>
-          <img src={isMobile || isLight ? logoDark : logo} alt="adorCV" />
+          <img src={isMobile || isLight || scrolled ? logoDark : logo} alt="adorCV" />
         </div>
 
         {isMobile ? (

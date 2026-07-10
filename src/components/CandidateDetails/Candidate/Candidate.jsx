@@ -1,52 +1,27 @@
-import './Candidate.css';
+import './Candidate.scss';
 import api from "../../../api";
 import React, { useState, useEffect } from "react";
-import CheckIcon from '@mui/icons-material/Check';
-import EditIcon from '@mui/icons-material/Edit';
+import { Button, Dropdown, Select, Tooltip, message } from 'antd';
 import {
-    Button,
-    Alert,
-    Box,
-    FormControl,
-    InputLabel,
-    Select,
-    MenuItem,
-    Typography,
-    Tooltip,
-    IconButton
-} from "@mui/material";
-import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import InfoOutlineIcon from '@mui/icons-material/InfoOutline';
-import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import {getFileNameFromDisposition, downloadFileFromBlob} from "../../../helperFunctions";
-import { fetchCandidates } from '../../../utils/fetchCandidates';
-import {getTenantConfig} from "../../../utils/tenantConfig";
-import {useTranslation} from "react-i18next";
+    EditOutlined,
+    DeleteOutlined,
+    CopyOutlined,
+    InfoCircleOutlined,
+    DownloadOutlined,
+} from '@ant-design/icons';
+import { getFileNameFromDisposition, downloadFileFromBlob } from "../../../helperFunctions";
+import { getTenantConfig } from "../../../utils/tenantConfig";
+import { useTranslation } from "react-i18next";
 
 export default function Candidate(props) {
-    const {t} = useTranslation();
+    const { t } = useTranslation();
 
     const [candidate, setCandidate] = useState(null);
-    const [success, setSuccess] = useState(false);
     const [loading, setLoading] = useState(false);
-    const [templateType, setTemplateType] = useState('');
-    const [downloadFileType, setDownloadFileType] = useState('');
-
-    const [iseSubType, setIseSubType] = useState('');
+    const [downloadFileType, setDownloadFileType] = useState('pdf');
 
     const BASE_URL = process.env.REACT_APP_BASE_URL + '/candidates';
-
-    const handleChangeTemplateType = (event) => {
-        const value = event.target.value;
-        setTemplateType(value);
-        if (value !== "ISE") {
-            setIseSubType("");
-        }
-    }
-
-    const handleChangeIseSubType = (event) => {
-        setIseSubType(event.target.value);
-    };
+    const isAdmin = ['admin', 'superadmin'].includes(localStorage.getItem('role'));
 
     useEffect(() => {
         fetchData();
@@ -55,277 +30,194 @@ export default function Candidate(props) {
     const fetchData = async () => {
         try {
             const response = await api.get(`/candidates/${props.candidateId}`);
-            const data = {
+            setCandidate({
                 id: response.data.id,
                 firstName: response.data.first_name || "N/A",
                 description: response.data.description || "N/A",
                 username: response.data.username || "N/A",
                 email: response.data.email || "N/A",
                 phone: response.data.phone || "N/A",
-                // Check if it has an original CV
-                hasOriginalCv: !!response.data.s3_key
-            };
-
-            // UNCOMMENT TO SEE CANDIDATE INFO
-            // console.log("candidate Object:", data);
-
-            setCandidate(data);
-            setSuccess(true);
-
-            setTimeout(() => {
-                setSuccess(false);
-            }, 3000);
-
+                hasOriginalCv: !!response.data.s3_key,
+            });
+            // message.success(t("candidate.successFetchMessage"));
         } catch (error) {
             console.error("Error fetching candidate data:", error);
         }
-    }
+    };
 
     const getOriginalCV = async () => {
-        try{
-            const response = await api.get(`/candidates/cv/${props.candidateId}`, {
-                    responseType: 'blob',
-                }
-            );
-
-            const disposition = response.headers['content-disposition'];
-            let filename = getFileNameFromDisposition(disposition);
-            const blobFile = new Blob([response.data]);
-
-            downloadFileFromBlob(blobFile, filename);
-        }catch (error) {
+        try {
+            const response = await api.get(`/candidates/cv/${props.candidateId}`, { responseType: 'blob' });
+            const filename = getFileNameFromDisposition(response.headers['content-disposition']);
+            downloadFileFromBlob(new Blob([response.data]), filename);
+        } catch (error) {
             console.error("Error downloading CV:", error);
-            alert("An error occurred while downloading the CV. Please try again.");
+            message.error("An error occurred while downloading the CV.");
         }
-    }
+    };
 
-    const getFormattedCV = async () => {
+    const getFormattedCV = async (tmplType, subType = '') => {
+        if (!downloadFileType) {
+            message.warning('Please select a file format first');
+            return;
+        }
         try {
             setLoading(true);
-
-            // 1. Determine the correct template type
-            const finalTemplateType = templateType === "ISE" ? iseSubType : templateType;
-
-            // 2. Make a single GET request matching your backend route
+            const finalTemplateType = tmplType === "ISE" ? subType : tmplType;
             const response = await api.get(
                 `/template/${props.candidateId}?file_type=${downloadFileType}&template_type=${finalTemplateType}`,
-                {
-                    responseType: 'blob',
-                }
+                { responseType: 'blob' }
             );
-
-            // 3. Process the file download
             const disposition = response.headers['content-disposition'];
-            let filename = getFileNameFromDisposition(disposition);
-
-            if (!filename) {
-                filename = `CV_${props.candidateId}.${downloadFileType}`;
-            }
-
-            const blobFile = new Blob([response.data]);
-            downloadFileFromBlob(blobFile, filename);
-
+            const filename = getFileNameFromDisposition(disposition) || `CV_${props.candidateId}.${downloadFileType}`;
+            downloadFileFromBlob(new Blob([response.data]), filename);
         } catch (error) {
             console.error("Error fetching formatted CV:", error);
-            alert("An error occurred while fetching the formatted CV. Please try again.");
+            message.error("An error occurred while fetching the formatted CV.");
         } finally {
             setLoading(false);
         }
-    }
+    };
 
     const deleteCandidate = async () => {
         try {
             const response = await api.delete(`/candidates?id=${props.candidateId}`);
             if (response.status === 200) {
                 props.setSelectedCandidate(null);
-
-                // Refresh the list
-                // fetchCandidates().then(sortedCandidates => {
-                //     props.setCandidates(sortedCandidates);
-                // });
-
                 window.dispatchEvent(new Event('refreshCandidates'));
             }
         } catch (error) {
             console.error("Error deleting candidate:", error);
         }
-    }
+    };
 
     const handleCopyLink = async () => {
         try {
-            const contentToCopy = BASE_URL + `/${props.candidateId}`;
-            await navigator.clipboard.writeText(contentToCopy);
+            await navigator.clipboard.writeText(`${BASE_URL}/${props.candidateId}`);
+            message.success(t("candidate.clipboard"));
         } catch (err) {
-            console.log(`Failed to copy! Error: ${err}`)
+            console.log(`Failed to copy! Error: ${err}`);
         }
-    }
+    };
 
-    const disableGetFormatted = ((downloadFileType === '') || (templateType === '')) || loading || (templateType === "ISE" && !iseSubType)
+    const handleTemplateSelect = ({ key }) => {
+        if (key.startsWith('ISE-')) {
+            getFormattedCV('ISE', key.split('-')[1]);
+        } else {
+            getFormattedCV(key);
+        }
+    };
 
-    const renderTooltipContent = () => (
-        <>
-        <Typography
-            variant="subtitle2"
-            sx={{ fontWeight: "bold", mb: 0.2, textAlign: "justify" }}
-        >
-            {t("candidate.description")}
-        </Typography>
-        <ul style={{ margin: 0, paddingLeft: "1.2rem", textAlign: "justify" }}>
-            <li style={{ marginBottom: "0.2rem"}}>{t("candidate.seeCandidateTooltip")}</li>
-            <li style={{ marginBottom: "0.2rem"}}>
-                {t("candidate.getFormatedTooltip")}
-            </li>
-            <li style={{ marginBottom: "0.2rem"}}>{t("candidate.downloadTooltip")}</li>
-            <li style={{ marginBottom: "0.2rem"}}>
-                {t("candidate.editTooltip")}
-            </li>
+    const buildTemplateItems = () =>
+        getTenantConfig().templates.map((tmpl) => {
+            if (tmpl === 'ISE') {
+                return {
+                    key: 'ISE',
+                    label: 'ISE',
+                    children: [
+                        { key: 'ISE-ISE1', label: `${t("candidate.template")} 1` },
+                        { key: 'ISE-ISE2', label: `${t("candidate.template")} 2` },
+                        { key: 'ISE-ISE3', label: `${t("candidate.template")} 3` },
+                    ],
+                };
+            }
+            return { key: tmpl, label: tmpl };
+        });
+
+    const tooltipContent = (
+        <ul style={{ margin: 0, paddingLeft: '1.2rem' }}>
+            <li>{t("candidate.seeCandidateTooltip")}</li>
+            <li>{t("candidate.getFormatedTooltip")}</li>
+            <li>{t("candidate.downloadTooltip")}</li>
+            <li>{t("candidate.editTooltip")}</li>
         </ul>
-        </>
-    )
+    );
 
     return (
-        <Box sx={{ padding: 2 }}>
-            {success && (
-                <Alert icon={<CheckIcon fontSize="inherit" />} severity="success">
-                    {t("candidate.successFetchMessage")}
-                </Alert>
-            )}
+        <div className="candidate-wrapper">
+            <div className="candidate-card">
 
-            <div className="candidate-wrapper">
-                <div className="candidate-header">
-                <h2>{ t("candidate.candidateName") } {candidate ? candidate.firstName : t("candidate.noName")}</h2>
-                
-                <Tooltip sx={{mr: 2}} title={renderTooltipContent()}>
-                    <IconButton>
-                        <InfoOutlineIcon />
-                    </IconButton>
-                </Tooltip>
-
-                <Tooltip sx={{mr: 2}} title={t("candidate.clipboard")}>
-                    <Button onClick={handleCopyLink}>
-                        <ContentCopyIcon />
-                    </Button>
-                </Tooltip>
-
-                {(localStorage.getItem('role') === "admin" || localStorage.getItem('role') === "superadmin") && (
-                    <Button
-                        variant="contained"
-                        size="small"
-                        color="error"
-                        onClick={deleteCandidate}
-                        startIcon={<DeleteForeverIcon />}
-                    >
-                        {t("candidate.deleteBtn")}
-                    </Button>
-                )}
-                <Button
-                    variant="contained"
-                    size="small"
-                    onClick={() => props.setEditMode(true)}
-                    sx={{ marginLeft: 2 }}
-                    startIcon={<EditIcon />}
-                >
-                    {t("candidate.editButton")}
-                </Button>
-                </div>
-
-                {(localStorage.getItem('role') === "admin" || localStorage.getItem('role') === "superadmin") && (
-                <div className="uploader">
-                    <h2>{t("candidate.uploadedBy")} {candidate ? candidate.username : "Unknown"}</h2>
-                </div>
-                )}
-
-                <Box className="candidate-data">
-                    <Typography variant="h6" gutterBottom>
-                        {t("candidate.details")}
-                    </Typography>
-                    <Typography>
-                        <strong>{t("candidate.phoneNo")}</strong> {candidate?.phone || "Not Specified"}
-                    </Typography>
-                    <Typography>
-                        <strong>{t("candidate.email")}</strong> {candidate?.email || "Not Specified"}
-                    </Typography>
-                    <Typography sx={{ whiteSpace: "pre-line", textAlign: "justify" }}>
-                        <strong>{t("candidate.description")}</strong>{" "}
-                        {candidate ? candidate.description : "none"}
-                    </Typography>
-
-                    <div className="candidate-cv-buttons">
-                        <FormControl sx={{ minWidth: 130 }}>
-                            <InputLabel id="file-type-select-label">{t("candidate.fileFormat")}</InputLabel>
-                            <Select
-                                labelId="file-type-select-label"
-                                id="file-type-select"
-                                value={downloadFileType}
-                                onChange={(e) => setDownloadFileType(e.target.value)}
-                                label={t("candidate.fileFormat")}
-                            >
-                                <MenuItem value="pdf">PDF</MenuItem>
-                                <MenuItem value="pptx">PPTX</MenuItem>
-                                <MenuItem value="docx">DOCX</MenuItem>
-                            </Select>
-                        </FormControl>
-
-                        <FormControl sx={{ minWidth: 140 }}>
-                            <InputLabel id="template-type-select-label">Template</InputLabel>
-                            <Select
-                                labelId="template-type-select-label"
-                                id="template-type-select"
-                                value={templateType}
-                                onChange={handleChangeTemplateType}
-                                label={t("candidate.template")}
-                            >
-                                {getTenantConfig().templates.map(t => (
-                                    <MenuItem key={t.toLowerCase()} value={t}>{t}</MenuItem>
-                                ))}
-                            </Select>
-                        </FormControl>
-
-                        {templateType === "ISE" && (
-                            <FormControl sx={{ minWidth: 140 }}>
-                                <InputLabel id="ise-subtype-label">ISE Template</InputLabel>
-                                <Select
-                                    labelId="ise-subtype-label"
-                                    id="ise-subtype-select"
-                                    value={iseSubType}
-                                    onChange={handleChangeIseSubType}
-                                    label="ISE"
-                                >
-                                    <MenuItem value="ISE1">{t("candidate.template")} 1</MenuItem>
-                                    <MenuItem value="ISE2">{t("candidate.template")} 2</MenuItem>
-                                    <MenuItem value="ISE3">{t("candidate.template")} 3</MenuItem>
-                                </Select>
-                            </FormControl>
-                        )}
-
-                        <Button
-                            loading={loading}
-                            variant="contained"
-                            color="primary"
-                            disabled={disableGetFormatted}
-                            onClick={() => getFormattedCV()}
-                        >
-                            {t("candidate.getFormatedCV")}
-                        </Button>
-
-                        <Tooltip
-                            title={!candidate?.hasOriginalCv ? "This profile was created from raw text. No original file exists." : ""}
-                            placement="top"
-                        >
-                            <Box component="span" sx={{ display: 'inline-flex' }}>
-                                <Button
-                                    variant="contained"
-                                    color="primary"
-                                    onClick={() => getOriginalCV()}
-                                    disabled={!candidate?.hasOriginalCv}
-                                >
-                                    {t("candidate.getOriginalCV")}
-                                </Button>
-                            </Box>
-                        </Tooltip>
+                <div className="candidate-card-header">
+                    <div className="candidate-name-block">
+                        <span className="candidate-label">{t("candidate.candidateName", "Candidate")}</span>
+                        <h2 className="candidate-name">
+                            {candidate ? candidate.firstName : t("candidate.noName")}
+                        </h2>
                     </div>
-                </Box>
+                    <div className="candidate-header-actions">
+                        <Tooltip title={tooltipContent}>
+                            <Button icon={<InfoCircleOutlined />} className="header-icon-btn icon-button filled-icon-btn" />
+                        </Tooltip>
+                        <Tooltip title={t("candidate.clipboard")}>
+                            <Button icon={<CopyOutlined />} className="header-icon-btn icon-button filled-icon-btn" onClick={handleCopyLink} />
+                        </Tooltip>
+                        {isAdmin && (
+                            <Tooltip title={t("candidate.deleteBtn")}>
+                                <Button  icon={<DeleteOutlined />} className="header-icon-btn icon-button filled-icon-btn" onClick={deleteCandidate} />
+                            </Tooltip>
+                        )}
+                        <Button
+                            icon={<EditOutlined />}
+                            onClick={() => props.setEditMode(true)}
+                            className="edit-cv-btn filled-btn"
+                        >
+                            {t("candidate.editButton", "Edit CV")}
+                        </Button>
+                    </div>
+                </div>
+
+                <div className="candidate-card-body">
+                    {isAdmin && candidate?.username && (
+                        <p className="uploader-info">
+                            {t("candidate.uploadedBy")} <strong>{candidate.username}</strong>
+                        </p>
+                    )}
+                    <div className="general-info-title">{t("candidate.details", "General information")}</div>
+                    <p className="candidate-description">
+                        {candidate?.description}
+                    </p>
+                    <br/>
+                    <div className="general-info-title">{t("candidate.phoneNo", "Phone Number")}</div>
+                    <p className="candidate-description">
+                        {candidate?.phone}
+                    </p>
+                    <br/>
+                    <div className="general-info-title">{t("candidate.email", "Email")}</div>
+                    <p className="candidate-description">
+                        {candidate?.email}
+                    </p>
+                </div>
+
+                <div className="candidate-card-footer">
+                    <Dropdown
+                        menu={{ items: buildTemplateItems(), onClick: handleTemplateSelect }}
+                        trigger={['click']}
+                        disabled={loading}
+                    >
+                        <Button icon={<DownloadOutlined />} loading={loading}>
+                            {t("candidate.getFormatedCV", "Download formated CV")}
+                        </Button>
+                    </Dropdown>
+
+                    <Select
+                        value={downloadFileType}
+                        onChange={setDownloadFileType}
+                        style={{ minWidth: 90 }}
+                        options={[
+                            { value: 'pdf', label: 'PDF' },
+                            { value: 'pptx', label: 'PPTX' },
+                            { value: 'docx', label: 'DOCX' },
+                        ]}
+                    />
+
+                    <Tooltip title={!candidate?.hasOriginalCv ? "This profile was created from raw text. No original file exists." : ""}>
+                        <Button onClick={getOriginalCV} disabled={!candidate?.hasOriginalCv}>
+                            {t("candidate.getOriginalCV", "Get Original CV")}
+                        </Button>
+                    </Tooltip>
+                </div>
+
             </div>
-        </Box>
+        </div>
     );
 }

@@ -1,29 +1,17 @@
 import React, { useState } from 'react';
-import { Modal, Box, Typography, Button, Alert, Fade } from '@mui/material';
-import CheckIcon from '@mui/icons-material/Check';
+import { Modal, Button, Alert, Typography } from 'antd';
 import api from '../../api';
 import PasswordField from './PasswordField';
-import {useTranslation} from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 
-const modalStyle = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 400,
-    bgcolor: 'background.paper',
-    boxShadow: 24,
-    p: 4,
-    borderRadius: 2,
-};
+const { Text } = Typography;
 
 const ResetPasswordModal = ({ open, onClose, targetUser }) => {
-    const {t} = useTranslation();
+    const { t } = useTranslation();
     const [newPassword, setNewPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [success, setSuccess] = useState(false);
     const [errorMsg, setErrorMsg] = useState('');
-
 
     const handleReset = async () => {
         setErrorMsg('');
@@ -32,17 +20,13 @@ const ResetPasswordModal = ({ open, onClose, targetUser }) => {
                 username: targetUser.username,
                 new_password: newPassword
             });
-
             setSuccess(true);
             setNewPassword('');
             setConfirmPassword('');
-
-            // Auto-close modal after success feedback
             setTimeout(() => {
                 setSuccess(false);
                 onClose();
             }, 2500);
-
         } catch (error) {
             const detail = error.response?.data?.detail;
             const message = typeof detail === 'string' ? detail : JSON.stringify(detail);
@@ -55,64 +39,66 @@ const ResetPasswordModal = ({ open, onClose, targetUser }) => {
     const isButtonDisabled = !passwordsMatch || !isLengthValid || success;
 
     return (
-        <Modal open={open} onClose={onClose}>
-            <Box sx={modalStyle}>
-                {/* Feedback Alerts */}
-                {success && (
-                    <Fade in={success}>
-                        <Alert icon={<CheckIcon fontSize="inherit" />} severity="success" sx={{ mb: 2 }}>
-                            {t("resetPassword.successMsg")}
-                        </Alert>
-                    </Fade>
-                )}
-
-                {errorMsg && (
-                    <Alert severity="error" sx={{ mb: 2 }}>
-                        {errorMsg}
-                    </Alert>
-                )}
-
-                <Typography variant="h6" mb={1}>{t("resetPassword.resetPass")}</Typography>
-                <Typography variant="body2" color="textSecondary" mb={2}>
-                    {t("resetPassword.changingFor")} <strong>{targetUser?.username}</strong>
-                </Typography>
-
-                {/* Primary Password Input */}
-                <PasswordField
-                    label={t("resetPassword.newPassword")}
-                    value={newPassword}
-                    onChange={(e) => setNewPassword(e.target.value)}
+        <Modal
+            open={open}
+            onCancel={onClose}
+            title={t("resetPassword.resetPass")}
+            footer={null}
+        >
+            {success && (
+                <Alert
+                    message={t("resetPassword.successMsg")}
+                    type="success"
+                    showIcon
+                    style={{ marginBottom: 16 }}
                 />
-
-                {/* Confirmation Password Input with Error Feedback */}
-                <PasswordField
-                    label={t("resetPassword.confirmPassword")}
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                    error={confirmPassword !== '' && !passwordsMatch}
-                    helperText={confirmPassword !== '' && !passwordsMatch ? "Passwords do not match" : ""}
+            )}
+            {errorMsg && (
+                <Alert
+                    message={errorMsg}
+                    type="error"
+                    showIcon
+                    style={{ marginBottom: 16 }}
                 />
+            )}
 
-                <Box display="flex" gap={2} mt={3}>
-                    <Button
-                        fullWidth
-                        variant="outlined"
-                        onClick={onClose}
-                        disabled={success}
-                    >
-                        {t("resetPassword.cancel")}
-                    </Button>
-                    <Button
-                        fullWidth
-                        variant="contained"
-                        color="primary"
-                        onClick={handleReset}
-                        disabled={isButtonDisabled}
-                    >
-                        {t("resetPassword.saveChanges")}
-                    </Button>
-                </Box>
-            </Box>
+            <Text type="secondary" style={{ display: 'block', marginBottom: 16 }}>
+                {t("resetPassword.changingFor")} <strong>{targetUser?.username}</strong>
+            </Text>
+
+            <PasswordField
+                label={t("resetPassword.newPassword")}
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+            />
+
+            <PasswordField
+                label={t("resetPassword.confirmPassword")}
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                error={confirmPassword !== '' && !passwordsMatch}
+                helperText={confirmPassword !== '' && !passwordsMatch ? "Passwords do not match" : ""}
+            />
+
+            <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
+                <Button
+                    className="filled-btn"
+                    block
+                    onClick={onClose}
+                    disabled={success}
+                >
+                    {t("resetPassword.cancel")}
+                </Button>
+                <Button
+                    type="primary"
+                    className="default-button small"
+                    block
+                    onClick={handleReset}
+                    disabled={isButtonDisabled}
+                >
+                    {t("resetPassword.saveChanges")}
+                </Button>
+            </div>
         </Modal>
     );
 };

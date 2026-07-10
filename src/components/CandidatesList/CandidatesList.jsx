@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import './CandidatesList.css';
+import './CandidatesList.scss';
 import CandidatesTable from './CandidatesTable/CandidatesTable';
-import { Button } from '@mui/material';
-import RefreshButton from './RefreshButton/RefreshButton';
 import AdvancedFilters from './AdvancedFilters/AdvancedFilters';
+import { Input, Button, Badge, message } from 'antd';
 import { useTranslation } from "react-i18next";
 import api from '../../api';
+import { SearchIcon , FilterIcon, CloseIcon } from '../../constants/icons';
+
 
 function CandidatesList(props) {
     const { t, i18n } = useTranslation();
@@ -16,7 +17,7 @@ function CandidatesList(props) {
 
     // Pagination States managed centrally!
     const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(5);
+    const [rowsPerPage, setRowsPerPage] = useState(9);
     const [searchTerm, setSearchTerm] = useState('');
     const [totalCount, setTotalCount] = useState(-1);
     const [activeFilters, setActiveFilters] = useState(null);
@@ -53,7 +54,13 @@ function CandidatesList(props) {
             props.setCandidates(mappedData);
             setTotalCount(total !== -1 ? total : mappedData.length);
         } catch (error) {
-            console.error("Error fetching candidates:", error);
+            if (error?.response?.status === 404) {
+                props.setCandidates([]);
+                setTotalCount(0);
+                message.info(t('advancedFilters.noCandidates'));
+            } else {
+                console.error("Error fetching candidates:", error);
+            }
         }
     };
 
@@ -85,6 +92,14 @@ function CandidatesList(props) {
         setModalState(false);
     };
 
+    const filterCount = activeFilters
+        ? (activeFilters.position ? 1 : 0) +
+          (activeFilters.experience !== undefined ? 1 : 0) +
+          (activeFilters.skills?.length || 0) +
+          (activeFilters.languages?.length || 0) +
+          (activeFilters.certifications?.length || 0)
+        : 0;
+
     const handleRefresh = () => {
         setActiveFilters(null);
         setSearchTerm('');
@@ -97,35 +112,54 @@ function CandidatesList(props) {
 
     return (
         <div className="candidates-list">
-            <div className='table-buttons'>
-                <Button variant='contained' sx={{height: 40}} onClick={() => setModalState(true)}>
-                    {t("candidatesList.advancedFiltersBtn")}
-                </Button>
-
-                {/* Notice we just pass the fetch function directly to the refresh button */}
-                <RefreshButton onRefresh={handleRefresh} />
+            <div className="candidates-list-header">
+                <Input
+                    placeholder={t('candidateTable.searchCandidates')}
+                    prefix={<SearchIcon />}
+                    value={searchTerm}
+                    onChange={(e) => {
+                        setSearchTerm(e.target.value);
+                        setPage(0);
+                    }}
+                    className="candidates-search"
+                />
+                <Badge count={filterCount} size="small">
+                    <Button
+                        icon={<FilterIcon />}
+                        onClick={() => setModalState(true)}
+                        className="filters-button"
+                    >
+                        {t('candidatesList.Filters', 'Filters')}
+                    </Button>
+                </Badge>
+                {filterCount > 0 && (
+                    <Button
+                        icon={<CloseIcon />}
+                        onClick={handleRefresh}
+                        className="filters-button"
+                    >
+                        {t('candidateTable.clearFiltersTooltip', 'Clear all')}
+                    </Button>
+                )}
             </div>
-
-            <AdvancedFilters
-                modalState={modalState}
-                setModalState={setModalState}
-                onApplyFilters={handleApplyFilters} // Replaces api.post inside the filter modal!
-            />
 
             <CandidatesTable
                 candidates={props.candidates}
-                candidate={props.selectedCandidate}
-                setSelectedCandidate={props.setSelectedCandidate}
-                editMode={props.editMode}
-                setEditMode={props.setEditMode}
-                // Pass pagination variables to Table
                 page={page}
                 setPage={setPage}
                 rowsPerPage={rowsPerPage}
                 setRowsPerPage={setRowsPerPage}
-                searchTerm={searchTerm}
-                setSearchTerm={setSearchTerm}
                 totalCount={totalCount}
+                selectedCandidate={props.selectedCandidate}
+                setSelectedCandidate={props.setSelectedCandidate}
+                setEditMode={props.setEditMode}
+            />
+
+            <AdvancedFilters
+                modalState={modalState}
+                setModalState={setModalState}
+                onApplyFilters={handleApplyFilters}
+                activeFilters={activeFilters}
             />
         </div>
     );

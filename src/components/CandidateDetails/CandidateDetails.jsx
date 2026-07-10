@@ -1,5 +1,5 @@
 import React from 'react';
-import "./CandidateDetails.css";
+import "./CandidateDetails.scss";
 import NoCandidate from "./NoCandidate/NoCandidate";
 import Candidate from "./Candidate/Candidate";
 import EditProfile from "./EditProfile/EditProfile";

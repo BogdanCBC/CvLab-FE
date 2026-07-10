@@ -1,129 +1,67 @@
-import DeleteIcon from "@mui/icons-material/Delete";
-import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
-import IconButton from "@mui/material/IconButton";
+import React from "react";
+import { Input, Button } from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import AddIcon from "@mui/icons-material/Add";
-import {useTranslation} from "react-i18next";
+import { useTranslation } from "react-i18next";
+import { TrashIcon, DragIcon } from '../../../../../constants/icons';
 
 export default function FeelITItem({
-  client,
-  index,
-  updateFeelItClient,
-  removeFeelItClient,
-  addFeelItResponsibility,
-  updateFeelItResponsibility,
-  removeFeelItResponsibility,
+    client, index,
+    updateFeelItClient, removeFeelItClient,
+    addFeelItResponsibility, updateFeelItResponsibility, removeFeelItResponsibility,
 }) {
-  const { t } = useTranslation();
+    const { t } = useTranslation();
+    const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: index.toString() });
 
-  const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({ id: index.toString() });
+    const style = { transform: CSS.Transform.toString(transform), transition };
 
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-    display: "flex",
-    alignItems: "center",
-    gap: "8px",
-    marginBottom: "8px",
-  };
-
-  return (
-    <div ref={setNodeRef} style={style}>
-      <div key={index} className="client-item">
-        <IconButton
-            size="small"
-            sx={{ cursor: "grab", alignSelf: "flex-start" }}
-            {...attributes}
-            {...listeners}
-        >
-            <DragIndicatorIcon />
-        </IconButton>
-
-        <div className="client-item-header">
-          <h3>Client {client.client_name || ""}</h3>
-          <Button
-            variant="contained"
-            size="small"
-            sx={{ margin: 1, marginBottom: 2 }}
-            onClick={() => removeFeelItClient(index)}
-          >
-            <DeleteIcon />
-          </Button>
-        </div>
-
-        <TextField
-          label={t("feelIT.clientName")}
-          multiline
-          value={client.client_name || ""}
-          onChange={(e) => {
-            updateFeelItClient(index, "client_name", e.target.value);
-          }}
-        />
-
-        <TextField
-          label={t("feelIT.clientDescription")}
-          multiline
-          value={client.client_description || ""}
-          onChange={(e) => {
-            updateFeelItClient(index, "client_description", e.target.value);
-          }}
-        />
-
-        <TextField
-          label={t("feelIT.link")}
-          multiline
-          value={client.link || ""}
-          onChange={(e) => {
-            updateFeelItClient(index, "link", e.target.value);
-          }}
-        />
-
-        <div className="responsibilities">
-          <div className="responsibilities-header">
-            <h3>{t("feelIT.resp")}</h3>
-            <Button
-              variant="text"
-              size="small"
-              sx={{ margin: 1, marginBottom: 2, color: "primary.main" }}
-              onClick={() => addFeelItResponsibility(index)}
-              startIcon={<AddIcon />}
-            >
-                {t("feelIT.addResp")}
-            </Button>
-          </div>
-
-          {client.responsibilities &&
-            client.responsibilities.map((resp, respIndex) => (
-              <div className="responsibility-item" key={respIndex}>
-                <TextField
-                  key={respIndex}
-                  label={`${t("feelIT.responsibility")} ${respIndex + 1}`}
-                  multiline
-                  value={resp || ""}
-                  onChange={(e) => {
-                    updateFeelItResponsibility(index, respIndex, e.target.value);
-                  }}
-                  fullWidth
-                />
-
-                <Button
-                  variant="outlined"
-                  size="small"
-                  sx={{ margin: 1, marginBottom: 2 }}
-                  onClick={() =>
-                    removeFeelItResponsibility(index, respIndex)
-                  }
-                >
-                  <DeleteIcon />
+    return (
+        <div ref={setNodeRef} style={style} className="ep-item-card">
+            <div className="ep-item-header">
+                <div className="ep-item-title-row">
+                    <span className="ep-drag-handle ep-drag-handle--inline" {...attributes} {...listeners}>
+                        <DragIcon />
+                    </span>
+                    <span className="ep-item-title">{t("feelIT.client", "Client")} {index + 1}</span>
+                </div>
+                <Button className="ep-delete-feel-it-client-button" type="link" danger icon={<TrashIcon />} onClick={() => removeFeelItClient(index)}>
+                    {t("education.delete", "Delete")}
                 </Button>
-              </div>
-            ))}
+            </div>
+
+            <div className="ep-field">
+                <label className="ep-label">{t("feelIT.clientName")} <span className="ep-required">*</span></label>
+                <Input value={client.client_name || ""} onChange={(e) => updateFeelItClient(index, "client_name", e.target.value)} />
+            </div>
+
+            <div className="ep-field">
+                <label className="ep-label">{t("feelIT.clientDescription")} <span className="ep-required">*</span></label>
+                <Input.TextArea autoSize={{ minRows: 2, maxRows: 4 }} value={client.client_description || ""} onChange={(e) => updateFeelItClient(index, "client_description", e.target.value)} />
+            </div>
+
+            <div className="ep-field">
+                <label className="ep-label">{t("feelIT.link")} <span className="ep-required">*</span></label>
+                <Input value={client.link || ""} onChange={(e) => updateFeelItClient(index, "link", e.target.value)} />
+            </div>
+
+            <div className="ep-sub-section">
+                <div className="ep-sub-header">
+                    <span className="ep-sub-title">{t("feelIT.resp")}</span>
+                    <Button className="ep-add-feel-it-responsibility-button" type="link" icon={<PlusOutlined />} onClick={() => addFeelItResponsibility(index)}>
+                        {t("feelIT.addResp")}
+                    </Button>
+                </div>
+                {client.responsibilities?.map((resp, respIndex) => (
+                    <div key={respIndex} className="ep-inline-item">
+                        <Input
+                            value={resp || ""}
+                            onChange={(e) => updateFeelItResponsibility(index, respIndex, e.target.value)}
+                        />
+                        <Button type="text" danger icon={<TrashIcon />} onClick={() => removeFeelItResponsibility(index, respIndex)} />
+                    </div>
+                ))}
+            </div>
         </div>
-      </div>
-    </div>
-  );
+    );
 }

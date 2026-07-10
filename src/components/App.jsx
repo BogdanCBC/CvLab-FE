@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, Outlet, useLocation } from 'react-router-dom';
-import Login from '../componentsv2/Login/Login';
-import ForgotPassword from '../componentsv2/ForgotPassword/ForgotPassword';
+import Login from './Login/Login';
+import ForgotPassword from './ForgotPassword/ForgotPassword';
 import { isTokenValid } from '../utils/auth'
 import '../i18n';
-import HomePage from '../componentsv2/Home/HomePage';
-import LandingPage from '../componentsv2/LandingPage/LandingPage';
-import BlogListPage from '../componentsv2/BlogPage/BlogListPage';
-import ArticlePage from '../componentsv2/BlogPage/ArticlePage';
+import HomePage from './Home/HomePage';
+import LandingPage from './LandingPage/LandingPage';
+import BlogListPage from './BlogPage/BlogListPage';
+import ArticlePage from './BlogPage/ArticlePage';
 
 function ProtectedRoute({ isLoggedIn }) {
     const location = useLocation();

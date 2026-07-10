@@ -1,8 +1,10 @@
-import { Box, Typography, Rating, Stack, Paper } from "@mui/material";
-import PersonOffIcon from "@mui/icons-material/PersonOff";
+import { Typography, Rate, Space } from "antd";
+import { UserDeleteOutlined } from "@ant-design/icons";
 import "./AiMatch.css";
 import { useNavigate } from 'react-router-dom';
 import {useTranslation} from "react-i18next";
+
+const { Title, Text } = Typography;
 
 export default function AiMatch({ aiMatchedCandidates, jobTitle, setSelectedCandidate }) {
     const {t} = useTranslation();
@@ -22,58 +24,53 @@ export default function AiMatch({ aiMatchedCandidates, jobTitle, setSelectedCand
     };
 
     return (
-        <Box className={["ai-match-box", isEmpty && "empty"].filter(Boolean).join(" ")}>
+        <div className={["ai-match-box", isEmpty && "empty"].filter(Boolean).join(" ")}>
             {isEmpty ? (
-                <Box className="empty-content">
-                    <PersonOffIcon className="empty-icon" />
-                    <Typography align="center">
-                        {t("aiMatch.noMatch")} <b>{jobTitle}</b>.
+                <div className="empty-content">
+                    <UserDeleteOutlined className="empty-icon" />
+                    <Text style={{ textAlign: 'center', display: 'block' }}>
+                        {t("aiMatch.noMatch")} <strong>{jobTitle}</strong>.
                         {t("aiMatch.toPerform")}
-                    </Typography>
-                    <Typography align="center" sx={{ mt: 1 }}>
+                    </Text>
+                    <Text style={{ textAlign: 'center', display: 'block', marginTop: 8 }}>
                         {t("aiMatch.docxTip")}
-                    </Typography>
-                </Box>
+                    </Text>
+                </div>
             ) : (
                 <>
-                    <Typography variant="h4" align="center" gutterBottom>
+                    <Title level={3} style={{ textAlign: 'center' }}>
                         {t("aiMatch.aiResults")}
-                    </Typography>
-                    <Typography variant="h5" align="center" gutterBottom color="primary">
+                    </Title>
+                    <Title level={4} style={{ textAlign: 'center', color: '#2391D1' }}>
                         {t("aiMatch.job")} {jobTitle}
-                    </Typography>
+                    </Title>
 
-                    {/* Scrollable area for the AI results */}
-                    <Box className="matched-results-wrapper">
-                        <Stack spacing={3} sx={{ width: '100%', boxSizing: 'border-box' }}>
+                    <div className="matched-results-wrapper">
+                        <Space direction="vertical" size={16} style={{ width: '100%', boxSizing: 'border-box' }}>
                             {list.map((c) => (
-                                <Paper
+                                <div
                                     key={c.candidate_id}
-                                    className="ai-candidate-card" // Added new class for uniform card padding
+                                    className="ai-candidate-card"
                                     onClick={() => handleSelect(c.candidate_id)}
-                                    elevation={1}
                                 >
-                                    <Typography variant="h6" gutterBottom sx={{ fontWeight: 'bold' }}>
+                                    <Title level={5} style={{ fontWeight: 'bold', marginBottom: 8 }}>
                                         {c.candidate_name}
-                                    </Typography>
-                                    <Box display="flex" alignItems="center" gap={1} mb={1}>
-                                        <Rating value={parseStars(c.match_stars)} readOnly max={10} size="small" precision={1} />
-                                        <Typography variant="body2" color="text.secondary">
+                                    </Title>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
+                                        <Rate value={parseStars(c.match_stars)} disabled count={10} style={{ fontSize: 14 }} />
+                                        <Text type="secondary">
                                             {c.match_stars}
-                                        </Typography>
-                                    </Box>
-                                    <Typography
-                                        variant="body2"
-                                        className="ai-description-text"
-                                    >
+                                        </Text>
+                                    </div>
+                                    <Text className="ai-description-text">
                                         {c.description}
-                                    </Typography>
-                                </Paper>
+                                    </Text>
+                                </div>
                             ))}
-                        </Stack>
-                    </Box>
+                        </Space>
+                    </div>
                 </>
             )}
-        </Box>
+        </div>
     );
 }
