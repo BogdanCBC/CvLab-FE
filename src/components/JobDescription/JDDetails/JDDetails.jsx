@@ -1,50 +1,43 @@
 import React, { useState, useEffect } from "react";
-
-import "./JDDetails.css"
+import "./JDDetails.scss";
 import api from "../../../api";
 import JobInfoForm from "./JobInfoForm/JobInfoForm";
 import SelectedJD from "./SelectedJD/SelectedJD";
 import NothingSelected from "./NothingSelected/NothingSelected";
-import {useTranslation} from "react-i18next";
 
-export default function JDDetails({ selectedJob, setSelectedJob, setJobs, uploadNew, setUploadNew, setSelectedCandidate }) {
-    const {t} = useTranslation();
+export default function JDDetails({ selectedJob, setSelectedJob, setJobs, uploadNew, setUploadNew, setSelectedCandidate, clientId }) {
+
     const [jobInfo, setJobInfo] = useState(null);
 
-    useEffect(() => { fetchSelectedJob() }, [selectedJob])
-
-    const fetchSelectedJob = async () => {
-        try {
-            if (selectedJob) {
-                const response = await api.get(`/job-description/${selectedJob}`);
-                const data = response.data
-
-                if (data.success) {
-                    setJobInfo(data.data[0]);
-                } else {
-                    setJobInfo(null);
+    useEffect(() => {
+        const fetchSelectedJob = async () => {
+            try {
+                if (selectedJob) {
+                    const response = await api.get(`/job-description/${selectedJob}`);
+                    const data = response.data;
+                    if (data.success) {
+                        setJobInfo(data.data[0]);
+                    } else {
+                        setJobInfo(null);
+                    }
                 }
+            } catch (err) {
+                setJobInfo(null);
             }
-        } catch (err) {
-            setJobInfo(null);
-        }
-    }
+        };
+        fetchSelectedJob();
+    }, [selectedJob]);
 
     const updateJobInfoFromJobs = (jobsArray, jobId) => {
-        const updated = jobsArray.find(job => job.job_id === jobId);
+        const updated = jobsArray.find((job) => job.job_id === jobId);
         if (updated) setJobInfo(updated);
-    }
+    };
 
     return (
         <div className="jd-details">
-            {/* move button */}
-            {(!uploadNew && !jobInfo) && (
-                <NothingSelected
-                    setUploadNew={setUploadNew}
-                />
-            )}
+            {!jobInfo && <NothingSelected setUploadNew={setUploadNew} />}
 
-            {(!uploadNew && jobInfo) && (
+            {jobInfo && (
                 <SelectedJD
                     jobInfo={jobInfo}
                     setJobInfo={setJobInfo}
@@ -53,15 +46,11 @@ export default function JDDetails({ selectedJob, setSelectedJob, setJobs, upload
                     setSelectedJob={setSelectedJob}
                     updateJobInfoFromJobs={updateJobInfoFromJobs}
                     setSelectedCandidate={setSelectedCandidate}
+                    clientId={clientId}
                 />
             )}
 
-            {uploadNew && (
-                <JobInfoForm
-                    setJobs={setJobs}
-                    setUploadNew={setUploadNew}
-                />
-            )}
+            <JobInfoForm open={uploadNew} setJobs={setJobs} setUploadNew={setUploadNew} clientId={clientId} />
         </div>
     );
 }

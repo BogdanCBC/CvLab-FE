@@ -1,74 +1,53 @@
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
-import "./Education.css"
-import AddIcon from '@mui/icons-material/Add';
-import DeleteIcon from '@mui/icons-material/Delete';
-import {useTranslation} from "react-i18next";
+import React from 'react';
+import { Input, Button } from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
+import './Education.scss';
+import { useTranslation } from "react-i18next";
+import { TrashIcon } from '../../../../constants/icons';
 
-export default function Education(props) {
-    const {t} = useTranslation();
+export default function Education({ profileData, updateEducation, addEducation, removeEducation }) {
+    const { t } = useTranslation();
 
     return (
-        <div className="education">
-            <div className="education-header">
-            <h2 sx={{fontSize: 30}}>{t("education.education")}</h2>
-                <Button
-                    className = "add-education-button"
-                    variant = "contained"
-                    size = "small"
-                    sx = {{margin: 1, marginBottom: 2}}
-                    onClick={() => props.addEducation()}
-                > <AddIcon />{t("education.addEducation")}</Button>
+        <div className="ep-section education">
+            <div className="ep-section-header">
+                <h2 className="ep-section-title">{t("education.education")}</h2>
+                <Button className="add-education-button" type="link" icon={<PlusOutlined />} onClick={addEducation}>
+                    {t("education.addEducation")}
+                </Button>
             </div>
-            
-            {props.profileData.education.map((edu, index) => (
-                <div key={index} className='education-item'>
-                    <div className="education-item-header">
-                        <h3>{t("education.education")} {index + 1}</h3>
-                        <Button
-                            variant='contained'
-                            size='small'
-                            sx = {{margin: 1, marginBottom: 2}}
-                            onClick={() => props.removeEducation(index)}
-                        >
-                            <DeleteIcon />
+
+            {profileData.education.map((edu, index) => (
+                <div key={index} className="ep-item-card">
+                    <div className="ep-item-header">
+                        <span className="ep-item-title">{t("education.education")} {index + 1}</span>
+                        <Button className="delete-education-button" type="link" danger icon={<TrashIcon />} onClick={() => removeEducation(index)}>
+                            {t("education.delete", "Delete")}
                         </Button>
                     </div>
 
-                    <TextField
-                        label={t("education.instituteName")}
-                        multiline
-                        value={edu.institute_name || ""}
-                        onChange={(e) => {
-                            props.updateEducation(index, "institute_name", e.target.value);
-                        }}
-                    />
-                    <TextField
-                        label={t("education.degree")}
-                        multiline
-                        value={edu.degree || ""}
-                        onChange={(e) => {
-                            props.updateEducation(index, "degree", e.target.value);
-                        }}
-                    />
-                    <TextField
-                        label={t("education.startYear")}
-                        type="number"
-                        value={edu.start_year || new Date().getFullYear()}
-                        onChange={(e) => {
-                            props.updateEducation(index, "start_year", e.target.value);
-                        }}
-                    />
-                    <TextField
-                        label={t("education.endYear")}
-                        type="number"
-                        value={edu.end_year || ""}
-                        onChange={(e) => {
-                            props.updateEducation(index, "end_year", e.target.value);
-                        }}
-                    />
+                    <div className="ep-field">
+                        <label className="ep-label">{t("education.instituteName")} <span className="ep-required">*</span></label>
+                        <Input value={edu.institute_name || ""} onChange={(e) => updateEducation(index, "institute_name", e.target.value)} />
+                    </div>
+
+                    <div className="ep-field">
+                        <label className="ep-label">{t("education.degree")} <span className="ep-required">*</span></label>
+                        <Input value={edu.degree || ""} onChange={(e) => updateEducation(index, "degree", e.target.value)} />
+                    </div>
+
+                    <div className="ep-row-2">
+                        <div className="ep-field">
+                            <label className="ep-label">{t("education.startYear")} <span className="ep-required">*</span></label>
+                            <Input type="number" value={edu.start_year || ""} onChange={(e) => updateEducation(index, "start_year", e.target.value)} />
+                        </div>
+                        <div className="ep-field">
+                            <label className="ep-label">{t("education.endYear")} <span className="ep-required">*</span></label>
+                            <Input type="number" value={edu.end_year || ""} onChange={(e) => updateEducation(index, "end_year", e.target.value)} />
+                        </div>
+                    </div>
                 </div>
-          ))}    
+            ))}
         </div>
     );
 }

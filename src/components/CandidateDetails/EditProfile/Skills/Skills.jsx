@@ -1,57 +1,36 @@
-import Button from '@mui/material/Button';
-import AddIcon from '@mui/icons-material/Add';
+import React from 'react';
+import { Button } from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
 import SkillsList from './SkillsList/SkillsList';
 import { closestCorners, DndContext } from '@dnd-kit/core';
-import './Skills.css';
-import {useTranslation} from "react-i18next";
+import './Skills.scss';
+import { useTranslation } from "react-i18next";
 
-export default function Skills(props) {
-  const {t} = useTranslation()
+export default function Skills({ profileData, updateSkills, addSkill, removeSkill, updateSkillPosition }) {
+    const { t } = useTranslation();
 
     const handleDragEnd = (event) => {
-    const { active, over } = event;
-    if (!over || active.id === over.id) return;
+        const { active, over } = event;
+        if (!over || active.id === over.id) return;
+        updateSkillPosition(parseInt(active.id), parseInt(over.id));
+    };
 
-    const oldIndex = parseInt(active.id);
-    const newIndex = parseInt(over.id);
+    return (
+        <div className="ep-section">
+            <div className="ep-section-header">
+                <h2 className="ep-section-title">{t("skills.skills")}</h2>
+                <Button type="link" icon={<PlusOutlined />} onClick={addSkill} className="add-skill-button">
+                    {t("skills.addSkill")}
+                </Button>
+            </div>
 
-    const updatedSkills = [...props.profileData.skills];
-    const [moved] = updatedSkills.splice(oldIndex, 1);
-    updatedSkills.splice(newIndex, 0, moved);
-    
-    props.updateSkillPosition(oldIndex, newIndex);
-  };
-
-  return (
-    <div className="skills">
-      <div className="skills-header">
-        <h2>{t("skills.skills")}</h2>
-        <Button
-          className="add-skill-button"
-          variant="contained"
-          size="small"
-          sx={{ margin: 1, marginBottom: 2 }}
-          onClick={props.addSkill}
-        >
-          <AddIcon />
-            {t("skills.addSkill")}
-        </Button>
-      </div>
-      
-      <div className="skills-columns" style={{ display: "flex", alignItems: "center", gap: "8px", fontWeight: "bold", marginBottom: "8px" }}>
-        <span style={{ width: 40 }} />
-        <span style={{ flex: 1 }}>{t("skills.skill")}</span>
-        <span style={{ width: 130 }}>{t("skills.years")}</span>
-        <span style={{ width: 56 }} />
-      </div>
-
-      <DndContext collisionDetection={closestCorners} onDragEnd={handleDragEnd}>
-        <SkillsList
-          skills={props.profileData.skills}
-          updateSkills={props.updateSkills}
-          removeSkill={props.removeSkill}
-        />
-      </DndContext>
-    </div>
-  );
+            <DndContext collisionDetection={closestCorners} onDragEnd={handleDragEnd}>
+                <SkillsList
+                    skills={profileData.skills}
+                    updateSkills={updateSkills}
+                    removeSkill={removeSkill}
+                />
+            </DndContext>
+        </div>
+    );
 }

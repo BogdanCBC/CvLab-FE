@@ -1,0 +1,16 @@
+.company-details {
+    background-color: #FAFAFA;
+    flex: 1 1;
+    overflow: auto;
+    padding: 0;
+    height: auto;
+    min-width: 592px;
+    border-radius: 16px;
+    border: 1px solid #E9EAEB;
+}
+
+@media (max-width: 768px) {
+    .company-details {
+        min-width: 0;
+    }
+}

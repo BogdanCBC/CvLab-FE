@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Typography, FormControl, Select, MenuItem, Card, CardContent, Divider } from '@mui/material';
-import GenericHeader from '../GenericHeader/GenericHeader';
+import { Typography, Select, Card, Divider } from 'antd';
 import MetricsTable from './MetricsTable';
 import api from '../../api';
 import { useTranslation } from "react-i18next";
+
+const { Title, Text } = Typography;
 
 const MetricsPage = ({ setIsLoggedIn }) => {
     const { t } = useTranslation();
@@ -52,31 +53,28 @@ const MetricsPage = ({ setIsLoggedIn }) => {
     }, [page, rowsPerPage]);
 
     return (
-        <Box sx={{ backgroundColor: '#f9f9f9', height: '100vh', display: 'flex', flexDirection: 'column' }}>
-            <GenericHeader setIsLoggedIn={setIsLoggedIn} navigateLocation='/admin' />
-
-            <Box sx={{ mt: 3, px: 4, pb: 2, flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0 }}>
-                <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
-                    <Typography variant="h4" sx={{ fontWeight: 'bold', color: '#1976d2' }}>
+        <div style={{ backgroundColor: '#f9f9f9', display: 'flex', flexDirection: 'column' }}>
+            <div style={{ marginTop: 24, paddingLeft: 32, paddingRight: 32, paddingBottom: 16, flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+                    <Title level={3} style={{ margin: 0, color: '#1976d2', fontWeight: 'bold' }}>
                         {t("metrics.dashboardTitle", "API Usage & Costs")}
-                    </Typography>
+                    </Title>
 
-                    <FormControl size="small" sx={{ minWidth: 200, backgroundColor: 'white', borderRadius: 1 }}>
-                        <Select
-                            value={period}
-                            onChange={(e) => setPeriod(e.target.value)}
-                            variant="outlined"
-                        >
-                            <MenuItem value="today">{t("metrics.today", "Today")}</MenuItem>
-                            <MenuItem value="7d">{t("metrics.last7Days", "Last 7 Days")}</MenuItem>
-                            <MenuItem value="30d">{t("metrics.last30Days", "Last 30 Days")}</MenuItem>
-                        </Select>
-                    </FormControl>
-                </Box>
+                    <Select
+                        value={period}
+                        onChange={(value) => setPeriod(value)}
+                        style={{ minWidth: 200 }}
+                        options={[
+                            { value: 'today', label: t("metrics.today", "Today") },
+                            { value: '7d', label: t("metrics.last7Days", "Last 7 Days") },
+                            { value: '30d', label: t("metrics.last30Days", "Last 30 Days") },
+                        ]}
+                    />
+                </div>
 
-                <Box sx={{ flex: 1, display: 'flex', gap: 2, minHeight: 0 }}>
+                <div style={{ flex: 1, display: 'flex', gap: 16, minHeight: 0 }}>
                     {/* LEFT SIDE: Users Table — takes 2/3 of the space */}
-                    <Box sx={{ flex: 2, display: 'flex', flexDirection: 'column', minWidth: 0 }}>
+                    <div style={{ flex: 2, display: 'flex', flexDirection: 'column', minWidth: 0 }}>
                         <MetricsTable
                             users={usersData}
                             page={page}
@@ -85,70 +83,69 @@ const MetricsPage = ({ setIsLoggedIn }) => {
                             setRowsPerPage={setRowsPerPage}
                             totalCount={totalCount}
                         />
-                    </Box>
+                    </div>
 
-                    <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0 }}>
+                    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0 }}>
                         {summary && (
-                            <Card sx={{ boxShadow: '0 2px 8px rgba(0,0,0,0.1)', borderRadius: 2, flex: 1 }}>
-                                <CardContent sx={{ p: 3, height: '100%', display: 'flex', flexDirection: 'column', boxSizing: 'border-box' }}>
-                                    <Typography variant="h5" fontWeight="bold" mb={2}>
-                                        {t("metrics.overallSummary", "Overall Summary")}
-                                    </Typography>
+                            <Card
+                                style={{ borderRadius: 8, flex: 1 }}
+                                styles={{ body: { padding: 24, height: '100%', display: 'flex', flexDirection: 'column', boxSizing: 'border-box' } }}
+                            >
+                                <Title level={4} style={{ marginBottom: 16, marginTop: 0 }}>
+                                    {t("metrics.overallSummary", "Overall Summary")}
+                                </Title>
 
-                                    {/* Two stat boxes side by side */}
-                                    <Box display="flex" gap={2}>
-                                        <Box sx={{ flex: 1, backgroundColor: '#fff3e0', borderRadius: 2, p: 2, textAlign: 'center' }}>
-                                            <Typography variant="body2" color="text.secondary" gutterBottom>
-                                                Total Spent
-                                            </Typography>
-                                            <Typography variant="h4" color="error.main" fontWeight="bold">
-                                                ${summary.Total?.spent.toFixed(4)}
-                                            </Typography>
-                                        </Box>
-                                        <Box sx={{ flex: 1, backgroundColor: '#e3f2fd', borderRadius: 2, p: 2, textAlign: 'center' }}>
-                                            <Typography variant="body2" color="text.secondary" gutterBottom>
-                                                Total Actions
-                                            </Typography>
-                                            <Typography variant="h4" color="primary.main" fontWeight="bold">
-                                                {summary.Total?.actions}
-                                            </Typography>
-                                        </Box>
-                                    </Box>
+                                <div style={{ display: 'flex', gap: 16 }}>
+                                    <div style={{ flex: 1, backgroundColor: '#fff3e0', borderRadius: 8, padding: 16, textAlign: 'center' }}>
+                                        <Text type="secondary" style={{ display: 'block', marginBottom: 4 }}>
+                                            Total Spent
+                                        </Text>
+                                        <Title level={3} style={{ margin: 0, color: '#d32f2f' }}>
+                                            ${summary.Total?.spent.toFixed(4)}
+                                        </Title>
+                                    </div>
+                                    <div style={{ flex: 1, backgroundColor: '#e3f2fd', borderRadius: 8, padding: 16, textAlign: 'center' }}>
+                                        <Text type="secondary" style={{ display: 'block', marginBottom: 4 }}>
+                                            Total Actions
+                                        </Text>
+                                        <Title level={3} style={{ margin: 0, color: '#1976d2' }}>
+                                            {summary.Total?.actions}
+                                        </Title>
+                                    </div>
+                                </div>
 
-                                    <Divider sx={{ my: 2.5 }} />
+                                <Divider style={{ margin: '20px 0' }} />
 
-                                    {/* Breakdown by Category */}
-                                    <Typography variant="subtitle2" color="text.secondary" fontWeight="bold" gutterBottom>
-                                        {t("metrics.costBreakdown", "COST BREAKDOWN")}
-                                    </Typography>
+                                <Text type="secondary" strong style={{ display: 'block', marginBottom: 8 }}>
+                                    {t("metrics.costBreakdown", "COST BREAKDOWN")}
+                                </Text>
 
-                                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5, mt: 1 }}>
-                                        {['PARSE_CV', 'PARSE_RAW_CV', 'PARSE_JD', 'MATCH_CANDIDATES'].map((key) => {
-                                            if (!summary[key]) return null;
-                                            return (
-                                                <Box key={key} sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#f5f5f5', borderRadius: 1.5, px: 2, py: 1.5 }}>
-                                                    <Typography variant="body2" fontWeight="500">
-                                                        {key.replace(/_/g, ' ')}
-                                                    </Typography>
-                                                    <Box textAlign="right">
-                                                        <Typography variant="body2" fontWeight="bold">
-                                                            ${summary[key].spent.toFixed(4)}
-                                                        </Typography>
-                                                        <Typography variant="caption" color="text.secondary">
-                                                            {summary[key].actions} actions
-                                                        </Typography>
-                                                    </Box>
-                                                </Box>
-                                            );
-                                        })}
-                                    </Box>
-                                </CardContent>
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginTop: 8 }}>
+                                    {['PARSE_CV', 'PARSE_RAW_CV', 'PARSE_JD', 'MATCH_CANDIDATES'].map((key) => {
+                                        if (!summary[key]) return null;
+                                        return (
+                                            <div key={key} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#f5f5f5', borderRadius: 6, padding: '12px 16px' }}>
+                                                <Text style={{ fontWeight: 500 }}>
+                                                    {key.replace(/_/g, ' ')}
+                                                </Text>
+                                                <div style={{ textAlign: 'right' }}>
+                                                    <Text strong style={{ display: 'block' }}>
+                                                        ${summary[key].spent.toFixed(4)}
+                                                    </Text>
+                                                    <Text type="secondary" style={{ fontSize: 12 }}>
+                                                        {summary[key].actions} actions
+                                                    </Text>
+                                                </div>
+                                            </div>
+                                        );
+                                    })}
+                                </div>
                             </Card>
                         )}
-                    </Box>
-                </Box>
-            </Box>
-        </Box>
+                    </div>
+                </div>
+            </div>
+        </div>
     );
 };
 

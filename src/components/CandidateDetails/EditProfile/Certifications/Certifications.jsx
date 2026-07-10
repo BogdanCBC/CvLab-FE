@@ -1,49 +1,35 @@
-import Button from '@mui/material/Button'
-import AddIcon from '@mui/icons-material/Add';
-import DeleteIcon from '@mui/icons-material/Delete';
-import TextField from '@mui/material/TextField';
-import './Certifications.css'
-import {useTranslation} from "react-i18next";
+import React from 'react';
+import { Input, Button } from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
+import './Certifications.scss';
+import { useTranslation } from "react-i18next";
+import { TrashIcon } from '../../../../constants/icons';
 
-export default function Certifications(props) {
-    const {t} = useTranslation();
+export default function Certifications({ profileData, updateCertifications, addCertification, removeCertification }) {
+    const { t } = useTranslation();
 
     return (
-        <div className="certifications">
-            <div className="certifications-header">
-                <h2 sx={{fontSize: 30}}>{t("certifications.certifications")}</h2>
-                <Button
-                    className="add-certification-button"
-                    variant="contained"
-                    size="small"
-                    sx={{margin: 1, marginBottom: 2}}
-                    onClick={() => props.addCertification()}
-                > 
-                    <AddIcon />{t("certifications.addCert")}
+        <div className="ep-section">
+            <div className="ep-section-header">
+                <h2 className="ep-section-title">{t("certifications.certifications")}</h2>
+                <Button type="link" icon={<PlusOutlined />} className="add-certification-button" onClick={addCertification}>
+                    {t("certifications.addCert")}
                 </Button>
             </div>
 
-            {props.profileData.certifications.map((certification, index) => (
-                <div key={index} className="certification-item">
-                    <TextField 
-                        value={certification || ""}
-                        placeholder={t("certifications.enterCert")}
-                        onChange={(e) => {
-                            props.updateCertifications(index, e.target.value);
-                        }}
-                        fullWidth
-                    />
-
-                    <Button
-                        variant="outlined"
-                        size="small"
-                        sx={{ marginLeft: 1 }}
-                        onClick={() => props.removeCertification(index)}
-                    >
-                        <DeleteIcon />
-                    </Button>
-                </div>
-            ))}
+            <div className="ep-cert-list">
+                {profileData.certifications.map((cert, index) => (
+                    <div key={index} className="ep-inline-item ep-cert-row">
+                        <Input
+                            variant="borderless"
+                            value={cert || ""}
+                            placeholder={t("certifications.enterCert")}
+                            onChange={(e) => updateCertifications(index, e.target.value)}
+                        />
+                        <Button type="text" danger icon={<TrashIcon />} onClick={() => removeCertification(index)} />
+                    </div>
+                ))}
+            </div>
         </div>
     );
 }

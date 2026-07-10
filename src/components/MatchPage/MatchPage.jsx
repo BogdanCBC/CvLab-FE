@@ -38,6 +38,7 @@ export default function MatchPage({ setSelectedCandidate, setIsLoggedIn }) {
 
     return (
         <div className="match-page">
+            {/* Unified Top Bar */}
 
             <RawMatch
                 jobId={jobId}

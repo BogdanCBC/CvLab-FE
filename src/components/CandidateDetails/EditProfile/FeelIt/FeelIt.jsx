@@ -1,9 +1,10 @@
-import Button from '@mui/material/Button'
-import AddIcon from '@mui/icons-material/Add';
+import React from 'react';
+import { Button } from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
 import { closestCorners, DndContext } from '@dnd-kit/core';
-import "./FeelIt.css"
 import FeelITList from './FeelITList/FeelITList';
-import {useTranslation} from "react-i18next";
+import './FeelIt.scss';
+import { useTranslation } from "react-i18next";
 
 export default function FeelIt(props) {
     const { t } = useTranslation();
@@ -11,29 +12,18 @@ export default function FeelIt(props) {
     const handleDragEnd = (event) => {
         const { active, over } = event;
         if (!over || active.id === over.id) return;
-
-        const oldIndex = parseInt(active.id);
-        const newIndex = parseInt(over.id);
-
-        const updatedClients = [...props.profileData.feel_it];
-        const [moved] = updatedClients.splice(oldIndex, 1);
-        updatedClients.splice(newIndex, 0, moved);
-
-        props.updateFeelItClientPosition(oldIndex, newIndex);
-    }
+        props.updateFeelItClientPosition(parseInt(active.id), parseInt(over.id));
+    };
 
     return (
-        <div className="feel-it">
-            <div className="feel-it-header">
-                <h2 sx={{fontSize: 30}}>{t("feelIT.projects")}</h2>
-                <Button
-                    className = "add-feel-it-client-button"
-                    variant = "contained"
-                    size = "small"
-                    sx = {{margin: 1, marginBottom: 2}}
-                    onClick={() => props.addFeelItClient()}
-                > <AddIcon />{t("feelIT.addFeel")}</Button>
+        <div className="ep-section">
+            <div className="ep-section-header">
+                <h2 className="ep-section-title">{t("feelIT.projects")}</h2>
+                <Button className="ep-add-feel-it-client-button" type="link" icon={<PlusOutlined />} onClick={props.addFeelItClient}>
+                    {t("feelIT.addFeel")}
+                </Button>
             </div>
+
             <DndContext collisionDetection={closestCorners} onDragEnd={handleDragEnd}>
                 <FeelITList
                     clients={props.profileData.feel_it}
@@ -45,5 +35,5 @@ export default function FeelIt(props) {
                 />
             </DndContext>
         </div>
-    )
+    );
 }

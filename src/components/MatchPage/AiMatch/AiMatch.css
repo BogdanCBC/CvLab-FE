@@ -1,4 +1,3 @@
-/* src/components/MatchPage/AiMatch/AiMatch.css */
 .ai-match-box {
     background-color: #fff;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -9,8 +8,8 @@
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
-    /* Strict overflow control to solve the X-axis issue */
     overflow-x: hidden;
+    border-radius: 0;
 }
 
 .matched-results-wrapper {
@@ -19,13 +18,14 @@
     overflow-x: hidden;
     width: 100%;
     margin-top: 16px;
-    /* Prevent stack from leaking out */
     padding-right: 5px;
 }
 
-/* Specific padding for each individual candidate card */
 .ai-candidate-card {
-    padding: 20px !important;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+    padding: 20px;
     cursor: pointer;
     transition: background-color 0.2s;
 }
@@ -35,7 +35,8 @@
 }
 
 .ai-description-text {
-    margin-top: 12px !important;
+    display: block;
+    margin-top: 12px;
     white-space: pre-line;
     text-align: justify;
     word-break: break-word;
@@ -56,7 +57,7 @@
 }
 
 .empty-icon {
-    font-size: 4rem !important;
+    font-size: 4rem;
     color: #ccc;
     margin-bottom: 16px;
 }

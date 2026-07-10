@@ -1,8 +1,7 @@
 import React from "react";
-import TopBar from "../TopBar/TopBar";
 import CandidatesList from "../CandidatesList/CandidatesList";
 import CandidateDetails from "../CandidateDetails/CandidateDetails";
-import './CandidatesPage.css';
+import './CandidatesPage.scss';
 
 export default function CandidatesPage({
                                        candidates,
@@ -17,11 +16,6 @@ export default function CandidatesPage({
                                    }) {
     return (
         <div className="candidates-page">
-            <TopBar
-                candidates={candidates}
-                setCandidates={setCandidates}
-                setIsLoggedIn={setIsLoggedIn}
-            />
             <CandidatesList
                 setSelectedCandidate={setSelectedCandidate}
                 editMode={editMode}
@@ -30,6 +24,7 @@ export default function CandidatesPage({
                 setAdvancedSearch={setAdvancedSearch}
                 candidates={candidates}
                 setCandidates={setCandidates}
+                selectedCandidate={selectedCandidate}
             />
             <CandidateDetails
                 selectedCandidate={selectedCandidate}

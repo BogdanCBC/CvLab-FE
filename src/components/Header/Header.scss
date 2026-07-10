@@ -1,0 +1,70 @@
+.header{
+    .header-container{
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        .breadcrumbs-container{
+            .ant-breadcrumb{
+                ol{
+                    .ant-breadcrumb-item{
+                        color: #717680;
+                        font-size: 14px;
+                        font-style: normal;
+                        font-weight: 600;
+                        line-height: 20px; /* 142.857% */
+                        &:nth-last-child(1){
+                            color: #414651;
+                        }
+                    }
+                    .ant-breadcrumb-separator{
+                        margin-top: 1px;
+                    }
+                }
+            }
+        }
+        .header-content{
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            min-height: 40px;
+            gap: 10px;
+            .left{
+                .header-title{
+                    color: #181D27;
+                    font-size: 24px;
+                    font-style: normal;
+                    font-weight: 600;
+                    line-height: 32px; /* 133.333% */
+                }
+            }
+            .right{
+                display: flex;
+                flex-direction: row;
+                gap: 8px;
+                flex-wrap: wrap;
+            }
+            .archive-header-btn {
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                height: 40px;
+                padding: 8px 16px;
+                border: 1px solid #079455;
+                border-radius: 8px;
+                color: #079455;
+                font-weight: 500;
+                font-size: 14px;
+                background: #fff;
+                cursor: pointer;
+
+                &:hover {
+                    background: #f0fdf4 !important;
+                    color: #079455 !important;
+                    border-color: #079455 !important;
+                }
+            }
+        }
+    }
+}

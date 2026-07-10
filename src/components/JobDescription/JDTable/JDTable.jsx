@@ -1,169 +1,100 @@
 import React, { useState } from "react";
-import { useTheme } from '@mui/material/styles';
-import PropTypes from 'prop-types';
-import { 
-    TableContainer, 
-    Table,
-    TableHead,
-    TableRow,
-    TableCell,
-    Paper,
-    TableBody,
-    TableFooter,
-    TablePagination,
-    Box, 
-    IconButton
- } from "@mui/material";
+import { Table, Button } from "antd";
+import { Input } from "antd";
+import { SearchIcon, FilterIcon, ArrowLeftIcon, ArrowRightIcon } from "../../../constants/icons";
+import { useTranslation } from "react-i18next";
+import "./JDTable.css";
 
-import FirstPageIcon from '@mui/icons-material/FirstPage';
-import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
-import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
-import LastPageIcon from '@mui/icons-material/LastPage';
-import {useTranslation} from "react-i18next";
+export default function JDTable({ jobs, setSelectedJob, selectedJob }) {
+    const { t } = useTranslation();
+    const [searchText, setSearchText] = useState("");
+    const [page, setPage] = useState(1);
 
+    const truncate = (text, limit) =>
+        text?.length > limit ? text.slice(0, limit) + "..." : text;
 
-// Table actions
-function TablePaginationActions(props) {
-  const theme = useTheme();
-  const { count, page, rowsPerPage, onPageChange } = props;
+    const filteredJobs = jobs.filter((job) =>
+        job.title?.toLowerCase().includes(searchText.toLowerCase())
+    );
 
-  const handleFirstPageButtonClick = (event) => {
-    onPageChange(event, 0);
-  };
+    const columns = [
+        {
+            title: t("jdTable.title"),
+            dataIndex: "title",
+            key: "title",
+        },
+        {
+            title: t("jdTable.shortDescription"),
+            dataIndex: "description",
+            key: "description",
+            render: (text) => truncate(text, 130),
+        },
+        {
+            title: t("jdTable.actions", "Actions"),
+            key: "actions",
+            render: (_, record) => (
+                <Button
+                    type="link"
+                    className="view-link"
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        setSelectedJob(record.job_id);
+                    }}
+                >
+                    View
+                </Button>
+            ),
+        },
+    ];
 
-  const handleBackButtonClick = (event) => {
-    onPageChange(event, page - 1);
-  };
-
-  const handleNextButtonClick = (event) => {
-    onPageChange(event, page + 1);
-  };
-
-  const handleLastPageButtonClick = (event) => {
-    onPageChange(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1));
-  };
-
-  return (
-    <Box sx={{ flexShrink: 0, ml: 2.5 }}>
-      <IconButton
-        onClick={handleFirstPageButtonClick}
-        disabled={page === 0}
-        aria-label="first page"
-      >
-        {theme.direction === 'rtl' ? <LastPageIcon /> : <FirstPageIcon />}
-      </IconButton>
-      <IconButton
-        onClick={handleBackButtonClick}
-        disabled={page === 0}
-        aria-label="previous page"
-      >
-        {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
-      </IconButton>
-      <IconButton
-        onClick={handleNextButtonClick}
-        disabled={page >= Math.ceil(count / rowsPerPage) - 1}
-        aria-label="next page"
-      >
-        {theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
-      </IconButton>
-      <IconButton
-        onClick={handleLastPageButtonClick}
-        disabled={page >= Math.ceil(count / rowsPerPage) - 1}
-        aria-label="last page"
-      >
-        {theme.direction === 'rtl' ? <FirstPageIcon /> : <LastPageIcon />}
-      </IconButton>
-    </Box>
-  );
-}
-
-TablePaginationActions.propTypes = {
-  count: PropTypes.number.isRequired,
-  onPageChange: PropTypes.func.isRequired,
-  page: PropTypes.number.isRequired,
-  rowsPerPage: PropTypes.number.isRequired,
-};
-
-
-export default function JDTable({jobs, setSelectedJob}) {
-    const {t} = useTranslation();
-    const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(5);
-
-    const emptyRows = 
-        page > 0 ? Math.max(0, (1 + page) * rowsPerPage - jobs.length) : 0;
-
-    const handleChangePage = (event, newPage) => {
-        setPage(newPage);
-    }
-
-    const handleChangeRowsPerPage = (event) => {
-        setRowsPerPage(parseInt(event.target.value, 10));
-        setPage(0);
-    }
-
-    const truncate = (text, limit) => text.length > limit ? text.slice(0, limit) + '...' : text;  
-
-    const handleSelect = (event, jobId) => {
-        console.log("Selected job ID:", jobId);
-        setSelectedJob(jobId);
+    const handleTableChange = (pagination) => {
+        setPage(pagination.current);
     };
 
-    return(
+    return (
         <div className="jd-table">
-            <TableContainer component={Paper}>
-                <Table sx={{minWidth: 650, minHeight: 650}} aria-label="simple table">
-                    <TableHead>
-                        <TableRow sx={{ backgroundColor: 'rgba(200, 215, 216, 0.92)'}}>
-                            <TableCell>{t("jdTable.title")}</TableCell>
-                            <TableCell>{t("jdTable.shortDescription")}</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {(rowsPerPage > 0
-                          ? jobs.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                          : jobs
-                        ).map((job) => (
-                            <TableRow
-                                key={job.job_id}
-                                onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#f0f0f0'} 
-                                onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
-                                onClick={(e) => handleSelect(e, job.job_id)}
-                            >
-                                <TableCell>{job.title}</TableCell>
-                                <TableCell>{truncate(job.description, 40)}</TableCell>
-                            </TableRow>
-                        ))}
-                        {emptyRows > 0 && (
-                            <TableRow>
-                                <TableCell colSpan={6} />
-                            </TableRow>
-                        )}
-                    </TableBody>
-                    <TableFooter>
-                        <TableRow>
-                            <TablePagination
-                                rowsPerPageOptions={[5, 10 , 25, { label: 'All', value: -1 }]}
-                                colSpan={4}
-                                count={jobs.length}
-                                rowsPerPage={rowsPerPage}
-                                page={page}
-                                slotProps={{
-                                    select: {
-                                        inputProps: {
-                                            'aria-label': 'rows per page',
-                                        },
-                                        native: true,
-                                    }
-                                }}
-                                onPageChange={handleChangePage}
-                                onRowsPerPageChange={handleChangeRowsPerPage}
-                                ActionsComponent={TablePaginationActions}
-                            />
-                        </TableRow>
-                    </TableFooter>
-                </Table>
-            </TableContainer>
+            <div className="jd-table-header">
+                <Input
+                    placeholder="Search"
+                    prefix={<SearchIcon />}
+                    value={searchText}
+                    onChange={(e) => {
+                        setSearchText(e.target.value);
+                        setPage(1);
+                    }}
+                    className="jd-search"
+                />
+                {/* <Button icon={<FilterIcon />} className="filters-button">
+                    Filters
+                </Button> */}
+            </div>
+            <Table
+                className="jd-jobs-table"
+                dataSource={filteredJobs}
+                columns={columns}
+                rowKey="job_id"
+                onRow={(record) => ({
+                    onClick: () => setSelectedJob(record.job_id),
+                    className: `jd-table-row${selectedJob === record.job_id ? " active" : ""}`,
+                })}
+                pagination={{
+                    current: page,
+                    pageSize: 8,
+                    total: filteredJobs.length,
+                    showSizeChanger: false,
+                    prevIcon: (
+                        <span>
+                            <ArrowLeftIcon /> Previous
+                        </span>
+                    ),
+                    nextIcon: (
+                        <span>
+                            Next <ArrowRightIcon />
+                        </span>
+                    ),
+                }}
+                onChange={handleTableChange}
+            />
         </div>
     );
 }

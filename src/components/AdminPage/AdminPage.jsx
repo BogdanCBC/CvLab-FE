@@ -1,17 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Typography, Button, Container } from '@mui/material';
+import { Typography, Button, Space, Flex } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import UsersTable from './UsersTable';
 import CreateUserModal from './CreateUserModal';
 import ResetPasswordModal from "./ResetPasswordModal";
-
 import api from '../../api';
-import GenericHeader from "../GenericHeader/GenericHeader";
+import { useTranslation } from "react-i18next";
 
-import {useTranslation} from "react-i18next";
+const { Title } = Typography;
 
 const AdminPage = ({ setIsLoggedIn }) => {
-    const {t} = useTranslation();
+    const { t } = useTranslation();
     const navigate = useNavigate();
 
     const [users, setUsers] = useState([]);
@@ -19,9 +18,8 @@ const AdminPage = ({ setIsLoggedIn }) => {
     const [isResetModalOpen, setIsResetModalOpen] = useState(false);
     const [selectedUser, setSelectedUser] = useState(null);
 
-    // Pagination
     const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(5);
+    const [rowsPerPage, setRowsPerPage] = useState(7);
     const [searchTerm, setSearchTerm] = useState('');
     const [totalCount, setTotalCount] = useState(0);
 
@@ -45,7 +43,6 @@ const AdminPage = ({ setIsLoggedIn }) => {
         const delayDebounceFn = setTimeout(() => {
             fetchUsers();
         }, 500);
-
         return () => clearTimeout(delayDebounceFn);
     }, [page, rowsPerPage, searchTerm]);
 
@@ -55,30 +52,24 @@ const AdminPage = ({ setIsLoggedIn }) => {
     };
 
     return (
-        <Box sx={{ flexGrow: 1, backgroundColor: '#f9f9f9', minHeight: '100vh' }}>
-            <GenericHeader setIsLoggedIn={setIsLoggedIn} navigateLocation='/candidates'/>
-
-            <Container maxWidth="lg" sx={{ mt: 6 }}>
-                <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
-                    <Typography variant="h4" sx={{ fontWeight: 'bold', color: '#1976d2' }}>
+        <div>
+            <div style={{ maxWidth: 1200, margin: '0 auto', padding: '48px 24px 0' }}>
+                <Flex justify="space-between" align="center" style={{ marginBottom: 24 }}>
+                    <Title level={2} style={{ margin: 0, color: '#1976d2' }}>
                         {t("adminPage.userManagement")}
-                    </Typography>
-
-                    <Box display="flex" gap={2}>
-                        <Button variant="outlined" color="secondary" onClick={() => navigate('/admin/prompts')}
-                        >
+                    </Title>
+                    <Space>
+                        <Button className="filled-btn" onClick={() => navigate('/admin/prompts')}>
                             {t("adminPage.promptEngineering", "Prompt Engineering")}
                         </Button>
-
-                        <Button variant="outlined" color="primary" onClick={() => navigate('/metrics')}>
+                        <Button className="filled-btn" onClick={() => navigate('/metrics')}>
                             {t("adminPage.viewMetrics", "View Metrics")}
                         </Button>
-
-                        <Button variant="contained" color="success" onClick={() => setIsCreateModalOpen(true)}>
+                        <Button type="primary" className="default-button small" onClick={() => setIsCreateModalOpen(true)}>
                             {t("adminPage.createNewUser")}
                         </Button>
-                    </Box>
-                </Box>
+                    </Space>
+                </Flex>
 
                 <UsersTable
                     users={users}
@@ -91,22 +82,20 @@ const AdminPage = ({ setIsLoggedIn }) => {
                     setSearchTerm={setSearchTerm}
                     totalCount={totalCount}
                 />
-            </Container>
+            </div>
 
-            {/* Modal for Creating User */}
             <CreateUserModal
                 open={isCreateModalOpen}
                 onClose={() => setIsCreateModalOpen(false)}
                 onUserCreated={fetchUsers}
             />
 
-            {/* Modal for Resetting Password */}
             <ResetPasswordModal
                 open={isResetModalOpen}
                 onClose={() => setIsResetModalOpen(false)}
                 targetUser={selectedUser}
             />
-        </Box>
+        </div>
     );
 };
 
