@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { message } from "antd";
+import { notification } from "antd";
 import "./CompanyDetails.scss";
 import api from "../../../api";
 import CreateCompanyModal from "./CreateCompanyModal/CreateCompanyModal";
@@ -21,12 +21,12 @@ export default function CompanyDetails({ selectedClient, setSelectedClient, setC
                         setClientInfo(Array.isArray(data) ? data[0] : (data.data ? data.data : data));
                     } else {
                         setClientInfo(null);
-                        message.warning(t("companiesPage.fetchDetailEmpty", "No data found for this company"));
+                        notification.warning({ message: t("companiesPage.fetchDetailEmpty", "No data found for this company") });
                     }
                 }
             } catch (err) {
                 setClientInfo(null);
-                message.error(err?.response?.data?.message || t("companiesPage.fetchDetailError", "Failed to load company details"));
+                notification.error({ message: err?.response?.data?.message || t("companiesPage.fetchDetailError", "Failed to load company details") });
             }
         };
         fetchSelectedClient();

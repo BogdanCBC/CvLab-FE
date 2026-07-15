@@ -100,6 +100,9 @@
     "candidateName": "Nom du candidat",
     "noName": "Non spécifié",
     "deleteBtn": "Supprimer",
+    "deleteSuccess": "Candidat supprimé avec succès",
+    "deleteSuccessDescription": "Il a été retiré de votre liste de candidats.",
+    "deleteError": "Échec de la suppression du candidat",
     "editButton": "Modifier CV",
     "uploadedBy": "Candidat ajouté par:",
     "details": "Détails",
@@ -131,6 +134,7 @@
     "greaterThan": "Doit être supérieur à 0",
     "validEmail": "Veuillez saisir une adresse e-mail valide",
     "candidateSaved": "Candidat enregistré avec succès.",
+    "candidateSavedDescription": "Vos modifications ont été enregistrées.",
     "loadingData": "Chargement des données..."
   },
   "generalInfo": {
@@ -244,7 +248,9 @@
     "companyDescription": "Description de l'entreprise",
     "companyDescPlaceholder": "Entrez une description...",
     "createdSuccess": "Entreprise créée avec succès",
+    "createdSuccessDescription": "Elle apparaît maintenant dans votre liste d'entreprises.",
     "editSuccess": "Entreprise mise à jour avec succès",
+    "editSuccessDescription": "Vos modifications ont été enregistrées.",
     "editCompany": "Modifier l'entreprise",
     "companyLabel": "Entreprise",
     "descriptionLabel": "Description",
@@ -253,6 +259,7 @@
     "fetchDetailEmpty": "Aucune donnée trouvée pour cette entreprise",
     "fetchDetailError": "Échec du chargement des détails de l'entreprise",
     "deleteSuccess": "Entreprise supprimée avec succès",
+    "deleteSuccessDescription": "Elle a été retirée de votre liste d'entreprises.",
     "deleteError": "Échec de la suppression de l'entreprise"
   },
   "companiesTable": {
@@ -320,6 +327,7 @@
       "cancel": "Annuler",
       "save": "Ajouter",
       "addSuccess": "Candidat(s) ajouté(s) au suivi",
+      "addSuccessDescription": "Ils apparaissent maintenant sur le tableau de suivi.",
       "loadError": "Échec du chargement de la liste des candidats",
       "saveError": "Échec de l'ajout des candidats. Veuillez réessayer."
     },
@@ -329,6 +337,7 @@
       "cancel": "Annuler",
       "save": "Enregistrer",
       "saveSuccess": "Note enregistrée avec succès",
+      "saveSuccessDescription": "Votre note a été enregistrée.",
       "loadError": "Échec du chargement des notes",
       "saveError": "Échec de l'enregistrement de la note. Veuillez réessayer."
     },
@@ -339,6 +348,7 @@
       "cancel": "Annuler",
       "archive": "Archiver",
       "archiveSuccess": "Candidat archivé avec succès",
+      "archiveSuccessDescription": "Le candidat a été déplacé vers l'archive.",
       "archiveError": "Échec de l'archivage du candidat. Veuillez réessayer.",
       "reasons": {
         "noAlignment": "Non-alignement avec la culture Feel IT",
@@ -361,7 +371,9 @@
       "delete": "Supprimer",
       "editReason": "Modifier la raison",
       "deleteSuccess": "Candidat supprimé de l'archive",
+      "deleteSuccessDescription": "Le candidat a été définitivement supprimé.",
       "editSuccess": "Raison d'archivage mise à jour",
+      "editSuccessDescription": "La raison d'archivage a été mise à jour.",
       "empty": "Aucun candidat archivé",
       "previous": "Précédent",
       "next": "Suivant"
@@ -385,7 +397,9 @@
     "confirm": "Confirmer",
     "addJobDescription": "Ajouter une description de poste",
     "createdSuccess": "Description du poste créée avec succès",
-    "editSuccess": "Description du poste modifiée avec succès"
+    "createdSuccessDescription": "Elle apparaît maintenant dans votre liste de descriptions de poste.",
+    "editSuccess": "Description du poste modifiée avec succès",
+    "editSuccessDescription": "Vos modifications ont été enregistrées."
   },
   "rawMatch": {
     "title": "Candidats correspondants",
@@ -443,10 +457,15 @@
     "confirmPassword": "Confirmer le nouveau mot de passe",
     "passwordMismatch": "Les mots de passe ne correspondent pas",
     "passwordUpdated": "Mot de passe mis à jour avec succès",
+    "passwordUpdatedDescription": "Utilisez votre nouveau mot de passe lors de votre prochaine connexion.",
     "saved": "Paramètres enregistrés avec succès",
+    "savedDescription": "Vos paramètres de profil ont été enregistrés.",
     "saveError": "Échec de l'enregistrement des paramètres",
     "imageOnly": "Vous ne pouvez télécharger que des fichiers image",
-    "fileTooLarge": "L'image doit être inférieure à 2 Mo"
+    "fileTooLarge": "L'image doit être inférieure à 2 Mo",
+    "photoUpdated": "Photo mise à jour avec succès",
+    "photoUpdatedDescription": "Votre nouvelle photo est maintenant visible sur votre profil.",
+    "photoError": "Échec du téléchargement de la photo"
   },
   "profilePage": {
     "title": "Profil",

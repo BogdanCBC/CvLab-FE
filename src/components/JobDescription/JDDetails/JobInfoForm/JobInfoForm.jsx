@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Modal, Button, Input, Select, Tag, Space, message } from "antd";
+import { Modal, Button, Input, Select, Tag, Space, notification } from "antd";
 import { useTranslation } from "react-i18next";
 import api from "../../../../api";
 import { fetchJobDescription } from "../../../../utils/fetchJobDescription";
@@ -65,7 +65,7 @@ export default function JobInfoForm({ open, setJobs, setUploadNew, clientId }) {
         try {
             const response = await api.post("/job-description", payload);
             if (response.data.success) {
-                message.success(t("jdEditMode.createdSuccess"));
+                notification.success({ message: t("jdEditMode.createdSuccess"), description: t("jdEditMode.createdSuccessDescription") });
                 setFormData({ title: "", description: "" });
                 setSkills([]);
                 setLanguages([]);
@@ -76,7 +76,7 @@ export default function JobInfoForm({ open, setJobs, setUploadNew, clientId }) {
             setUploading(false);
             setTimeout(() => setUploadNew(false), 500);
         } catch (err) {
-            message.error(err?.response?.data?.message || "Error");
+            notification.error({ message: err?.response?.data?.message || "Error" });
             setUploading(false);
         }
     };

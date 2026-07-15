@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { Dropdown, message, Spin, Modal, Button } from "antd";
+import { Dropdown, notification, Spin, Modal, Button } from "antd";
 import {
     DndContext,
     DragOverlay,
@@ -238,7 +238,7 @@ export default function TrackingPage({ addCandidateOpen, setAddCandidateOpen, ar
                 setColumns(mapped);
             })
             .catch(() => {
-                message.error(t("trackingPage.fetchError"));
+                notification.error({ message: t("trackingPage.fetchError") });
             })
             .finally(() => setLoading(false));
     }, [jobId, t]);
@@ -283,7 +283,7 @@ export default function TrackingPage({ addCandidateOpen, setAddCandidateOpen, ar
             ),
         }));
         api.put(`/job-candidates/${cardId}/phase`, { phase }).catch(() => {
-            message.error(t("trackingPage.phaseUpdateError"));
+            notification.error({ message: t("trackingPage.phaseUpdateError") });
             fetchCandidates();
         });
         setPendingAcceptDecline(null);
@@ -323,10 +323,10 @@ export default function TrackingPage({ addCandidateOpen, setAddCandidateOpen, ar
 
         api.put(`/job-candidates/${candidate.id}/archive`, { archive_reason: reason })
             .then(() => {
-                message.success(t("trackingPage.archiveModal.archiveSuccess"));
+                notification.success({ message: t("trackingPage.archiveModal.archiveSuccess"), description: t("trackingPage.archiveModal.archiveSuccessDescription") });
             })
             .catch(() => {
-                message.error(t("trackingPage.archiveModal.archiveError"));
+                notification.error({ message: t("trackingPage.archiveModal.archiveError") });
                 if (sourceCol) {
                     setColumns((prev) => ({
                         ...prev,
@@ -370,7 +370,8 @@ export default function TrackingPage({ addCandidateOpen, setAddCandidateOpen, ar
                 const sourceCards = [...prev[sourceCol]];
                 const targetCards = [...prev[targetCol]];
                 const cardIndex = sourceCards.findIndex((c) => c.id === active.id);
-                const [card] = sourceCards.splice(cardIndex, 1);
+                const [rawCard] = sourceCards.splice(cardIndex, 1);
+                const card = sourceCol === 'accepted_declined' ? { ...rawCard, status: null } : rawCard;
 
                 const overIndex = isColumnId(over.id)
                     ? targetCards.length
@@ -387,7 +388,7 @@ export default function TrackingPage({ addCandidateOpen, setAddCandidateOpen, ar
                 api.put(`/job-candidates/${active.id}/phase`, {
                     phase: COLUMN_TO_API_PHASE[targetCol],
                 }).catch(() => {
-                    message.error(t("trackingPage.phaseUpdateError"));
+                    notification.error({ message: t("trackingPage.phaseUpdateError") });
                     fetchCandidates();
                 });
             }

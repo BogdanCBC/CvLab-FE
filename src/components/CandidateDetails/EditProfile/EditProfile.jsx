@@ -9,7 +9,7 @@ import Languages from "./Languages/Languages";
 import Certifications from "./Certifications/Certifications";
 import FeelIt from "./FeelIt/FeelIt";
 import PersonalProjects from "./PersonalProjects/PersonalProjects";
-import { Button, Segmented, Alert, Typography, message } from "antd";
+import { Button, Segmented, Alert, Typography, notification } from "antd";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
 import { SaveIcon } from "../../../constants/icons";
@@ -62,7 +62,11 @@ function EditProfile(props) {
             if (response.data) {
                 setUnvalidMessage("");
                 setUnvalidError(false);
-                message.success(t("editProfile.candidateSaved"));
+                notification.success({
+                    message: t("editProfile.candidateSaved"),
+                    description: t("editProfile.candidateSavedDescription"),
+                });
+                setEditMode(false);
             }
         } catch (err) {
             if (err.response?.status === 422) {

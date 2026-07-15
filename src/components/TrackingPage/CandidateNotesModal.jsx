@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Modal, Input, Button, message, Spin } from "antd";
+import { Modal, Input, Button, notification, Spin } from "antd";
 import { useTranslation } from "react-i18next";
 import api from "../../api";
 import "./CandidateNotesModal.scss";
@@ -52,7 +52,7 @@ export default function CandidateNotesModal({ open, onClose, candidate, jobId, c
                 }
                 setNotesMap(map);
             })
-            .catch(() => message.error(t("trackingPage.notesModal.loadError")))
+            .catch(() => notification.error({ message: t("trackingPage.notesModal.loadError") }))
             .finally(() => setLoading(false));
     }, [open, jobId, candidate, currentPhase, t]);
 
@@ -63,10 +63,10 @@ export default function CandidateNotesModal({ open, onClose, candidate, jobId, c
             await api.post(`/jobs/${jobId}/candidates/${candidate.id}/notes`, {
                 content: currentNote,
             });
-            message.success(t("trackingPage.notesModal.saveSuccess"));
+            notification.success({ message: t("trackingPage.notesModal.saveSuccess"), description: t("trackingPage.notesModal.saveSuccessDescription") });
             handleClose();
         } catch {
-            message.error(t("trackingPage.notesModal.saveError"));
+            notification.error({ message: t("trackingPage.notesModal.saveError") });
         } finally {
             setSaving(false);
         }

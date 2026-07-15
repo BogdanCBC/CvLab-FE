@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './ContactSection.scss';
 import { useTranslation } from 'react-i18next';
-import { message } from 'antd';
+import { notification } from 'antd';
 import api from '../../../api';
 
 const initialFormState = { fullName: '', workEmail: '', company: '', message: '' };
@@ -30,10 +30,10 @@ const ContactSection = () => {
         company: formData.company,
         message: formData.message,
       });
-      message.success(t('landing.contact.success', "Thanks! We'll get back to you within 24 hours."));
+      notification.success({ message: t('landing.contact.success', "Thanks! We'll get back to you within 24 hours.") });
       setFormData(initialFormState);
     } catch (err) {
-      message.error(err?.response?.data?.message || t('landing.contact.error', 'Something went wrong. Please try again.'));
+      notification.error({ message: err?.response?.data?.message || t('landing.contact.error', 'Something went wrong. Please try again.') });
     } finally {
       setSubmitting(false);
     }

@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import './CandidatesList.scss';
 import CandidatesTable from './CandidatesTable/CandidatesTable';
 import AdvancedFilters from './AdvancedFilters/AdvancedFilters';
-import { Input, Button, Badge, message } from 'antd';
+import { Input, Button, Badge, notification } from 'antd';
 import { useTranslation } from "react-i18next";
 import api from '../../api';
 import { SearchIcon , FilterIcon, CloseIcon } from '../../constants/icons';
@@ -57,7 +57,7 @@ function CandidatesList(props) {
             if (error?.response?.status === 404) {
                 props.setCandidates([]);
                 setTotalCount(0);
-                message.info(t('advancedFilters.noCandidates'));
+                notification.info({ message: t('advancedFilters.noCandidates') });
             } else {
                 console.error("Error fetching candidates:", error);
             }

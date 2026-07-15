@@ -1,7 +1,7 @@
 import './Candidate.scss';
 import api from "../../../api";
 import React, { useState, useEffect } from "react";
-import { Button, Dropdown, Select, Tooltip, message } from 'antd';
+import { Button, Dropdown, Select, Tooltip, notification } from 'antd';
 import {
     EditOutlined,
     DeleteOutlined,
@@ -52,13 +52,13 @@ export default function Candidate(props) {
             downloadFileFromBlob(new Blob([response.data]), filename);
         } catch (error) {
             console.error("Error downloading CV:", error);
-            message.error("An error occurred while downloading the CV.");
+            notification.error({ message: "An error occurred while downloading the CV." });
         }
     };
 
     const getFormattedCV = async (tmplType, subType = '') => {
         if (!downloadFileType) {
-            message.warning('Please select a file format first');
+            notification.warning({ message: 'Please select a file format first' });
             return;
         }
         try {
@@ -73,7 +73,7 @@ export default function Candidate(props) {
             downloadFileFromBlob(new Blob([response.data]), filename);
         } catch (error) {
             console.error("Error fetching formatted CV:", error);
-            message.error("An error occurred while fetching the formatted CV.");
+            notification.error({ message: "An error occurred while fetching the formatted CV." });
         } finally {
             setLoading(false);
         }
@@ -85,16 +85,21 @@ export default function Candidate(props) {
             if (response.status === 200) {
                 props.setSelectedCandidate(null);
                 window.dispatchEvent(new Event('refreshCandidates'));
+                notification.success({
+                    message: t("candidate.deleteSuccess"),
+                    description: t("candidate.deleteSuccessDescription"),
+                });
             }
         } catch (error) {
             console.error("Error deleting candidate:", error);
+            notification.error({ message: t("candidate.deleteError") });
         }
     };
 
     const handleCopyLink = async () => {
         try {
             await navigator.clipboard.writeText(`${BASE_URL}/${props.candidateId}`);
-            message.success(t("candidate.clipboard"));
+            notification.success({ message: t("candidate.clipboard") });
         } catch (err) {
             console.log(`Failed to copy! Error: ${err}`);
         }

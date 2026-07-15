@@ -100,6 +100,9 @@
     "candidateName": "Candidate Name:",
     "noName": "Unspecified",
     "deleteBtn": "Delete",
+    "deleteSuccess": "Candidate deleted successfully",
+    "deleteSuccessDescription": "It has been removed from your candidates list.",
+    "deleteError": "Failed to delete candidate",
     "editButton": "Edit CV",
     "uploadedBy": "Candidate uploaded by:",
     "details": "Details",
@@ -130,7 +133,8 @@
     "requiredField": "This field is required",
     "greaterThan": "Must be greater than 0",
     "validEmail": "Must be a valid email address",
-    "candidateSaved": "Candidate saved successfully.",
+    "candidateSaved": "Successfully updated candidate data",
+    "candidateSavedDescription": "Your changes have been saved.",
     "loadingData": "Loading profile data..."
   },
   "generalInfo": {
@@ -253,7 +257,9 @@
     "companyDescription": "Company Description",
     "companyDescPlaceholder": "Enter a description...",
     "createdSuccess": "Company created successfully",
+    "createdSuccessDescription": "It now appears in your companies list.",
     "editSuccess": "Company updated successfully",
+    "editSuccessDescription": "Your changes have been saved.",
     "editCompany": "Edit Company",
     "companyLabel": "Companie",
     "descriptionLabel": "Description",
@@ -262,6 +268,7 @@
     "fetchDetailEmpty": "No data found for this company",
     "fetchDetailError": "Failed to load company details",
     "deleteSuccess": "Company deleted successfully",
+    "deleteSuccessDescription": "It has been removed from your companies list.",
     "deleteError": "Failed to delete company"
   },
   "companiesTable": {
@@ -329,6 +336,7 @@
       "cancel": "Cancel",
       "save": "Add",
       "addSuccess": "Candidate(s) added to tracking",
+      "addSuccessDescription": "They now appear on the tracking board.",
       "loadError": "Failed to load candidates list",
       "saveError": "Failed to add candidates. Please try again."
     },
@@ -338,6 +346,7 @@
       "cancel": "Cancel",
       "save": "Save",
       "saveSuccess": "Note saved successfully",
+      "saveSuccessDescription": "Your note has been saved.",
       "loadError": "Failed to load notes",
       "saveError": "Failed to save note. Please try again."
     },
@@ -348,6 +357,7 @@
       "cancel": "Cancel",
       "archive": "Archive",
       "archiveSuccess": "Candidate archived successfully",
+      "archiveSuccessDescription": "The candidate has been moved to the archive.",
       "archiveError": "Failed to archive candidate. Please try again.",
       "reasons": {
         "noAlignment": "No alignment to Feel IT Culture",
@@ -370,7 +380,9 @@
       "delete": "Delete",
       "editReason": "Edit reason",
       "deleteSuccess": "Candidate removed from archive",
+      "deleteSuccessDescription": "The candidate has been permanently removed.",
       "editSuccess": "Archive reason updated",
+      "editSuccessDescription": "The archive reason has been updated.",
       "empty": "No archived candidates",
       "previous": "Previous",
       "next": "Next"
@@ -394,7 +406,9 @@
     "confirm": "Confirm",
     "addJobDescription": "Add job description",
     "createdSuccess": "Job description created successfully",
-    "editSuccess": "Job description updated successfully"
+    "createdSuccessDescription": "It now appears in your job descriptions list.",
+    "editSuccess": "Job description updated successfully",
+    "editSuccessDescription": "Your changes have been saved."
   },
   "rawMatch": {
     "title": "Matched Candidates",
@@ -452,10 +466,15 @@
     "confirmPassword": "Confirm new password",
     "passwordMismatch": "Passwords do not match",
     "passwordUpdated": "Password updated successfully",
+    "passwordUpdatedDescription": "Use your new password next time you sign in.",
     "saved": "Settings saved successfully",
+    "savedDescription": "Your profile settings have been saved.",
     "saveError": "Failed to save settings",
     "imageOnly": "You can only upload image files",
-    "fileTooLarge": "Image must be smaller than 2MB"
+    "fileTooLarge": "Image must be smaller than 2MB",
+    "photoUpdated": "Photo updated successfully",
+    "photoUpdatedDescription": "Your new photo is now visible on your profile.",
+    "photoError": "Failed to upload photo"
   },
   "profilePage": {
     "title": "Profile",
