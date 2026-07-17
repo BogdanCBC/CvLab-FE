@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Input, message } from "antd";
+import { Button, Input, notification } from "antd";
 import { SaveIcon, ArrowLeftIcon } from "../../../../../constants/icons";
 import api from "../../../../../api";
 import { fetchClients } from "../../../../../utils/fetchClients";
@@ -27,7 +27,7 @@ export default function EditMode({ clientInfo, setEditMode, setClients, setClien
             };
             const response = await api.put("/clients", payload);
             if (response.data) {
-                message.success(t("companiesPage.editSuccess", "Company updated successfully"));
+                notification.success({ message: t("companiesPage.editSuccess", "Company updated successfully"), description: t("companiesPage.editSuccessDescription", "Your changes have been saved.") });
                 const clientsRes = await fetchClients();
                 if (clientsRes.success) {
                     setClients(clientsRes.clients || []);
@@ -38,7 +38,7 @@ export default function EditMode({ clientInfo, setEditMode, setClients, setClien
             }
             setSaving(false);
         } catch (err) {
-            message.error(err?.response?.data?.message || "Error");
+            notification.error({ message: err?.response?.data?.message || "Error" });
             setSaving(false);
         }
     };

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Modal, Select, Button, message, Spin } from "antd";
+import { Modal, Select, Button, notification, Spin } from "antd";
 import { useTranslation } from "react-i18next";
 import api from "../../api";
 import "./AddCandidateModal.scss";
@@ -35,7 +35,7 @@ export default function AddCandidateModal({ open, onClose, onSave, jobId }) {
                     label: `${c.first_name ?? ''} ${c.last_name ?? ''}`.trim(),
                 })));
             })
-            .catch(() => message.error(t("trackingPage.modal.loadError")))
+            .catch(() => notification.error({ message: t("trackingPage.modal.loadError") }))
             .finally(() => setLoadingOptions(false));
     }, [open, i18n.language, t]);
 
@@ -47,11 +47,11 @@ export default function AddCandidateModal({ open, onClose, onSave, jobId }) {
                 job_id: Number(jobId),
                 candidate_ids: selectedIds,
             });
-            message.success(t("trackingPage.modal.addSuccess"));
+            notification.success({ message: t("trackingPage.modal.addSuccess"), description: t("trackingPage.modal.addSuccessDescription") });
             onSave();
             handleClose();
         } catch {
-            message.error(t("trackingPage.modal.saveError"));
+            notification.error({ message: t("trackingPage.modal.saveError") });
         } finally {
             setSaving(false);
         }

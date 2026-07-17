@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Typography, Button, Space, Flex } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import UsersTable from './UsersTable';
@@ -23,7 +23,7 @@ const AdminPage = ({ setIsLoggedIn }) => {
     const [searchTerm, setSearchTerm] = useState('');
     const [totalCount, setTotalCount] = useState(0);
 
-    const fetchUsers = async () => {
+    const fetchUsers = useCallback(async () => {
         try {
             const response = await api.get('/user', {
                 params: {
@@ -37,14 +37,14 @@ const AdminPage = ({ setIsLoggedIn }) => {
         } catch (error) {
             console.error("Error fetching users:", error);
         }
-    };
+    }, [page, rowsPerPage, searchTerm]);
 
     useEffect(() => {
         const delayDebounceFn = setTimeout(() => {
             fetchUsers();
         }, 500);
         return () => clearTimeout(delayDebounceFn);
-    }, [page, rowsPerPage, searchTerm]);
+    }, [fetchUsers]);
 
     const openResetDialog = (user) => {
         setSelectedUser(user);

@@ -85,7 +85,7 @@ function UploadCandidateModal(props) {
     }
   };
 
-  // Returns true on successful upload+download, false otherwise
+  // Returns 'success', 'error' or 'duplicate' depending on the outcome
   const processFile = async (file) => {
     setFiles((prev) =>
       prev.map((f) => (f.id === file.id ? { ...f, progress: 50, status: 'loading' } : f))
@@ -98,7 +98,7 @@ function UploadCandidateModal(props) {
         prev.map((f) => (f.id === file.id ? { ...f, progress: 100, status: 'error' } : f))
       );
       if (response.new_candidate_id) await cleanupFailedCandidate(response.new_candidate_id);
-      return false;
+      return 'error';
     }
 
     if (response.duplicates === false && response.new_candidate_id) {
@@ -118,14 +118,14 @@ function UploadCandidateModal(props) {
         setFiles((prev) =>
           prev.map((f) => (f.id === file.id ? { ...f, progress: 100, status: 'success' } : f))
         );
-        return true;
+        return 'success';
       } catch (downloadError) {
         console.error(`Download failed for ${file.fileName}`, downloadError);
         setFiles((prev) =>
           prev.map((f) => (f.id === file.id ? { ...f, progress: 100, status: 'error' } : f))
         );
         if (response.new_candidate_id) await cleanupFailedCandidate(response.new_candidate_id);
-        return false;
+        return 'error';
       }
     } else {
       setFiles((prev) =>
@@ -135,7 +135,7 @@ function UploadCandidateModal(props) {
             : f
         )
       );
-      return false;
+      return 'duplicate';
     }
   };
 
@@ -143,13 +143,16 @@ function UploadCandidateModal(props) {
     setSubmitStatusBtn(true);
     setIsUploading(true);
     let successCount = 0;
+    let errorCount = 0;
     for (const file of files) {
-      const ok = await processFile(file);
-      if (ok) successCount++;
+      const result = await processFile(file);
+      if (result === 'success') successCount++;
+      else if (result === 'error') errorCount++;
     }
     setIsUploading(false);
     window.dispatchEvent(new Event('refreshCandidates'));
     if (successCount > 0) props.setSuccess(successCount);
+    if (errorCount > 0) props.setError(errorCount);
   };
 
   const handleKeepDuplicate = async (localId) => {

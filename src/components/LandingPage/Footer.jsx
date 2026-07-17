@@ -3,6 +3,15 @@ import './Footer.scss';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import logo from '../../images/AdorLogoDarkBlue.svg';
+import facebookLogo from '../../images/facebook-logo.svg';
+import youtubeLogo from '../../images/youtube-logo.svg';
+import instaLogo from '../../images/insta-logo.svg';
+
+const SOCIAL_LINKS = [
+  { key: 'facebook', icon: facebookLogo, url: 'https://www.facebook.com/adorcv' },
+  { key: 'youtube', icon: youtubeLogo, url: 'https://www.youtube.com/@adorCV' },
+  { key: 'instagram', icon: instaLogo, url: 'https://www.instagram.com/ador.cv' },
+];
 
 const FOOTER_COLUMNS = [
   {
@@ -59,6 +68,26 @@ const Footer = () => {
           <p className="landing-footer__tagline">
             {t('landing.footer.tagline', 'The AI-powered HR platform that transforms recruitment.')}
           </p>
+
+          <div className="landing-footer__social">
+            <span className="landing-footer__social-title">
+              {t('landing.footer.socialMedia', 'Social Media')}
+            </span>
+            <div className="landing-footer__social-icons">
+              {SOCIAL_LINKS.map((social) => (
+                <a
+                  key={social.key}
+                  href={social.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="landing-footer__social-icon"
+                  aria-label={social.key}
+                >
+                  <img src={social.icon} alt={social.key} />
+                </a>
+              ))}
+            </div>
+          </div>
         </div>
 
         {FOOTER_COLUMNS.map((column) => (

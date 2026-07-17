@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { message } from "antd";
+import { notification } from "antd";
 import CompaniesTable from "./CompaniesTable/CompaniesTable";
 import CompanyDetails from "./CompanyDetails/CompanyDetails";
 import "./CompaniesPage.scss";
@@ -18,7 +18,7 @@ export default function CompaniesPage({ setSelectedCandidate, setIsLoggedIn, upl
                 setClients(response.clients || []);
             } else {
                 setClients([]);
-                message.error(response?.message || t("companiesPage.fetchError", "Failed to load companies"));
+                notification.error({ message: response?.message || t("companiesPage.fetchError", "Failed to load companies") });
             }
         });
     }, [t]);

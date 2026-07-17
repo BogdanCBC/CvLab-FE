@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, message } from "antd";
+import { Button, notification } from "antd";
 import { EditIcon, TrashIcon } from "../../../../../constants/icons";
 import api from "../../../../../api";
 import { fetchClients } from "../../../../../utils/fetchClients";
@@ -17,7 +17,7 @@ export default function ViewMode({ clientInfo, setClientInfo, setEditMode, setCl
                 params: { client_id: clientInfo.client_id },
             });
             if (deleteRes.data) {
-                message.success(t("companiesPage.deleteSuccess", "Company deleted successfully"));
+                notification.success({ message: t("companiesPage.deleteSuccess", "Company deleted successfully"), description: t("companiesPage.deleteSuccessDescription", "It has been removed from your companies list.") });
                 try {
                     const clientsRes = await fetchClients();
                     if (clientsRes.success && Array.isArray(clientsRes.clients)) {
@@ -35,7 +35,7 @@ export default function ViewMode({ clientInfo, setClientInfo, setEditMode, setCl
                 }
             }
         } catch (err) {
-            message.error(err?.response?.data?.message || t("companiesPage.deleteError", "Failed to delete company"));
+            notification.error({ message: err?.response?.data?.message || t("companiesPage.deleteError", "Failed to delete company") });
             setClientInfo(null);
             setSelectedClient(null);
         }

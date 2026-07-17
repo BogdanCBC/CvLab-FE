@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import './CandidatesList.scss';
 import CandidatesTable from './CandidatesTable/CandidatesTable';
 import AdvancedFilters from './AdvancedFilters/AdvancedFilters';
-import { Input, Button, Badge, message } from 'antd';
+import { Input, Button, Badge, notification } from 'antd';
 import { useTranslation } from "react-i18next";
 import api from '../../api';
 import { SearchIcon , FilterIcon, CloseIcon } from '../../constants/icons';
 
 
-function CandidatesList(props) {
+function CandidatesList({ candidates, setCandidates, selectedCandidate, setSelectedCandidate, setEditMode }) {
     const { t, i18n } = useTranslation();
     const { candidateId } = useParams();
 
@@ -22,7 +22,7 @@ function CandidatesList(props) {
     const [totalCount, setTotalCount] = useState(-1);
     const [activeFilters, setActiveFilters] = useState(null);
 
-    const fetchCandidatesData = async () => {
+    const fetchCandidatesData = useCallback(async () => {
         const skip = page * rowsPerPage;
         const limit = rowsPerPage;
         const currentLang = i18n.language?.startsWith('fr') ? 'French' : 'English';
@@ -51,18 +51,18 @@ function CandidatesList(props) {
                 language: candidate.language,
             }));
 
-            props.setCandidates(mappedData);
+            setCandidates(mappedData);
             setTotalCount(total !== -1 ? total : mappedData.length);
         } catch (error) {
             if (error?.response?.status === 404) {
-                props.setCandidates([]);
+                setCandidates([]);
                 setTotalCount(0);
-                message.info(t('advancedFilters.noCandidates'));
+                notification.info({ message: t('advancedFilters.noCandidates') });
             } else {
                 console.error("Error fetching candidates:", error);
             }
         }
-    };
+    }, [page, rowsPerPage, searchTerm, activeFilters, i18n.language, t, setCandidates]);
 
     // Trigger fetch on dependencies changing
     useEffect(() => {
@@ -70,21 +70,21 @@ function CandidatesList(props) {
             fetchCandidatesData();
         }, 500);
         return () => clearTimeout(delayDebounceFn);
-    }, [page, rowsPerPage, searchTerm, activeFilters, i18n.language]);
+    }, [fetchCandidatesData]);
 
     // FIX: Listen for the Modal's Upload Event!
     useEffect(() => {
         const handleRefresh = () => fetchCandidatesData();
         window.addEventListener('refreshCandidates', handleRefresh);
         return () => window.removeEventListener('refreshCandidates', handleRefresh);
-    }, [page, rowsPerPage, searchTerm, activeFilters, i18n.language]);
+    }, [fetchCandidatesData]);
 
     useEffect(() => {
         if (candidateId) {
             const normalize = isNaN(Number(candidateId)) ? candidateId : Number(candidateId);
-            props.setSelectedCandidate(normalize);
+            setSelectedCandidate(normalize);
         }
-    }, [candidateId]);
+    }, [candidateId, setSelectedCandidate]);
 
     const handleApplyFilters = (filters) => {
         setActiveFilters(filters);
@@ -144,15 +144,15 @@ function CandidatesList(props) {
             </div>
 
             <CandidatesTable
-                candidates={props.candidates}
+                candidates={candidates}
                 page={page}
                 setPage={setPage}
                 rowsPerPage={rowsPerPage}
                 setRowsPerPage={setRowsPerPage}
                 totalCount={totalCount}
-                selectedCandidate={props.selectedCandidate}
-                setSelectedCandidate={props.setSelectedCandidate}
-                setEditMode={props.setEditMode}
+                selectedCandidate={selectedCandidate}
+                setSelectedCandidate={setSelectedCandidate}
+                setEditMode={setEditMode}
             />
 
             <AdvancedFilters

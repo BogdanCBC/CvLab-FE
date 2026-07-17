@@ -55,7 +55,7 @@ const Header = (props) => {
   const [openTextModal, setOpenTextModal] = useState(false);
   const [success, setSuccess] = useState(0);   // number of successfully uploaded CVs
   const [warning, setWarning] = useState(false);
-  const [error, setError] = useState(false);
+  const [error, setError] = useState(0);   // number of CVs that failed to upload
 
   // Show Ant Design notifications when upload state changes
   useEffect(() => {
@@ -81,13 +81,13 @@ const Header = (props) => {
   }, [warning]);
 
   useEffect(() => {
-    if (error) {
+    if (error > 0) {
       notification.error({
-        message: 'Upload failed',
-        description: 'Some files could not be processed. Please try again.',
+        message: `${error} CV${error > 1 ? 's' : ''} failed to upload`,
+        description: 'Please check the files and try again.',
         placement: 'topRight',
       });
-      setError(false);
+      setError(0);
     }
   }, [error]);
 

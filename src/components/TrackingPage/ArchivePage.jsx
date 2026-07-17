@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Table, Input, message } from "antd";
+import { Table, Input, notification } from "antd";
 import { useTranslation } from "react-i18next";
 import { ArrowLeftIcon, ArrowRightIcon, ArchiveTrashIcon, ArchiveEditIcon } from "../../constants/icons";
 import ArchiveReasonModal from "./ArchiveReasonModal";
@@ -33,7 +33,7 @@ export default function ArchivePage({ archivedCandidates, setArchivedCandidates 
 
     const handleDelete = (id) => {
         setArchivedCandidates(prev => prev.filter(c => c.id !== id));
-        message.success(t("trackingPage.archivePage.deleteSuccess"));
+        notification.success({ message: t("trackingPage.archivePage.deleteSuccess"), description: t("trackingPage.archivePage.deleteSuccessDescription") });
     };
 
     const handleUpdateReason = (reason) => {
@@ -41,7 +41,7 @@ export default function ArchivePage({ archivedCandidates, setArchivedCandidates 
             prev.map(c => c.id === editingCandidate.id ? { ...c, archiveReason: reason } : c)
         );
         setEditingCandidate(null);
-        message.success(t("trackingPage.archivePage.editSuccess"));
+        notification.success({ message: t("trackingPage.archivePage.editSuccess"), description: t("trackingPage.archivePage.editSuccessDescription") });
     };
 
     const columns = [

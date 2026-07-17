@@ -59,23 +59,23 @@ function Menu(props) {
                 <div className="logo-wrapper">
                     <img src={LogoIcon} alt='logo' style={{ maxHeight: '80px' }} />
                 </div>
-                <Tooltip title={t('topbar.candidate_cv')}>
+                <Tooltip title={t('topbar.candidate_cv')} placement="right">
                     <Button className={`icon-button ${pathname === "/candidates" ? "active" : ""}`} type="primary" icon={pathname === "/candidates" ? <CvIconActive /> : <CvIcon />} onClick={handleNavigateCv}/>
                 </Tooltip>
                 {/* <Tooltip title={t('topbar.job_desc')}>
                     <Button className={`icon-button ${pathname === "/job-description" ? "active" : ""}`} type="primary" icon={pathname === "/job-description" ? <JobIconActive /> : <JobIcon />} onClick={handleNavigateJob}/>
                 </Tooltip> */}
-                <Tooltip title={t('topbar.companies', 'Companies')}>
+                <Tooltip title={t('topbar.companies', 'Companies')} placement="right">
                     <Button className={`icon-button ${pathname === "/companies" ? "active" : ""}`} type="primary" icon={pathname === "/companies" ? <CompaniesIconActive /> : <CompaniesIcon />} onClick={handleNavigateCompanies}/>
                 </Tooltip>
                 {(userRole === 'admin' || userRole === 'superadmin') && (
-                <Tooltip title={t('topbar.admin')}>
+                <Tooltip title={t('topbar.admin')} placement="right">
                     <Button className={`icon-button ${pathname === "/admin" ? "active" : ""}`} type="primary" icon={pathname === "/admin" ? <UserOutlined style={{color : '#717680'}}/> : <UserOutlined style={{color : '#A4A7AE'}}/>} onClick={handleNavigateAdmin}/>
                 </Tooltip>
                 )}
             </div>
             <div className="bottom">
-                <Tooltip title={t('topbar.settings')}>
+                <Tooltip title={t('topbar.settings')} placement="right">
                     <Button className={`icon-button ${pathname === "/settings" ? "active" : ""}`} type="primary" icon={pathname === "/settings" ? <SettingsActive /> : <Settings />} onClick={() => navigate('/settings')} />
                 </Tooltip>
                 <Popover

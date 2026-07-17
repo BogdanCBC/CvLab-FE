@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import useIsMobile from '../../hooks/useIsMobile';
 import logo from '../../images/adorCvLogo.svg';
 import logoDark from '../../images/adorCvLogoDark.svg';
+import { trackEvent } from '../../analytics';
 
 const NAV_ITEMS = ['solutions', 'demo', 'product', 'pricing', 'blog'];
 const NAV_ROUTES = {};
@@ -114,6 +115,7 @@ const LandingHeader = ({ isLoggedIn }) => {
   };
 
   const goToContact = () => {
+    trackEvent('contact_us_clicked');
     setMenuOpen(false);
     if (isOnLandingPage) {
       scrollToSection('contact');

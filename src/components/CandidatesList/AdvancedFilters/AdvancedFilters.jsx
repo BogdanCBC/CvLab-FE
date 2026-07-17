@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Modal, Input, InputNumber, Button, Tag, Row, Col, Space, AutoComplete } from "antd";
-import { FilterOutlined, PlusOutlined } from "@ant-design/icons";
+import { PlusOutlined } from "@ant-design/icons";
 import './AdvancedFilters.scss';
 import { useTranslation } from 'react-i18next';
 import { FilterModalIcon } from '../../../constants/icons';

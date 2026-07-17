@@ -13,10 +13,13 @@ import FaqSection from './sections/FaqSection';
 import BlogSection from './sections/BlogSection';
 import ContactSection from './sections/ContactSection';
 import Footer from './Footer';
+import CookieConsent from './CookieConsent';
+import { trackPageView } from '../../analytics';
 
 const LandingPage = ({ isLoggedIn }) => {
   useEffect(() => {
     window.scrollTo(0, 0);
+    trackPageView('Landing Page');
   }, []);
 
   return (
@@ -36,6 +39,7 @@ const LandingPage = ({ isLoggedIn }) => {
         <ContactSection />
       </main>
       <Footer />
+      <CookieConsent />
     </div>
   );
 };

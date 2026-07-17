@@ -10,7 +10,6 @@ export default function MatchPage({ setSelectedCandidate, setIsLoggedIn }) {
     const location = useLocation();
 
     const [jobTitle, setJobTitle] = useState("Macaroane");
-    const [error, setError] = useState(null);
     const [matchCandidates, setMatchCandidates] = useState([]);
     const [aiMatchedCandidates, setAiMatchedCandidates] = useState([]);
 
@@ -30,7 +29,7 @@ export default function MatchPage({ setSelectedCandidate, setIsLoggedIn }) {
                 try {
                     const resp = await api.get(endpoint, { params: { job_id: jobId } });
                     if (resp.data.success) setMatchCandidates(resp.data.data);
-                } catch (err) { setError('Failed to fetch matches'); }
+                } catch (err) { console.error('Failed to fetch matches:', err); }
             }
         };
         fetchData();

@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
-import { Typography, Input, Button, Upload, Avatar, message } from 'antd';
-import { MailOutlined, UploadOutlined, UserOutlined } from '@ant-design/icons';
+import { Typography, Input, Button, Upload, Avatar, notification } from 'antd';
+import { MailOutlined, UserOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import api from '../../api';
@@ -27,7 +27,7 @@ const SettingsPage = () => {
 
     const handleSave = async () => {
         if (newPassword && newPassword !== confirmPassword) {
-            message.error(t('settingsPage.passwordMismatch', 'Passwords do not match'));
+            notification.error({ message: t('settingsPage.passwordMismatch', 'Passwords do not match') });
             return;
         }
 
@@ -64,14 +64,14 @@ const SettingsPage = () => {
                     new_password: newPassword,
                     confirm_password: confirmPassword,
                 });
-                message.success(t('settingsPage.passwordUpdated', 'Password updated successfully'));
+                notification.success({ message: t('settingsPage.passwordUpdated', 'Password updated successfully'), description: t('settingsPage.passwordUpdatedDescription', 'Use your new password next time you sign in.') });
             }
 
             setUser({ ...user, username, email });
-            message.success(t('settingsPage.saved', 'Settings saved successfully'));
+            notification.success({ message: t('settingsPage.saved', 'Settings saved successfully'), description: t('settingsPage.savedDescription', 'Your profile settings have been saved.') });
             navigate('/profile');
         } catch (error) {
-            message.error(t('settingsPage.saveError', 'Failed to save settings'));
+            notification.error({ message: t('settingsPage.saveError', 'Failed to save settings') });
         } finally {
             setLoading(false);
         }
@@ -85,12 +85,12 @@ const SettingsPage = () => {
         beforeUpload: async (file) => {
             const isImage = file.type.startsWith('image/');
             if (!isImage) {
-                message.error(t('settingsPage.imageOnly', 'You can only upload image files'));
+                notification.error({ message: t('settingsPage.imageOnly', 'You can only upload image files') });
                 return false;
             }
             const isLt2M = file.size / 1024 / 1024 < 2;
             if (!isLt2M) {
-                message.error(t('settingsPage.fileTooLarge', 'Image must be smaller than 2MB'));
+                notification.error({ message: t('settingsPage.fileTooLarge', 'Image must be smaller than 2MB') });
                 return false;
             }
             try {
@@ -102,9 +102,9 @@ const SettingsPage = () => {
                 const newUrl = res.data.profile_image_url || URL.createObjectURL(file);
                 setAvatarUrl(newUrl);
                 setUser({ ...user, avatarUrl: newUrl });
-                message.success(t('settingsPage.photoUpdated', 'Photo updated successfully'));
+                notification.success({ message: t('settingsPage.photoUpdated', 'Photo updated successfully'), description: t('settingsPage.photoUpdatedDescription', 'Your new photo is now visible on your profile.') });
             } catch (error) {
-                message.error(t('settingsPage.photoError', 'Failed to upload photo'));
+                notification.error({ message: t('settingsPage.photoError', 'Failed to upload photo') });
             }
             return false;
         },

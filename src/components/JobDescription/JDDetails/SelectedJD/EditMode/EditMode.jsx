@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Input, Select, Tag, Space, message } from "antd";
+import { Button, Input, Select, Tag, Space, notification } from "antd";
 import { PlusIconBlue } from "../../../../../constants/icons";
 import { fetchJobDescription } from "../../../../../utils/fetchJobDescription";
 import api from "../../../../../api";
@@ -69,7 +69,7 @@ export default function EditMode({ jobInfo, setEditMode, setJobs, setJobInfo, se
             if (result.data.success) {
                 const response = await fetchJobDescription(i18n.language);
                 if (response.success) {
-                    message.success(t("jdEditMode.editSuccess"));
+                    notification.success({ message: t("jdEditMode.editSuccess"), description: t("jdEditMode.editSuccessDescription") });
                     const jobsList = response.jobs || [];
                     setJobs(jobsList);
                     updateJobInfoFromJobs(jobsList, selectedJob);
@@ -78,7 +78,7 @@ export default function EditMode({ jobInfo, setEditMode, setJobs, setJobInfo, se
                 setEditMode(false);
             }
         } catch (err) {
-            message.error(err?.response?.data?.message || "Error");
+            notification.error({ message: err?.response?.data?.message || "Error" });
             console.log("Error updating");
         }
     };
