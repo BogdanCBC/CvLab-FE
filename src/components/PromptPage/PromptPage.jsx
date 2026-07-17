@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Typography, Select, Card, Input, Button, Switch, Spin, Alert, Tag, Flex } from 'antd';
 import { LockOutlined, UnlockOutlined, SaveOutlined } from '@ant-design/icons';
 import api from '../../api';
@@ -27,7 +27,7 @@ const PromptPage = ({ setIsLoggedIn }) => {
     const [isSavingSystem, setIsSavingSystem] = useState(false);
     const [notification, setNotification] = useState({ type: '', message: '' });
 
-    const fetchPrompts = async () => {
+    const fetchPrompts = useCallback(async () => {
         setIsLoading(true);
         setNotification({ type: '', message: '' });
         try {
@@ -44,11 +44,11 @@ const PromptPage = ({ setIsLoggedIn }) => {
         } finally {
             setIsLoading(false);
         }
-    };
+    }, [actionType, t]);
 
     useEffect(() => {
         fetchPrompts();
-    }, [actionType]);
+    }, [fetchPrompts]);
 
     const handleChange = (field) => (e) => {
         setPromptData({ ...promptData, [field]: e.target.value });

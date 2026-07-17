@@ -14,7 +14,6 @@ export default function JobDescription({ setSelectedCandidate, setIsLoggedIn, up
     const clientId = state?.clientId;
     const [jobs, setJobs] = useState([]);
     const [selectedJob, setSelectedJob] = useState(null);
-    const [failMessage, setFailMessage] = useState(null);
 
     useEffect(() => {
         fetchJobDescription(i18n.language, clientId).then((response) => {
@@ -22,7 +21,6 @@ export default function JobDescription({ setSelectedCandidate, setIsLoggedIn, up
                 setJobs(response.jobs || []);
             } else {
                 setJobs([]);
-                setFailMessage(response?.message || "Failed to load");
             }
         });
     }, [i18n.language, clientId]);

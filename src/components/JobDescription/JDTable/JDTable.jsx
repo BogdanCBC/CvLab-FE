@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Table, Button } from "antd";
 import { Input } from "antd";
-import { SearchIcon, FilterIcon, ArrowLeftIcon, ArrowRightIcon } from "../../../constants/icons";
+import { SearchIcon, ArrowLeftIcon, ArrowRightIcon } from "../../../constants/icons";
 import { useTranslation } from "react-i18next";
 import "./JDTable.css";
 

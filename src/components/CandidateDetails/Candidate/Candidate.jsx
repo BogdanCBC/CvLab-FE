@@ -1,6 +1,6 @@
 import './Candidate.scss';
 import api from "../../../api";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Button, Dropdown, Select, Tooltip, notification } from 'antd';
 import {
     EditOutlined,
@@ -23,11 +23,7 @@ export default function Candidate(props) {
     const BASE_URL = process.env.REACT_APP_BASE_URL + '/candidates';
     const isAdmin = ['admin', 'superadmin'].includes(localStorage.getItem('role'));
 
-    useEffect(() => {
-        fetchData();
-    }, [props.candidateId]);
-
-    const fetchData = async () => {
+    const fetchData = useCallback(async () => {
         try {
             const response = await api.get(`/candidates/${props.candidateId}`);
             setCandidate({
@@ -43,7 +39,11 @@ export default function Candidate(props) {
         } catch (error) {
             console.error("Error fetching candidate data:", error);
         }
-    };
+    }, [props.candidateId]);
+
+    useEffect(() => {
+        fetchData();
+    }, [fetchData]);
 
     const getOriginalCV = async () => {
         try {

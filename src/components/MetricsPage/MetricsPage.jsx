@@ -46,10 +46,14 @@ const MetricsPage = ({ setIsLoggedIn }) => {
         setPage(0);
         fetchSummary();
         fetchUsers();
+        // fetchSummary/fetchUsers intentionally omitted: they close over page/rowsPerPage,
+        // so listing them here would re-fire this effect (and reset page) on every page change.
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [period]);
 
     useEffect(() => {
         fetchUsers();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [page, rowsPerPage]);
 
     return (

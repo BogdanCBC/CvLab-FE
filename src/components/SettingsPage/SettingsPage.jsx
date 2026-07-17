@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { Typography, Input, Button, Upload, Avatar, notification } from 'antd';
-import { MailOutlined, UploadOutlined, UserOutlined } from '@ant-design/icons';
+import { MailOutlined, UserOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import api from '../../api';

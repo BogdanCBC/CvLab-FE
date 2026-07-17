@@ -720,6 +720,7 @@
     },
     "footer": {
       "tagline": "The AI-powered HR platform that transforms recruitment.",
+      "socialMedia": "Social Media",
       "copyright": "adorCV. All rights reserved.",
       "product": "Product",
       "resources": "Resources",
@@ -738,6 +739,12 @@
         "privacy": "Privacy Policy",
         "contact": "Contact"
       }
+    },
+    "cookieConsent": {
+      "title": "We value your privacy",
+      "description": "We use cookies to understand how visitors use adorCV and to improve your experience. You can accept or reject non-essential cookies at any time.",
+      "accept": "Accept",
+      "reject": "Reject"
     }
   },
   "blog": {

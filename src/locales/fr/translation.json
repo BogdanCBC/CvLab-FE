@@ -711,6 +711,7 @@
     },
     "footer": {
       "tagline": "La plateforme RH propulsée par l'IA qui transforme le recrutement.",
+      "socialMedia": "Réseaux sociaux",
       "copyright": "adorCV. Tous droits réservés.",
       "product": "Produit",
       "resources": "Ressources",
@@ -729,6 +730,12 @@
         "privacy": "Politique de confidentialité",
         "contact": "Contact"
       }
+    },
+    "cookieConsent": {
+      "title": "Nous respectons votre vie privée",
+      "description": "Nous utilisons des cookies pour comprendre comment les visiteurs utilisent adorCV et améliorer votre expérience. Vous pouvez accepter ou refuser les cookies non essentiels à tout moment.",
+      "accept": "Accepter",
+      "reject": "Refuser"
     }
   },
   "blog": {
