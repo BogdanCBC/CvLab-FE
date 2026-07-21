@@ -408,7 +408,9 @@
     "createdSuccess": "Job description created successfully",
     "createdSuccessDescription": "It now appears in your job descriptions list.",
     "editSuccess": "Job description updated successfully",
-    "editSuccessDescription": "Your changes have been saved."
+    "editSuccessDescription": "Your changes have been saved.",
+    "selectClientRequired": "Select a company",
+    "selectClientRequiredDescription": "Please select a company before entering the Job description page."
   },
   "rawMatch": {
     "title": "Matched Candidates",

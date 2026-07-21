@@ -399,7 +399,9 @@
     "createdSuccess": "Description du poste créée avec succès",
     "createdSuccessDescription": "Elle apparaît maintenant dans votre liste de descriptions de poste.",
     "editSuccess": "Description du poste modifiée avec succès",
-    "editSuccessDescription": "Vos modifications ont été enregistrées."
+    "editSuccessDescription": "Vos modifications ont été enregistrées.",
+    "selectClientRequired": "Sélectionnez une entreprise",
+    "selectClientRequiredDescription": "Veuillez sélectionner une entreprise avant d'accéder à la page des descriptions de poste."
   },
   "rawMatch": {
     "title": "Candidats correspondants",

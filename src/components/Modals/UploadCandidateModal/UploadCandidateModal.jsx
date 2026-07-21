@@ -153,6 +153,7 @@ function UploadCandidateModal(props) {
     window.dispatchEvent(new Event('refreshCandidates'));
     if (successCount > 0) props.setSuccess(successCount);
     if (errorCount > 0) props.setError(errorCount);
+    setSubmitStatusBtn(false);
   };
 
   const handleKeepDuplicate = async (localId) => {

@@ -5,17 +5,30 @@ import "./JobDescription.scss";
 
 import { fetchJobDescription } from "../../utils/fetchJobDescription";
 import { useTranslation } from "react-i18next";
-import { useLocation } from "react-router-dom";
+import { notification } from "antd";
+import { useParams, useNavigate } from "react-router-dom";
 
 
 export default function JobDescription({ setSelectedCandidate, setIsLoggedIn, uploadNew, setUploadNew }) {
-    const { i18n } = useTranslation();
-    const { state } = useLocation();
-    const clientId = state?.clientId;
+    const { t, i18n } = useTranslation();
+    const { clientId } = useParams();
+    const navigate = useNavigate();
     const [jobs, setJobs] = useState([]);
     const [selectedJob, setSelectedJob] = useState(null);
 
     useEffect(() => {
+        if (!clientId) {
+            notification.warning({
+                key: "jd-select-client-required",
+                message: t("jdEditMode.selectClientRequired", "Select a company"),
+                description: t("jdEditMode.selectClientRequiredDescription", "Please select a company before entering the Job description page."),
+            });
+            navigate("/companies", { replace: true });
+        }
+    }, [clientId, navigate, t]);
+
+    useEffect(() => {
+        if (!clientId) return;
         fetchJobDescription(i18n.language, clientId).then((response) => {
             if (response && response.success) {
                 setJobs(response.jobs || []);

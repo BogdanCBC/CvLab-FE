@@ -2,13 +2,15 @@ const measurementId = process.env.REACT_APP_GA4_MEASUREMENT_ID;
 
 let initialized = false;
 
-const gtag = (...args) => {
-  window.dataLayer = window.dataLayer || [];
-  window.dataLayer.push(args);
-};
+function gtag() {
+  window.dataLayer.push(arguments);
+}
 
 export const initGA4 = () => {
   if (!measurementId || initialized) return;
+
+  window.dataLayer = window.dataLayer || [];
+  window.gtag = window.gtag || gtag;
 
   const script = document.createElement('script');
   script.async = true;
