@@ -76,7 +76,7 @@ function App() {
         {/* Main App Route */}
         <Route element={<ProtectedRoute isLoggedIn={isLoggedIn} />}>
            <Route
-              path="/job-description"
+              path="/job-description/:clientId?"
               element={<HomePage
                   setSelectedCandidate={setSelectedCandidate}
                   setIsLoggedIn={setIsLoggedIn}

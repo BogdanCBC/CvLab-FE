@@ -96,7 +96,7 @@ export default function ViewMode({ jobInfo, setJobInfo, setEditMode, setJobs, se
                         {t("jdViewMode.match")}
                         </Button> */}
                         <Button
-                            onClick={() => navigate(`/tracking/${jobInfo.job_id}`)}
+                            onClick={() => navigate(`/tracking/${jobInfo.job_id}`, { state: { clientId } })}
                             className="filled-btn"
                         >
                             {t("jdViewMode.tracking", "Tracking")}

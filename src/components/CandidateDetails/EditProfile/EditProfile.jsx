@@ -66,6 +66,7 @@ function EditProfile(props) {
                     message: t("editProfile.candidateSaved"),
                     description: t("editProfile.candidateSavedDescription"),
                 });
+                window.dispatchEvent(new Event('refreshCandidates'));
                 setEditMode(false);
             }
         } catch (err) {

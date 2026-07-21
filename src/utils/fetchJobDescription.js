@@ -9,18 +9,10 @@ export async function fetchJobDescription(language, clientId) {
         'fr': 'French'
     };
 
-    let url = "/job-description";
-    let params;
-
-    if (clientId) {
-        url = "/clients/jobs";
-        params = { client_id: clientId, language: langMap[language] || 'English' };
-    } else if (language) {
-        params = { language: langMap[language] || 'English' };
-    }
+    const params = { client_id: clientId, language: langMap[language] || 'English' };
 
     try{
-        const response = await api.get(url, { params });
+        const response = await api.get("/clients/jobs", { params });
         if (response.data.success) {
             const jobs = response.data.data.map(job => ({
                 job_id: job.job_id,

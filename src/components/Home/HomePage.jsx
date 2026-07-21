@@ -62,7 +62,7 @@ export default function HomePage({
                             setIsLoggedIn={setIsLoggedIn}
                         />
                     )}
-                    {pathname === "/job-description" && (
+                    {pathname.startsWith("/job-description") && (
                         <JobDescription
                             setSelectedCandidate={setSelectedCandidate}
                             setIsLoggedIn={setIsLoggedIn}

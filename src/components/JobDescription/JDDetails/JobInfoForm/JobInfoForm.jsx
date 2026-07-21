@@ -60,7 +60,7 @@ export default function JobInfoForm({ open, setJobs, setUploadNew, clientId }) {
     const handleSubmit = async () => {
         setUploading(true);
         const currentLang = i18n.language?.startsWith("fr") ? "French" : "English";
-        const payload = { ...formData, skills, languages, language: currentLang };
+        const payload = { ...formData, skills, languages, language: currentLang, client_id: clientId };
 
         try {
             const response = await api.post("/job-description", payload);
