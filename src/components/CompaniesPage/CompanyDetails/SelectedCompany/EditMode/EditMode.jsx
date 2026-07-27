@@ -27,7 +27,7 @@ export default function EditMode({ clientInfo, setEditMode, setClients, setClien
             };
             const response = await api.put("/clients", payload);
             if (response.data) {
-                notification.success({ message: t("companiesPage.editSuccess", "Company updated successfully"), description: t("companiesPage.editSuccessDescription", "Your changes have been saved.") });
+                notification.success({ title: t("companiesPage.editSuccess", "Company updated successfully"), description: t("companiesPage.editSuccessDescription", "Your changes have been saved.") });
                 const clientsRes = await fetchClients();
                 if (clientsRes.success) {
                     setClients(clientsRes.clients || []);
@@ -38,7 +38,7 @@ export default function EditMode({ clientInfo, setEditMode, setClients, setClien
             }
             setSaving(false);
         } catch (err) {
-            notification.error({ message: err?.response?.data?.message || "Error" });
+            notification.error({ title: err?.response?.data?.message || "Error" });
             setSaving(false);
         }
     };

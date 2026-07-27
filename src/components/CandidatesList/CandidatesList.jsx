@@ -57,7 +57,7 @@ function CandidatesList({ candidates, setCandidates, selectedCandidate, setSelec
             if (error?.response?.status === 404) {
                 setCandidates([]);
                 setTotalCount(0);
-                notification.info({ message: t('advancedFilters.noCandidates') });
+                notification.info({ title: t('advancedFilters.noCandidates') });
             } else {
                 console.error("Error fetching candidates:", error);
             }

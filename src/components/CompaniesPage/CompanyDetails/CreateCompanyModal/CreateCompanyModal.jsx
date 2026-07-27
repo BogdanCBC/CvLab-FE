@@ -22,7 +22,7 @@ export default function CreateCompanyModal({ open, setClients, setUploadNew }) {
         try {
             const response = await api.post("/clients", formData);
             if (response.data) {
-                notification.success({ message: t("companiesPage.createdSuccess", "Company created successfully"), description: t("companiesPage.createdSuccessDescription", "It now appears in your companies list.") });
+                notification.success({ title: t("companiesPage.createdSuccess", "Company created successfully"), description: t("companiesPage.createdSuccessDescription", "It now appears in your companies list.") });
                 setFormData({ client_name: "", client_description: "" });
                 fetchClients().then((res) => {
                     if (res.success) setClients(res.clients || []);
@@ -31,7 +31,7 @@ export default function CreateCompanyModal({ open, setClients, setUploadNew }) {
             setUploading(false);
             setTimeout(() => setUploadNew(false), 500);
         } catch (err) {
-            notification.error({ message: err?.response?.data?.message || "Error" });
+            notification.error({ title: err?.response?.data?.message || "Error" });
             setUploading(false);
         }
     };

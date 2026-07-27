@@ -52,7 +52,7 @@ export default function CandidateNotesModal({ open, onClose, candidate, jobId, c
                 }
                 setNotesMap(map);
             })
-            .catch(() => notification.error({ message: t("trackingPage.notesModal.loadError") }))
+            .catch(() => notification.error({ title: t("trackingPage.notesModal.loadError") }))
             .finally(() => setLoading(false));
     }, [open, jobId, candidate, currentPhase, t]);
 
@@ -63,10 +63,10 @@ export default function CandidateNotesModal({ open, onClose, candidate, jobId, c
             await api.post(`/jobs/${jobId}/candidates/${candidate.id}/notes`, {
                 content: currentNote,
             });
-            notification.success({ message: t("trackingPage.notesModal.saveSuccess"), description: t("trackingPage.notesModal.saveSuccessDescription") });
+            notification.success({ title: t("trackingPage.notesModal.saveSuccess"), description: t("trackingPage.notesModal.saveSuccessDescription") });
             handleClose();
         } catch {
-            notification.error({ message: t("trackingPage.notesModal.saveError") });
+            notification.error({ title: t("trackingPage.notesModal.saveError") });
         } finally {
             setSaving(false);
         }

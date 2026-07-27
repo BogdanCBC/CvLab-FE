@@ -120,7 +120,7 @@ export default function RawMatch({ jobId, jobTitle, setSelectedCandidate, matchC
             </div>
 
             <div className="candidates-list-wrapper">
-                <Space direction="vertical" size={12} style={{ width: '100%' }}>
+                <Space orientation="vertical" size={12} style={{ width: '100%' }}>
                     {matchCandidates.map((c) => (
                         <div
                             key={c.id}

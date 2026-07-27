@@ -59,7 +59,7 @@ const CreateUserModal = ({ open, onClose, onUserCreated }) => {
                 />
             )}
 
-            <Space direction="vertical" style={{ width: '100%' }} size="middle">
+            <Space orientation="vertical" style={{ width: '100%' }} size="middle">
                 <div>
                     <label style={{ display: 'block', marginBottom: 4 }}>{t("createUserModal.username")}</label>
                     <Input

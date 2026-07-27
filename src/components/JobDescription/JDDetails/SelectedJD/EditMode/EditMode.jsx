@@ -69,7 +69,7 @@ export default function EditMode({ jobInfo, setEditMode, setJobs, setJobInfo, se
             if (result.data.success) {
                 const response = await fetchJobDescription(i18n.language);
                 if (response.success) {
-                    notification.success({ message: t("jdEditMode.editSuccess"), description: t("jdEditMode.editSuccessDescription") });
+                    notification.success({ title: t("jdEditMode.editSuccess"), description: t("jdEditMode.editSuccessDescription") });
                     const jobsList = response.jobs || [];
                     setJobs(jobsList);
                     updateJobInfoFromJobs(jobsList, selectedJob);
@@ -78,7 +78,7 @@ export default function EditMode({ jobInfo, setEditMode, setJobs, setJobInfo, se
                 setEditMode(false);
             }
         } catch (err) {
-            notification.error({ message: err?.response?.data?.message || "Error" });
+            notification.error({ title: err?.response?.data?.message || "Error" });
             console.log("Error updating");
         }
     };

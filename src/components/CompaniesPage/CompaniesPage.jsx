@@ -18,7 +18,7 @@ export default function CompaniesPage({ setSelectedCandidate, setIsLoggedIn, upl
                 setClients(response.clients || []);
             } else {
                 setClients([]);
-                notification.error({ key: "companies-fetch-error", message: response?.message || t("companiesPage.fetchError", "Failed to load companies") });
+                notification.error({ key: "companies-fetch-error", title: response?.message || t("companiesPage.fetchError", "Failed to load companies") });
             }
         });
     }, [t]);

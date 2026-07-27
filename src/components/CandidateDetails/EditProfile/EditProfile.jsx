@@ -63,7 +63,7 @@ function EditProfile(props) {
                 setUnvalidMessage("");
                 setUnvalidError(false);
                 notification.success({
-                    message: t("editProfile.candidateSaved"),
+                    title: t("editProfile.candidateSaved"),
                     description: t("editProfile.candidateSavedDescription"),
                 });
                 window.dispatchEvent(new Event('refreshCandidates'));

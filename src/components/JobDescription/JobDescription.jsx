@@ -20,7 +20,7 @@ export default function JobDescription({ setSelectedCandidate, setIsLoggedIn, up
         if (!clientId) {
             notification.warning({
                 key: "jd-select-client-required",
-                message: t("jdEditMode.selectClientRequired", "Select a company"),
+                title: t("jdEditMode.selectClientRequired", "Select a company"),
                 description: t("jdEditMode.selectClientRequiredDescription", "Please select a company before entering the Job description page."),
             });
             navigate("/companies", { replace: true });

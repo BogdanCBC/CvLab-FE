@@ -1,4 +1,6 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
 import { Dropdown, notification, Spin, Modal, Button } from "antd";
 import {
     DndContext,
@@ -26,7 +28,7 @@ import AddCandidateModal from "./AddCandidateModal";
 import ArchiveReasonModal from "./ArchiveReasonModal";
 import CandidateNotesModal from "./CandidateNotesModal";
 import "./TrackingPage.scss";
-import { PersonIcon, MoreDotsIcon } from "../../constants/icons";
+import { PersonIcon, MoreDotsIcon, aiMatchHistoryIcon as AiMatchHistoryIcon } from "../../constants/icons";
 
 const COLUMNS = [
     { id: "screening", titleKey: "trackingPage.screening" },
@@ -75,6 +77,177 @@ const mapCandidate = (raw) => {
         status,
     };
 };
+
+// "1/10" → 10  (percentage 0-100)
+const parseMatchScore = (scoreStr) => {
+    const parts = String(scoreStr ?? '').split('/');
+    if (parts.length === 2) {
+        const num = parseFloat(parts[0]);
+        const den = parseFloat(parts[1]);
+        if (!isNaN(num) && !isNaN(den) && den > 0) return Math.round((num / den) * 100);
+    }
+    return 0;
+};
+
+function AiMatchModalContent({ results, phase, onClose, createdAt, t }) {
+    const candidates = Array.isArray(results) ? results : [];
+    const [isDownloading, setIsDownloading] = useState(false);
+    const wrapRef = useRef(null);
+
+    const formatCreatedAt = (iso) => {
+        const d = new Date(iso);
+        const time = `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
+        const date = `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}/${d.getFullYear()}`;
+        return `${time} ${date}`;
+    };
+
+    const modalTitle = createdAt
+        ? t('trackingPage.aiMatch.modalTitleHistory', { date: formatCreatedAt(createdAt) })
+        : t('trackingPage.aiMatch.modalTitle');
+
+    const ordinal = (n) => {
+        const s = ['th', 'st', 'nd', 'rd'];
+        const v = n % 100;
+        return n + (s[(v - 20) % 10] || s[v] || s[0]);
+    };
+
+    const scoreColor = (pct) => {
+        if (pct >= 70) return '#079455';
+        if (pct >= 40) return '#F59E0B';
+        return '#D92D20';
+    };
+
+    const fitLabel = (pct) => {
+        if (pct >= 70) return t('trackingPage.aiMatch.strongFit');
+        if (pct >= 40) return t('trackingPage.aiMatch.mediumFit');
+        return t('trackingPage.aiMatch.lowFit');
+    };
+
+    const rankColor = (rank) => {
+        if (rank === 1) return '#079455';
+        if (rank === 2) return '#F59E0B';
+        return '#D92D20';
+    };
+
+    const handleDownload = async () => {
+        if (!wrapRef.current) return;
+        setIsDownloading(true);
+
+        const list = wrapRef.current.querySelector('.amr-list');
+        const footer = wrapRef.current.querySelector('.amr-footer');
+        const prevMaxHeight = list?.style.maxHeight ?? '';
+        const prevOverflow = list?.style.overflowY ?? '';
+        if (list) { list.style.maxHeight = 'none'; list.style.overflowY = 'visible'; }
+        if (footer) footer.style.display = 'none';
+
+        try {
+            const canvas = await html2canvas(wrapRef.current, {
+                scale: 2,
+                useCORS: true,
+                backgroundColor: '#ffffff',
+                logging: false,
+            });
+
+            const imgData = canvas.toDataURL('image/png');
+            const pdf = new jsPDF('p', 'mm', 'a4');
+            const pageW = pdf.internal.pageSize.getWidth();
+            const pageH = pdf.internal.pageSize.getHeight();
+            const margin = 10;
+            const contentW = pageW - 2 * margin;
+            const imgH = (canvas.height * contentW) / canvas.width;
+
+            let heightLeft = imgH;
+            let position = margin;
+            pdf.addImage(imgData, 'PNG', margin, position, contentW, imgH);
+            heightLeft -= pageH;
+
+            while (heightLeft > 0) {
+                position -= pageH;
+                pdf.addPage();
+                pdf.addImage(imgData, 'PNG', margin, position, contentW, imgH);
+                heightLeft -= pageH;
+            }
+
+            pdf.save(`ai-match-${phase.toLowerCase()}-${new Date().toISOString().slice(0, 10)}.pdf`);
+        } finally {
+            if (list) { list.style.maxHeight = prevMaxHeight; list.style.overflowY = prevOverflow; }
+            if (footer) footer.style.display = '';
+            setIsDownloading(false);
+        }
+    };
+
+    return (
+        <div className="amr-wrap" ref={wrapRef}>
+            {isDownloading && (
+                <div className="amr-loading-overlay">
+                    <Spin size="large" />
+                    <span className="amr-loading-text">{t('trackingPage.aiMatch.generatingPdf')}</span>
+                </div>
+            )}
+            <div className="amr-header">
+                <div>
+                    <h3 className="amr-title">{modalTitle}</h3>
+                    <p className="amr-subtitle">{t('trackingPage.aiMatch.modalSubtitle')}</p>
+                </div>
+                <button className="amr-close-x" onClick={onClose}>
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                        <path d="M12 4L4 12M4 4L12 12" stroke="#717680" strokeWidth="1.5" strokeLinecap="round"/>
+                    </svg>
+                </button>
+            </div>
+            <div className="amr-list">
+                {candidates.map((c, i) => {
+                    const rank = c.rank ?? (i + 1);
+                    const name = c.candidate_name ?? `Candidate #${rank}`;
+                    const isMatch = c.fit;
+                    const matchScore = c.match_score ?? '';
+                    const scorePct = parseMatchScore(matchScore);
+                    const color = scoreColor(scorePct);
+                    const summary = c.summary ?? '';
+
+                    return (
+                        <div key={i} className="amr-item">
+                            <div className="amr-row">
+                                <div className="amr-rank" style={{ background: rankColor(rank) }}>
+                                    {rank}
+                                </div>
+                                <div className="amr-meta">
+                                    <div className="amr-name-row">
+                                        <span className="amr-name">{name}</span>
+                                        <span className="amr-ordinal">{ordinal(rank)}</span>
+                                        <span className={`amr-badge amr-badge--${isMatch ? 'match' : 'no'}`}>
+                                            {isMatch
+                                                ? `● ${t('trackingPage.aiMatch.isMatch')}`
+                                                : `● ${t('trackingPage.aiMatch.notMatch')}`}
+                                        </span>
+                                    </div>
+                                    <div className="amr-fit-row">
+                                        <span className="amr-fit-label">{fitLabel(scorePct)}</span>
+                                        <div className="amr-bar-track">
+                                            <div className="amr-bar-fill" style={{ width: `${scorePct}%`, background: color }} />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {summary && <p className="amr-reason">{summary}</p>}
+                        </div>
+                    );
+                })}
+                {candidates.length === 0 && (
+                    <p className="amr-empty">No results to display.</p>
+                )}
+            </div>
+            <div className="amr-footer">
+                <Button className="amr-btn-close" onClick={onClose}>
+                    {t('trackingPage.aiMatch.close')}
+                </Button>
+                <Button className="amr-btn-download default-button small" type="primary" onClick={handleDownload}>
+                    {t('trackingPage.aiMatch.download')}
+                </Button>
+            </div>
+        </div>
+    );
+}
 
 function CandidateCard({ candidate, isDragging, t, onArchive, onAddNote, onCvProfile, columnId }) {
     const menuItems = [
@@ -145,12 +318,48 @@ function SortableCard({ candidate, t, onArchive, onAddNote, onCvProfile, columnI
     );
 }
 
-function KanbanColumn({ column, candidates, t, onArchive, onAddNote, onCvProfile }) {
+function KanbanColumn({ column, candidates, t, onArchive, onAddNote, onCvProfile, onAiMatch, onAiMatchHistory, onHistoryItemClick }) {
     const { setNodeRef } = useDroppable({ id: column.id });
     const { over } = useDndContext();
+    const [historyLoading, setHistoryLoading] = useState(false);
+    const [historyOpen, setHistoryOpen] = useState(false);
+    const [historyItems, setHistoryItems] = useState([]);
 
     const isColumnActive = over?.id === column.id
         || candidates.some((c) => String(c.id) === String(over?.id));
+
+    const showAiMatch = column.id !== 'accepted_declined' && candidates.length > 0;
+
+    const handleHistoryClick = async () => {
+        if (historyLoading) return;
+        setHistoryLoading(true);
+        setHistoryOpen(false);
+        try {
+            const items = await onAiMatchHistory(column.id);
+            setHistoryItems(Array.isArray(items) ? items : []);
+            setHistoryOpen(true);
+        } catch {
+            // error surfaced by parent
+        } finally {
+            setHistoryLoading(false);
+        }
+    };
+
+    const formatHistoryDate = (dateStr) => {
+        if (!dateStr) return '—';
+        const d = new Date(dateStr);
+        const time = `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
+        const date = `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}/${d.getFullYear()}`;
+        return `${t('trackingPage.aiMatch.viewAt')} ${time} ${date}`;
+    };
+
+    const historyMenuItems = historyItems.length > 0
+        ? historyItems.map((item) => ({
+            key: String(item.match_id),
+            label: formatHistoryDate(item.created_at),
+            onClick: () => onHistoryItemClick(item.match_id, item.created_at),
+        }))
+        : [{ key: 'empty', label: t('trackingPage.aiMatch.noHistory'), disabled: true }];
 
     return (
         <div ref={setNodeRef} className="tracking-column">
@@ -168,6 +377,24 @@ function KanbanColumn({ column, candidates, t, onArchive, onAddNote, onCvProfile
                     ))}
                 </div>
             </SortableContext>
+            {showAiMatch && (
+                <div className={`ai-match-section${historyOpen ? ' ai-match-section--open' : ''}`}>
+                    <button className="ai-match-btn" onClick={() => onAiMatch(column.id)}>
+                        {t('trackingPage.aiMatch.buttonLabel')}
+                    </button>
+                    <Dropdown
+                        menu={{ items: historyMenuItems }}
+                        open={historyOpen}
+                        onOpenChange={(v) => { if (!v) setHistoryOpen(false); }}
+                        placement="topRight"
+                        trigger={['click']}
+                    >
+                        <button className="ai-match-history-btn" onClick={handleHistoryClick}>
+                            {historyLoading ? <Spin size="small" /> : <AiMatchHistoryIcon />}
+                        </button>
+                    </Dropdown>
+                </div>
+            )}
         </div>
     );
 }
@@ -238,7 +465,7 @@ export default function TrackingPage({ addCandidateOpen, setAddCandidateOpen, ar
                 setColumns(mapped);
             })
             .catch(() => {
-                notification.error({ message: t("trackingPage.fetchError") });
+                notification.error({ title: t("trackingPage.fetchError") });
             })
             .finally(() => setLoading(false));
     }, [jobId, t]);
@@ -273,6 +500,106 @@ export default function TrackingPage({ addCandidateOpen, setAddCandidateOpen, ar
         setArchivingCandidate(candidate);
     };
 
+    const handleAiMatchHistory = useCallback(async (columnId) => {
+        const phase = COLUMN_TO_API_PHASE[columnId];
+        const res = await api.get(`/job-candidates/${jobId}/matches`, { params: { phase } });
+        return res.data?.data ?? res.data ?? [];
+    }, [jobId]);
+
+    const openAiMatchModal = useCallback((results, phase, createdAt = null) => {
+        let modalInstance;
+        const handleClose = () => modalInstance?.destroy();
+        modalInstance = Modal.info({
+            icon: null,
+            title: null,
+            content: (
+                <AiMatchModalContent
+                    results={results}
+                    phase={phase}
+                    createdAt={createdAt}
+                    onClose={handleClose}
+                    t={t}
+                />
+            ),
+            footer: null,
+            width: 924,
+            style: { top: 34 },
+            className: 'ai-match-result-modal',
+            closable: false,
+            mask: { closable: false },
+        });
+    }, [t]);
+
+    const handleAiMatch = useCallback((columnId) => {
+        const phase = COLUMN_TO_API_PHASE[columnId];
+        const notifKey = `ai-match-${columnId}-${Date.now()}`;
+
+        notification.open({
+            key: notifKey,
+            title: t('trackingPage.aiMatch.loadingTitle'),
+            description: t('trackingPage.aiMatch.loadingDescription'),
+            icon: <Spin size="small" />,
+            duration: 0,
+            placement: 'topRight',
+        });
+
+        api.post('/job-candidates/ai-match', { job_id: Number(jobId), phase })
+            .then((res) => {
+                const results = res.data?.data?.rankings ?? [];
+                notification.open({
+                    key: notifKey,
+                    title: t('trackingPage.aiMatch.successTitle'),
+                    description: t('trackingPage.aiMatch.successDescription'),
+                    actions: (
+                        <Button className="default-button small" size="small" type="primary" onClick={() => {
+                            notification.destroy(notifKey);
+                            openAiMatchModal(results, phase);
+                        }}>
+                            {t('trackingPage.aiMatch.viewResults')}
+                        </Button>
+                    ),
+                    duration: 0,
+                    placement: 'topRight',
+                });
+            })
+            .catch(() => {
+                notification.open({
+                    key: notifKey,
+                    type: 'error',
+                    title: t('trackingPage.aiMatch.errorTitle'),
+                    description: t('trackingPage.aiMatch.errorDescription'),
+                    duration: 5,
+                    placement: 'topRight',
+                });
+            });
+    }, [jobId, t, openAiMatchModal]);
+
+    const handleHistoryItemClick = useCallback(async (matchId, createdAt) => {
+        const notifKey = `ai-match-history-view-${matchId}-${Date.now()}`;
+        notification.open({
+            key: notifKey,
+            title: t('trackingPage.aiMatch.loadingTitle'),
+            icon: <Spin size="small" />,
+            duration: 0,
+            placement: 'topRight',
+        });
+        try {
+            const res = await api.get(`/job-candidates/${jobId}/matches/${matchId}`);
+            const results = res.data?.data?.rankings ?? [];
+            const phase = res.data?.data?.phase ?? '';
+            notification.destroy(notifKey);
+            openAiMatchModal(results, phase, createdAt);
+        } catch {
+            notification.open({
+                key: notifKey,
+                type: 'error',
+                title: t('trackingPage.aiMatch.errorTitle'),
+                duration: 5,
+                placement: 'topRight',
+            });
+        }
+    }, [jobId, t, openAiMatchModal]);
+
     const handleAcceptDeclineChoice = (choice) => {
         const { cardId } = pendingAcceptDecline;
         const phase = choice === 'accepted' ? 'ACCEPTED' : 'DECLINED';
@@ -283,7 +610,7 @@ export default function TrackingPage({ addCandidateOpen, setAddCandidateOpen, ar
             ),
         }));
         api.put(`/job-candidates/${cardId}/phase`, { phase }).catch(() => {
-            notification.error({ message: t("trackingPage.phaseUpdateError") });
+            notification.error({ title: t("trackingPage.phaseUpdateError") });
             fetchCandidates();
         });
         setPendingAcceptDecline(null);
@@ -323,10 +650,10 @@ export default function TrackingPage({ addCandidateOpen, setAddCandidateOpen, ar
 
         api.put(`/job-candidates/${candidate.id}/archive`, { archive_reason: reason })
             .then(() => {
-                notification.success({ message: t("trackingPage.archiveModal.archiveSuccess"), description: t("trackingPage.archiveModal.archiveSuccessDescription") });
+                notification.success({ title: t("trackingPage.archiveModal.archiveSuccess"), description: t("trackingPage.archiveModal.archiveSuccessDescription") });
             })
             .catch(() => {
-                notification.error({ message: t("trackingPage.archiveModal.archiveError") });
+                notification.error({ title: t("trackingPage.archiveModal.archiveError") });
                 if (sourceCol) {
                     setColumns((prev) => ({
                         ...prev,
@@ -388,7 +715,7 @@ export default function TrackingPage({ addCandidateOpen, setAddCandidateOpen, ar
                 api.put(`/job-candidates/${active.id}/phase`, {
                     phase: COLUMN_TO_API_PHASE[targetCol],
                 }).catch(() => {
-                    notification.error({ message: t("trackingPage.phaseUpdateError") });
+                    notification.error({ title: t("trackingPage.phaseUpdateError") });
                     fetchCandidates();
                 });
             }
@@ -415,6 +742,9 @@ export default function TrackingPage({ addCandidateOpen, setAddCandidateOpen, ar
                             onArchive={handleArchiveCandidate}
                             onAddNote={handleAddNote}
                             onCvProfile={handleCvProfile}
+                            onAiMatch={handleAiMatch}
+                            onAiMatchHistory={handleAiMatchHistory}
+                            onHistoryItemClick={handleHistoryItemClick}
                         />
                     ))}
                 </div>

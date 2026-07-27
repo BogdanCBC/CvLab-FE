@@ -66,7 +66,7 @@ const Header = (props) => {
   useEffect(() => {
     if (success > 0) {
       notification.success({
-        message: `${success} CV${success > 1 ? 's' : ''} uploaded successfully`,
+        title: `${success} CV${success > 1 ? 's' : ''} uploaded successfully`,
         description: 'The data for all candidates is now ready for review.',
         placement: 'topRight',
       });
@@ -77,7 +77,7 @@ const Header = (props) => {
   useEffect(() => {
     if (warning) {
       notification.warning({
-        message: 'Upload completed with warnings',
+        title: 'Upload completed with warnings',
         description: 'Some files were identified as duplicates.',
         placement: 'topRight',
       });
@@ -88,7 +88,7 @@ const Header = (props) => {
   useEffect(() => {
     if (error > 0) {
       notification.error({
-        message: `${error} CV${error > 1 ? 's' : ''} failed to upload`,
+        title: `${error} CV${error > 1 ? 's' : ''} failed to upload`,
         description: 'Please check the files and try again.',
         placement: 'topRight',
       });
