@@ -27,7 +27,7 @@ const SettingsPage = () => {
 
     const handleSave = async () => {
         if (newPassword && newPassword !== confirmPassword) {
-            notification.error({ message: t('settingsPage.passwordMismatch', 'Passwords do not match') });
+            notification.error({ title: t('settingsPage.passwordMismatch', 'Passwords do not match') });
             return;
         }
 
@@ -64,14 +64,14 @@ const SettingsPage = () => {
                     new_password: newPassword,
                     confirm_password: confirmPassword,
                 });
-                notification.success({ message: t('settingsPage.passwordUpdated', 'Password updated successfully'), description: t('settingsPage.passwordUpdatedDescription', 'Use your new password next time you sign in.') });
+                notification.success({ title: t('settingsPage.passwordUpdated', 'Password updated successfully'), description: t('settingsPage.passwordUpdatedDescription', 'Use your new password next time you sign in.') });
             }
 
             setUser({ ...user, username, email });
-            notification.success({ message: t('settingsPage.saved', 'Settings saved successfully'), description: t('settingsPage.savedDescription', 'Your profile settings have been saved.') });
+            notification.success({ title: t('settingsPage.saved', 'Settings saved successfully'), description: t('settingsPage.savedDescription', 'Your profile settings have been saved.') });
             navigate('/profile');
         } catch (error) {
-            notification.error({ message: t('settingsPage.saveError', 'Failed to save settings') });
+            notification.error({ title: t('settingsPage.saveError', 'Failed to save settings') });
         } finally {
             setLoading(false);
         }
@@ -85,12 +85,12 @@ const SettingsPage = () => {
         beforeUpload: async (file) => {
             const isImage = file.type.startsWith('image/');
             if (!isImage) {
-                notification.error({ message: t('settingsPage.imageOnly', 'You can only upload image files') });
+                notification.error({ title: t('settingsPage.imageOnly', 'You can only upload image files') });
                 return false;
             }
             const isLt2M = file.size / 1024 / 1024 < 2;
             if (!isLt2M) {
-                notification.error({ message: t('settingsPage.fileTooLarge', 'Image must be smaller than 2MB') });
+                notification.error({ title: t('settingsPage.fileTooLarge', 'Image must be smaller than 2MB') });
                 return false;
             }
             try {
@@ -102,9 +102,9 @@ const SettingsPage = () => {
                 const newUrl = res.data.profile_image_url || URL.createObjectURL(file);
                 setAvatarUrl(newUrl);
                 setUser({ ...user, avatarUrl: newUrl });
-                notification.success({ message: t('settingsPage.photoUpdated', 'Photo updated successfully'), description: t('settingsPage.photoUpdatedDescription', 'Your new photo is now visible on your profile.') });
+                notification.success({ title: t('settingsPage.photoUpdated', 'Photo updated successfully'), description: t('settingsPage.photoUpdatedDescription', 'Your new photo is now visible on your profile.') });
             } catch (error) {
-                notification.error({ message: t('settingsPage.photoError', 'Failed to upload photo') });
+                notification.error({ title: t('settingsPage.photoError', 'Failed to upload photo') });
             }
             return false;
         },

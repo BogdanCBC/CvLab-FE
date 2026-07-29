@@ -35,9 +35,9 @@ const FOOTER_COLUMNS = [
   {
     key: 'legal',
     links: [
-      { key: 'gdpr' },
-      { key: 'terms' },
-      { key: 'privacy' },
+      { key: 'gdpr', route: '/gdpr' },
+      { key: 'terms', route: '/terms' },
+      { key: 'privacy', route: '/privacy' },
       { key: 'contact', sectionId: 'contact' },
     ],
   },

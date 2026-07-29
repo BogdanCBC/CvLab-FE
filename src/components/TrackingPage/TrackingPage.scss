@@ -1,9 +1,9 @@
 .tracking-page {
-    padding: 0 0px 24px;
+    padding: 0 0px 5px;
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    height: calc(100vh - 111px);
+    height: calc(100vh - 127px);
 }
 
 .tracking-page-header {
@@ -84,14 +84,16 @@
     background: #FAFAFA;
     overflow: hidden;
     // height: calc(100vh - 160px);
+    &:hover{
+        background: #F2F2F2;
+    }
 }
 
 .tracking-column-header {
     padding: 14px 16px;
-    border-bottom: 1px solid #E9EAEB;
     border-right: 1px solid #E9EAEB;
     border-left: 1px solid #E9EAEB;
-    background: #FAFAFA;
+    // background: #FAFAFA;
 }
 
 .tracking-column-title {
@@ -115,7 +117,7 @@
     // max-height: calc(100vh - 269px);
     border-right: 1px solid #E9EAEB;
     border-left: 1px solid #E9EAEB;
-    background: #FAFAFA;
+    // background: #FAFAFA;
 
     &--over {
         background-color: #EBF5FB;
@@ -309,6 +311,286 @@
             border-color: #D92D20 !important;
         }
     }
+}
+
+/* ── AI Match button (revealed on column hover) ── */
+.ai-match-section{
+    display: none;
+    padding: 8px;
+    border-right: 1px solid #E9EAEB;
+    border-left: 1px solid #E9EAEB;
+    gap: 10px;
+    .ai-match-btn {
+        color: #fff;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: opacity 0.18s ease, background 0.15s ease;
+        border-radius: 8px;
+        border: 2px solid rgba(255, 255, 255, 0.12);
+        background: #2391D1;
+        padding: 9px 14px;
+        width: 100%;
+    
+        &:hover {
+            background: #26A5EF;
+        }
+    }
+    .ai-match-history-btn{
+        border-radius: 8px;
+        border: 1px solid var(--Gray-300, #D5D7DA);
+        background: var(--Base-White, #FFF);
+        justify-content: center;
+        align-items: center;
+        gap: 4px;
+        flex-shrink: 0;
+        display: flex;
+        width: 40px;
+        height: 40px;
+        cursor: pointer;
+        &:hover {
+            background: var(--Gray-100, #F5F5F5);
+        }
+    }
+}
+
+.tracking-column:hover .ai-match-section,
+.ai-match-section--open {
+    display: flex;
+}
+
+/* ── AI Match result modal ── */
+.ai-match-result-modal {
+    .ant-modal-content {
+        padding: 0;
+        border-radius: 12px;
+        overflow: hidden;
+    }
+    .ant-modal-body {
+        padding: 0;
+    }
+    .ant-modal-close {
+        display: none;
+    }
+}
+
+.amr-wrap {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.amr-loading-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.88);
+    backdrop-filter: blur(3px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    border-radius: 12px;
+    gap: 14px;
+}
+
+.amr-loading-text {
+    font-size: 14px;
+    font-weight: 500;
+    color: #535862;
+}
+
+.amr-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+.amr-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #181D27;
+    margin: 0 0 4px;
+    line-height: 24px; /* 150% */
+}
+
+.amr-subtitle {
+    font-size: 14px;
+    color: #535862;
+    margin: 0;
+    font-weight: 400;
+    line-height: 20px;
+}
+
+.amr-close-x {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    flex-shrink: 0;
+    margin-top: 2px;
+
+    &:hover {
+        background: #F5F5F5;
+    }
+}
+
+.amr-list {
+    padding-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-height: 710px;
+    overflow-y: auto;
+}
+
+.amr-item {
+    padding: 16px;
+    border-radius: 14px;
+    border: 1px solid #F3F4F6;
+    background: #F9FAFB;
+}
+
+.amr-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.amr-rank {
+    width: 32px;
+    height: 32px;
+    border-radius: 10px;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.amr-meta {
+    flex: 1;
+    min-width: 0;
+}
+
+.amr-name-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+}
+
+.amr-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: #101828;
+    line-height: 20px;
+}
+
+.amr-ordinal {
+    font-size: 12px;
+    color: #99A1AF;
+    font-weight: 400;
+    line-height: 16px;
+}
+
+.amr-badge {
+    font-size: 12px;
+    font-weight: 500;
+    padding: 2px 8px;
+    border-radius: 12px;
+
+    &--match {
+        color: #079455;
+        background: #F0FDF4;
+    }
+
+    &--no {
+        color: #D92D20;
+        background: #FEF2F2;
+    }
+}
+
+.amr-fit-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 9px;
+    flex-direction: column;
+}
+
+.amr-fit-label {
+    font-size: 14px;
+    color: #6A7282;
+    white-space: nowrap;
+    min-width: 80px;
+}
+
+.amr-bar-track {
+    height: 6px;
+    background: #E9EAEB;
+    border-radius: 3px;
+    overflow: hidden;
+    width: 100%;
+    min-height: 6px;
+}
+
+.amr-bar-fill {
+    height: 100%;
+    border-radius: 3px;
+    transition: width 0.5s ease;
+}
+
+.amr-reason {
+    font-size: 16px;
+    color: #4A5565;
+    line-height: 24px; /* 150% */
+    margin: 0;
+    font-weight: 400;
+    margin-left: 43px;
+}
+
+.amr-empty {
+    text-align: center;
+    color: #717680;
+    padding: 24px 0;
+    font-size: 14px;
+}
+
+.amr-footer {
+    display: flex;
+    gap: 12px;
+    padding: 32px 0px 24px;
+
+    .ant-btn:not(:disabled):not(.ant-btn-disabled) {
+        border-top-width: 1px !important;
+        border-right-width: 1px !important;
+        border-bottom-width: 1px !important;
+        border-left-width: 1px !important;
+    }
+}
+
+.amr-btn-close {
+    flex: 1;
+    height: 40px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.amr-btn-download {
+    flex: 1;
+    height: 40px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
 }
 
 /* ── Responsive: fixed-width columns + horizontal scroll (Jira-style) ── */

@@ -1,4 +1,5 @@
 @use '../../styles/variables' as *;
+@use '../../styles/articleTypography';
 
 .article-page {
   width: 100%;
@@ -59,55 +60,6 @@
 
   &__body {
     margin-bottom: 40px;
-  }
-
-  &__paragraph {
-    color: #344054;
-    font-size: 16px;
-    line-height: 1.7;
-    margin: 0 0 20px;
-  }
-
-  &__h2 {
-    color: $color-title;
-    font-size: 24px;
-    font-weight: 700;
-    line-height: 1.3;
-    margin: 40px 0 16px;
-  }
-
-  &__h3 {
-    color: $color-title;
-    font-size: 19px;
-    font-weight: 700;
-    line-height: 1.3;
-    margin: 28px 0 12px;
-  }
-
-  &__h4 {
-    color: $color-title;
-    font-size: 16px;
-    font-weight: 700;
-    line-height: 1.3;
-    margin: 22px 0 10px;
-  }
-
-  &__list {
-    margin: 0 0 20px;
-    padding-left: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-
-    li {
-      color: #344054;
-      font-size: 16px;
-      line-height: 1.7;
-    }
-
-    strong {
-      color: $color-title;
-    }
   }
 
   @media (max-width: 900px) {

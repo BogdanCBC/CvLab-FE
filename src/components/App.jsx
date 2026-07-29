@@ -8,6 +8,9 @@ import HomePage from './Home/HomePage';
 import LandingPage from './LandingPage/LandingPage';
 import BlogListPage from './BlogPage/BlogListPage';
 import ArticlePage from './BlogPage/ArticlePage';
+import TermsPage from './LegalPage/TermsPage';
+import GDPRPage from './LegalPage/GDPRPage';
+import PrivacyPage from './LegalPage/PrivacyPage';
 
 function ProtectedRoute({ isLoggedIn }) {
     const location = useLocation();
@@ -65,6 +68,9 @@ function App() {
           />
           <Route path="/blog" element={<BlogListPage isLoggedIn={isLoggedIn} />} />
           <Route path="/blog/:slug" element={<ArticlePage isLoggedIn={isLoggedIn} />} />
+          <Route path="/terms" element={<TermsPage isLoggedIn={isLoggedIn} />} />
+          <Route path="/gdpr" element={<GDPRPage isLoggedIn={isLoggedIn} />} />
+          <Route path="/privacy" element={<PrivacyPage isLoggedIn={isLoggedIn} />} />
 
         {/* Login Route */}
         <Route

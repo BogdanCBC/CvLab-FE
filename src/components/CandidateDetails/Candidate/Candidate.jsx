@@ -52,13 +52,13 @@ export default function Candidate(props) {
             downloadFileFromBlob(new Blob([response.data]), filename);
         } catch (error) {
             console.error("Error downloading CV:", error);
-            notification.error({ message: "An error occurred while downloading the CV." });
+            notification.error({ title: "An error occurred while downloading the CV." });
         }
     };
 
     const getFormattedCV = async (tmplType, subType = '') => {
         if (!downloadFileType) {
-            notification.warning({ message: 'Please select a file format first' });
+            notification.warning({ title: 'Please select a file format first' });
             return;
         }
         try {
@@ -73,7 +73,7 @@ export default function Candidate(props) {
             downloadFileFromBlob(new Blob([response.data]), filename);
         } catch (error) {
             console.error("Error fetching formatted CV:", error);
-            notification.error({ message: "An error occurred while fetching the formatted CV." });
+            notification.error({ title: "An error occurred while fetching the formatted CV." });
         } finally {
             setLoading(false);
         }
@@ -86,20 +86,20 @@ export default function Candidate(props) {
                 props.setSelectedCandidate(null);
                 window.dispatchEvent(new Event('refreshCandidates'));
                 notification.success({
-                    message: t("candidate.deleteSuccess"),
+                    title: t("candidate.deleteSuccess"),
                     description: t("candidate.deleteSuccessDescription"),
                 });
             }
         } catch (error) {
             console.error("Error deleting candidate:", error);
-            notification.error({ message: t("candidate.deleteError") });
+            notification.error({ title: t("candidate.deleteError") });
         }
     };
 
     const handleCopyLink = async () => {
         try {
             await navigator.clipboard.writeText(`${BASE_URL}/${props.candidateId}`);
-            notification.success({ message: t("candidate.clipboard") });
+            notification.success({ title: t("candidate.clipboard") });
         } catch (err) {
             console.log(`Failed to copy! Error: ${err}`);
         }

@@ -21,12 +21,12 @@ export default function CompanyDetails({ selectedClient, setSelectedClient, setC
                         setClientInfo(Array.isArray(data) ? data[0] : (data.data ? data.data : data));
                     } else {
                         setClientInfo(null);
-                        notification.warning({ message: t("companiesPage.fetchDetailEmpty", "No data found for this company") });
+                        notification.warning({ title: t("companiesPage.fetchDetailEmpty", "No data found for this company") });
                     }
                 }
             } catch (err) {
                 setClientInfo(null);
-                notification.error({ message: err?.response?.data?.message || t("companiesPage.fetchDetailError", "Failed to load company details") });
+                notification.error({ title: err?.response?.data?.message || t("companiesPage.fetchDetailError", "Failed to load company details") });
             }
         };
         fetchSelectedClient();

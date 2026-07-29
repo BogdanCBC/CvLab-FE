@@ -1,0 +1,54 @@
+@use './variables' as *;
+
+// Shared block typography for the constrained markdown subset rendered by
+// renderArticleBody.jsx (##, ###, ####, lists, paragraphs). Used by any page
+// that renders long-form content through that parser (blog articles, legal
+// pages, ...).
+.article-page__paragraph {
+  color: #09090B;
+  font-size: 16px;
+  line-height: 1.7;
+  margin: 0 0 20px;
+}
+
+.article-page__h2 {
+  color: $color-title;
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1.3;
+  margin: 40px 0 16px;
+}
+
+.article-page__h3 {
+  color: $color-title;
+  font-size: 19px;
+  font-weight: 700;
+  line-height: 1.3;
+  margin: 28px 0 12px;
+}
+
+.article-page__h4 {
+  color: $color-title;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.3;
+  margin: 22px 0 10px;
+}
+
+.article-page__list {
+  margin: 0 0 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  list-style-type: none;
+
+  li {
+    color: #09090B;
+    font-size: 16px;
+    line-height: 1.7;
+  }
+
+  strong {
+    color: $color-title;
+  }
+}

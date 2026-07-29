@@ -35,7 +35,7 @@ export default function AddCandidateModal({ open, onClose, onSave, jobId }) {
                     label: `${c.first_name ?? ''} ${c.last_name ?? ''}`.trim(),
                 })));
             })
-            .catch(() => notification.error({ message: t("trackingPage.modal.loadError") }))
+            .catch(() => notification.error({ title: t("trackingPage.modal.loadError") }))
             .finally(() => setLoadingOptions(false));
     }, [open, i18n.language, t]);
 
@@ -47,11 +47,11 @@ export default function AddCandidateModal({ open, onClose, onSave, jobId }) {
                 job_id: Number(jobId),
                 candidate_ids: selectedIds,
             });
-            notification.success({ message: t("trackingPage.modal.addSuccess"), description: t("trackingPage.modal.addSuccessDescription") });
+            notification.success({ title: t("trackingPage.modal.addSuccess"), description: t("trackingPage.modal.addSuccessDescription") });
             onSave();
             handleClose();
         } catch {
-            notification.error({ message: t("trackingPage.modal.saveError") });
+            notification.error({ title: t("trackingPage.modal.saveError") });
         } finally {
             setSaving(false);
         }

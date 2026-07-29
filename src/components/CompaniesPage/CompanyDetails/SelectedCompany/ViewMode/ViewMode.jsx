@@ -17,7 +17,7 @@ export default function ViewMode({ clientInfo, setClientInfo, setEditMode, setCl
                 params: { client_id: clientInfo.client_id },
             });
             if (deleteRes.data) {
-                notification.success({ message: t("companiesPage.deleteSuccess", "Company deleted successfully"), description: t("companiesPage.deleteSuccessDescription", "It has been removed from your companies list.") });
+                notification.success({ title: t("companiesPage.deleteSuccess", "Company deleted successfully"), description: t("companiesPage.deleteSuccessDescription", "It has been removed from your companies list.") });
                 try {
                     const clientsRes = await fetchClients();
                     if (clientsRes.success && Array.isArray(clientsRes.clients)) {
@@ -35,7 +35,7 @@ export default function ViewMode({ clientInfo, setClientInfo, setEditMode, setCl
                 }
             }
         } catch (err) {
-            notification.error({ message: err?.response?.data?.message || t("companiesPage.deleteError", "Failed to delete company") });
+            notification.error({ title: err?.response?.data?.message || t("companiesPage.deleteError", "Failed to delete company") });
             setClientInfo(null);
             setSelectedClient(null);
         }

@@ -370,6 +370,29 @@
         "compensationExpectations": "Compensation/Benefits Expectations"
       }
     },
+    "aiMatch": {
+      "buttonLabel": "AI Match",
+      "loadingTitle": "AI Match in progress",
+      "loadingDescription": "Evaluating candidates in the background. You can navigate away.",
+      "successTitle": "AI Match complete",
+      "successDescription": "Candidates have been ranked by AI.",
+      "viewResults": "View Results",
+      "errorTitle": "AI Match failed",
+      "errorDescription": "Failed to evaluate candidates. Please try again.",
+      "modalTitle": "Match with AI",
+      "modalTitleHistory": "Match with AI generated at {{date}}",
+      "modalSubtitle": "See the selected candidates ranked by AI.",
+      "close": "Close",
+      "download": "Download",
+      "isMatch": "It's a match",
+      "notMatch": "Not a match",
+      "strongFit": "Strong fit",
+      "mediumFit": "Medium fit",
+      "lowFit": "Low fit",
+      "generatingPdf": "Generating PDF…",
+      "viewAt": "View AI Match at",
+      "noHistory": "No history yet"
+    },
     "archivePage": {
       "title": "Archive",
       "searchPlaceholder": "Search",
@@ -756,5 +779,11 @@
     "pageTitle": "Blog",
     "publishedOn": "Published on {{date}}",
     "notFound": "Article not found"
+  },
+  "legal": {
+    "termsTitle": "Terms and Conditions",
+    "gdprTitle": "GDPR",
+    "privacyTitle": "Privacy Policy",
+    "lastUpdated": "Last updated on {{date}}"
   }
 }

@@ -46,7 +46,7 @@ export default function AiMatch({ aiMatchedCandidates, jobTitle, setSelectedCand
                     </Title>
 
                     <div className="matched-results-wrapper">
-                        <Space direction="vertical" size={16} style={{ width: '100%', boxSizing: 'border-box' }}>
+                        <Space orientation="vertical" size={16} style={{ width: '100%', boxSizing: 'border-box' }}>
                             {list.map((c) => (
                                 <div
                                     key={c.candidate_id}

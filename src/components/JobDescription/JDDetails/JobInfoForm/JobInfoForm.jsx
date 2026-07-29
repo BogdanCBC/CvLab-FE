@@ -65,7 +65,7 @@ export default function JobInfoForm({ open, setJobs, setUploadNew, clientId }) {
         try {
             const response = await api.post("/job-description", payload);
             if (response.data.success) {
-                notification.success({ message: t("jdEditMode.createdSuccess"), description: t("jdEditMode.createdSuccessDescription") });
+                notification.success({ title: t("jdEditMode.createdSuccess"), description: t("jdEditMode.createdSuccessDescription") });
                 setFormData({ title: "", description: "" });
                 setSkills([]);
                 setLanguages([]);
@@ -76,7 +76,7 @@ export default function JobInfoForm({ open, setJobs, setUploadNew, clientId }) {
             setUploading(false);
             setTimeout(() => setUploadNew(false), 500);
         } catch (err) {
-            notification.error({ message: err?.response?.data?.message || "Error" });
+            notification.error({ title: err?.response?.data?.message || "Error" });
             setUploading(false);
         }
     };

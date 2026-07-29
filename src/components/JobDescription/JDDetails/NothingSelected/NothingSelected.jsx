@@ -18,7 +18,7 @@ export default function NothingSelected({ setUploadNew }) {
                 justifyContent: "center",
             }}
         >
-            <Space direction="vertical" align="center" size="middle">
+            <Space orientation="vertical" align="center" size="middle">
                 <InfoIcon />
                 <Title level={5} style={{ margin: 0 }}>
                     {t("jdNothingSelected.message")}

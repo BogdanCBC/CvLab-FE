@@ -361,6 +361,29 @@
         "compensationExpectations": "Attentes salariales/avantages"
       }
     },
+    "aiMatch": {
+      "buttonLabel": "IA Match",
+      "loadingTitle": "IA Match en cours",
+      "loadingDescription": "Évaluation des candidats en arrière-plan. Vous pouvez naviguer.",
+      "successTitle": "IA Match terminé",
+      "successDescription": "Les candidats ont été classés par l'IA.",
+      "viewResults": "Voir les résultats",
+      "errorTitle": "Échec du Match IA",
+      "errorDescription": "Échec de l'évaluation des candidats. Veuillez réessayer.",
+      "modalTitle": "Match avec l'IA",
+      "modalTitleHistory": "Match IA généré le {{date}}",
+      "modalSubtitle": "Consultez les candidats classés par l'IA.",
+      "close": "Fermer",
+      "download": "Télécharger",
+      "isMatch": "C'est un match",
+      "notMatch": "Pas un match",
+      "strongFit": "Forte adéquation",
+      "mediumFit": "Adéquation moyenne",
+      "lowFit": "Faible adéquation",
+      "generatingPdf": "Génération du PDF…",
+      "viewAt": "Voir le match IA à",
+      "noHistory": "Pas encore d'historique"
+    },
     "archivePage": {
       "title": "Archive",
       "searchPlaceholder": "Rechercher",
@@ -747,5 +770,11 @@
     "pageTitle": "Blog",
     "publishedOn": "Publié le {{date}}",
     "notFound": "Article introuvable"
+  },
+  "legal": {
+    "termsTitle": "Conditions générales",
+    "gdprTitle": "RGPD",
+    "privacyTitle": "Politique de confidentialité",
+    "lastUpdated": "Dernière mise à jour le {{date}}"
   }
 }

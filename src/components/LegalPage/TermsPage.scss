@@ -1,0 +1,63 @@
+@use '../../styles/variables' as *;
+@use '../../styles/articleTypography';
+
+.terms-page {
+  width: 100%;
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 140px 24px 80px;
+
+  &__back {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: $color-primary;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    margin-bottom: 24px;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  &__title {
+    color: $color-title;
+    font-size: 48px;
+    font-weight: 700;
+    line-height: 48px;
+    margin: 0 0 12px;
+    text-transform: uppercase;
+  }
+
+  &__date {
+    display: block;
+    margin-bottom: 32px;
+    color: #09090B;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 24px;
+  }
+
+  @media (max-width: 900px) {
+    padding: 100px 20px 60px;
+
+    &__title {
+      font-size: 28px;
+    }
+  }
+  &.gdpr-page{
+    .article-page__list{
+        list-style-type: disc;
+        padding-left: 21px;
+    }
+  }
+  &.privacy-page{
+    .article-page__list{
+        list-style-type: disc;
+        padding-left: 21px;
+    }
+  }
+}

@@ -30,10 +30,10 @@ const ContactSection = () => {
         company: formData.company,
         message: formData.message,
       });
-      notification.success({ message: t('landing.contact.success', "Thanks! We'll get back to you within 24 hours.") });
+      notification.success({ title: t('landing.contact.success', "Thanks! We'll get back to you within 24 hours.") });
       setFormData(initialFormState);
     } catch (err) {
-      notification.error({ message: err?.response?.data?.message || t('landing.contact.error', 'Something went wrong. Please try again.') });
+      notification.error({ title: err?.response?.data?.message || t('landing.contact.error', 'Something went wrong. Please try again.') });
     } finally {
       setSubmitting(false);
     }
