@@ -1,20 +1,51 @@
 import React from 'react';
 import './InterfaceSection.scss';
 import { useTranslation } from 'react-i18next';
-import { NetworkIcon, ChartIcon, DocumentIcon, ArrowRightIcon } from '../../../constants/icons';
+import { NetworkIcon, ChartIcon, DocumentIcon, ArrowRightBlue, PersonIcon, MoreDotsIconSmall } from '../../../constants/icons';
 
 const MATCHES = [
-  { key: 'radu', initials: 'RP', color: '#12B76A', score: 94 },
-  { key: 'mihai', initials: 'MI', color: '#2391D1', score: 87 },
-  { key: 'ana', initials: 'AM', color: '#7A5AF8', score: 81 },
-  { key: 'elena', initials: 'EC', color: '#F79009', score: 76 },
+  { key: 'paul', rank: '1st', isMatch: true, score: 100 },
+  { key: 'cristian', rank: '2nd', isMatch: false, score: 16 },
 ];
 
-const STATUS_COLUMNS = [
-  { key: 'applied', color: '#98a2b3', count: 2, chips: ['Ana M.', 'Dan G.'] },
-  { key: 'reviewed', color: '#2391d1', count: 1, chips: ['Radu P.'] },
-  { key: 'interview', color: '#f79009', count: 2, chips: ['Ioana D.', 'Alex S.'] },
-  { key: 'hired', color: '#12b76a', count: 1, chips: ['Maria P.'], hideOnMobile: true },
+const PIPELINE_COLUMNS = [
+  {
+    key: 'screening',
+    candidates: [
+      { name: 'Olivia Rhye', location: 'Paris', owner: 'James Lucas' },
+      { name: 'James Wilson', location: 'Paris', owner: 'James Lucas' },
+    ],
+  },
+  {
+    key: 'hrInterview',
+    candidates: [{ name: 'Sophia Taylor', location: 'Paris', owner: 'James Lucas' }],
+  },
+  {
+    key: 'technicalInterview',
+    candidates: [
+      { name: 'Mia Clark', location: 'Paris', owner: 'James Lucas' },
+      { name: 'Jack Bennett', location: 'Paris', owner: 'James Lucas' },
+      { name: 'Oliver Parker', location: 'Iasi', owner: 'James Lucas' },
+    ],
+  },
+  {
+    key: 'clientInterview',
+    candidates: [{ name: 'Lily Young', location: 'Paris', owner: 'James Lucas' }],
+  },
+  {
+    key: 'offer',
+    candidates: [
+      { name: 'Chloe King', location: 'Paris', owner: 'James Lucas' },
+      { name: 'Sarah Baker', location: 'Paris', owner: 'James Lucas' },
+    ],
+  },
+  {
+    key: 'acceptedDeclined',
+    candidates: [
+      { name: 'Ella Wright', location: 'Paris', owner: 'James Lucas', status: 'accepted' },
+      { name: 'Andrew Lee', location: 'Paris', owner: 'James Lucas', status: 'declined' },
+    ],
+  },
 ];
 
 const InterfaceSection = () => {
@@ -54,30 +85,46 @@ const InterfaceSection = () => {
           <span className="match-mock__section-label">{t('landing.interface.match.topMatches', 'Top matches')}</span>
 
           <div className="match-mock__list">
-            {MATCHES.map((match) => (
-              <div key={match.key} className="match-mock__row">
-                <div className="match-mock__avatar" style={{ background: match.color }}>
-                  {match.initials}
-                </div>
-                <div className="match-mock__info">
-                  <span className="match-mock__name">{t(`landing.interface.match.candidates.${match.key}.name`)}</span>
-                  <span className="match-mock__role">{t(`landing.interface.match.candidates.${match.key}.role`)}</span>
-                </div>
-                <div className="match-mock__score">
-                  <div className="match-mock__bar">
-                    <span style={{ width: `${match.score}%`, background: match.color }} />
-                  </div>
-                  <span className="match-mock__percent" style={{ color: match.color }}>
-                    {match.score}%
+            {MATCHES.map((match, index) => (
+              <div key={match.key} className="match-mock__card">
+                <div className="match-mock__card-top">
+                  <span className="match-mock__rank-badge">{index + 1}</span>
+                  <span className="match-mock__card-name">
+                    {t(`landing.interface.match.candidates.${match.key}.name`)}
+                  </span>
+                  <span className="match-mock__card-ordinal">{match.rank}</span>
+                  <span
+                    className={`match-mock__pill${match.isMatch ? ' match-mock__pill--match' : ' match-mock__pill--no-match'}`}
+                  >
+                    <span className="match-mock__pill-dot" />
+                    {match.isMatch
+                      ? t('landing.interface.match.isMatch', "It's a match")
+                      : t('landing.interface.match.notMatch', 'Not a match')}
                   </span>
                 </div>
+
+                <span className="match-mock__fit-label">
+                  {match.isMatch
+                    ? t('landing.interface.match.strongFit', 'Strong fit')
+                    : t('landing.interface.match.lowFit', 'Low fit')}
+                </span>
+
+                <div className="match-mock__fit-bar">
+                  <span
+                    style={{ width: `${match.score}%`, background: match.isMatch ? '#12B76A' : '#F04438' }}
+                  />
+                </div>
+
+                <p className={`match-mock__description${index === 1 ? ' match-mock__description--second' : ''}`}>
+                  {t(`landing.interface.match.candidates.${match.key}.description`)}
+                </p>
               </div>
             ))}
           </div>
         </div>
 
         <div className="interface-section__col">
-          <div className="interface-mock-card">
+          <div className="interface-mock-card candidate-board-mock">
             <div className="interface-mock-card__header">
               <div className="interface-mock-card__icon interface-mock-card__icon--green">
                 <ChartIcon />
@@ -90,30 +137,44 @@ const InterfaceSection = () => {
               </div>
             </div>
 
-            <div className="board-mock__columns">
-              {STATUS_COLUMNS.map((col) => (
-                <span
-                  key={col.key}
-                  className={`board-mock__status${col.hideOnMobile ? ' board-mock__status--hide-mobile' : ''}`}
-                >
-                  <span className="board-mock__dot" style={{ background: col.color }} />
-                  {t(`landing.interface.board.statuses.${col.key}`)}
-                  <span className="board-mock__count">{col.count}</span>
-                </span>
-              ))}
-            </div>
+            <div className="board-mock__board">
+              {PIPELINE_COLUMNS.map((col) => (
+                <div key={col.key} className="board-mock__column">
+                  <span className="board-mock__column-title">
+                    {t(`landing.interface.board.statuses.${col.key}`)}
+                  </span>
 
-            <div className="board-mock__grid">
-              {STATUS_COLUMNS.map((col) => (
-                <div
-                  key={col.key}
-                  className={`board-mock__chips${col.hideOnMobile ? ' board-mock__chips--hide-mobile' : ''}`}
-                >
-                  {col.chips.map((chip) => (
-                    <span key={chip} className="board-mock__chip">
-                      {chip}
-                    </span>
-                  ))}
+                  <div className="board-mock__cards">
+                    {col.candidates.map((candidate) => (
+                      <div key={candidate.name} className="board-mock__candidate">
+                        <div className="board-mock__candidate-top">
+                          <div className="board-mock__candidate-avatar">
+                            <PersonIcon />
+                          </div>
+                          <div className="board-mock__candidate-details">
+                            <span className="board-mock__candidate-name">{candidate.name}</span>
+                            <span className="board-mock__candidate-location">{candidate.location}</span>
+                          </div>
+                          <span className="board-mock__candidate-menu">
+                            <MoreDotsIconSmall />
+                          </span>
+                        </div>
+                        <span className="board-mock__candidate-owner-label">
+                          {t('landing.interface.board.opportunityOwner', 'Opportunity Owner')}
+                        </span>
+                        <span className="board-mock__candidate-name-label">
+                          {t('landing.interface.board.name', 'Name')}
+                        </span>
+                        <span className="board-mock__candidate-owner-value">{candidate.owner}</span>
+
+                        {candidate.status && (
+                          <span className={`board-mock__candidate-status board-mock__candidate-status--${candidate.status}`}>
+                            {t(`landing.interface.board.candidateStatus.${candidate.status}`)}
+                          </span>
+                        )}
+                      </div>
+                    ))}
+                  </div>
                 </div>
               ))}
             </div>
@@ -149,14 +210,13 @@ const InterfaceSection = () => {
               </div>
 
               <div className="format-mock__arrow">
-                <ArrowRightIcon />
+                <ArrowRightBlue />
               </div>
 
               <div className="format-mock__panel">
                 <span className="format-mock__label format-mock__label--brand">adorCV</span>
                 <div className="format-mock__box format-mock__box--after">
-                  <span />
-                  <span />
+                  <span className="format-mock__box-item">Your company logo</span>
                   <span />
                   <span />
                   <span />

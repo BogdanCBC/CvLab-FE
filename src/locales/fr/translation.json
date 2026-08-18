@@ -633,21 +633,37 @@
         "openPosition": "Poste ouvert",
         "positionTitle": "Product Manager — Tech SRL",
         "topMatches": "Meilleures correspondances",
+        "isMatch": "C'est une correspondance",
+        "notMatch": "Ce n'est pas une correspondance",
+        "strongFit": "Forte adéquation",
+        "lowFit": "Faible adéquation",
         "candidates": {
-          "radu": { "name": "Radu Popescu", "role": "PM senior" },
-          "mihai": { "name": "Mihai Ionescu", "role": "Product Owner" },
-          "ana": { "name": "Ana Marinescu", "role": "PM confirmée" },
-          "elena": { "name": "Elena Constantin", "role": "Responsable produit" }
+          "paul": {
+            "name": "Paul",
+            "description": "Paul se classe en tête des trois uniquement parce qu'il est légèrement plus proche des exigences opérationnelles : il a une expérience professionnelle pertinente et possède au moins un permis de conduire de catégorie B. Cependant, comparé à Bob et Clara, il manque encore d'une expérience d'encadrement démontrée."
+          },
+          "cristian": {
+            "name": "Cristian S.",
+            "description": "Cristian se classe dernière car son profil est le plus éloigné des exigences principales du poste : il manque d'expérience pertinente dans le secteur et rien ne démontre les certifications techniques requises pour le poste."
+          }
         }
       },
       "board": {
         "title": "Tableau des candidats",
         "subtitle": "Gestion du pipeline en temps réel",
+        "opportunityOwner": "Responsable de l'opportunité",
+        "name": "Nom",
         "statuses": {
-          "applied": "Candidatures",
-          "reviewed": "Examinés",
-          "interview": "Entretien",
-          "hired": "Recrutés"
+          "screening": "Présélection",
+          "hrInterview": "Entretien RH",
+          "technicalInterview": "Entretien technique",
+          "clientInterview": "Entretien client",
+          "offer": "Offre",
+          "acceptedDeclined": "Accepté/Refusé"
+        },
+        "candidateStatus": {
+          "accepted": "Accepté",
+          "declined": "Refusé"
         }
       },
       "format": {
