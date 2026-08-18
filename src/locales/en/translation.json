@@ -642,21 +642,37 @@
         "openPosition": "Open position",
         "positionTitle": "Product Manager — Tech SRL",
         "topMatches": "Top matches",
+        "isMatch": "It's a match",
+        "notMatch": "Not a match",
+        "strongFit": "Strong fit",
+        "lowFit": "Low fit",
         "candidates": {
-          "radu": { "name": "Radu Popescu", "role": "Senior PM" },
-          "mihai": { "name": "Mihai Ionescu", "role": "Product Owner" },
-          "ana": { "name": "Ana Marinescu", "role": "Mid-level PM" },
-          "elena": { "name": "Elena Constantin", "role": "Head of Product" }
+          "paul": {
+            "name": "Paul",
+            "description": "Paul ranks highest of the three only because he is marginally closer to the operational requirements: he has relevant work history length and at least a category B driving licence. However, compared with Bob and Clara, he still lacks any demonstrated supervisory experience."
+          },
+          "cristian": {
+            "name": "Cristian S.",
+            "description": "Cristian ranks last because his background is the furthest from the role's core requirements: it lacks relevant industry experience and there is no evidence of the technical certifications the role requires."
+          }
         }
       },
       "board": {
         "title": "Candidate Board",
         "subtitle": "Real-time pipeline management",
+        "opportunityOwner": "Opportunity Owner",
+        "name": "Name",
         "statuses": {
-          "applied": "Applied",
-          "reviewed": "Reviewed",
-          "interview": "Interview",
-          "hired": "Hired"
+          "screening": "Screening",
+          "hrInterview": "HR Interview",
+          "technicalInterview": "Technical Interview",
+          "clientInterview": "Client Interview",
+          "offer": "Offer",
+          "acceptedDeclined": "Accepted/Declined"
+        },
+        "candidateStatus": {
+          "accepted": "Accepted",
+          "declined": "Declined"
         }
       },
       "format": {
