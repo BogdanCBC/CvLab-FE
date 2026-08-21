@@ -10,9 +10,9 @@ const AVATAR_COLORS = ['#2391D1', '#F79009', '#F4661E', '#7A5AF8', '#12B76A'];
 
 // Add more entries here as new testimonials come in — quote/role text lives in translation.json under landing.testimonials.<key>.
 const TESTIMONIALS = [
-  { key: 'bogdan', initials: 'BM', name: 'Bogdan Manolache', company: 'TechRom SA' },
-  { key: 'elena', initials: 'ER', name: 'Elena Radu', company: 'Globant Romania' },
-  { key: 'andreea', initials: 'AV', name: 'Andreea Voicu', company: 'Orange Romania' },
+  { key: 'bogdan', initials: 'BM', name: 'Bogdan Manolache', company: 'Artefact' },
+  { key: 'elena', initials: 'ER', name: 'Elena Radu', company: 'OmniStore Romania' },
+  { key: 'andreea', initials: 'AV', name: 'Andreea Voicu', company: 'Feel IT Services' },
 ];
 
 const TestimonialsSection = () => {
